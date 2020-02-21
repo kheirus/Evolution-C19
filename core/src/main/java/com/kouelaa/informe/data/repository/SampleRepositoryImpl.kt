@@ -7,7 +7,9 @@ import com.kouelaa.informe.domain.SampleEntity
  * Created by kheirus on 2020-02-11.
  */
 
-class SampleRepositoryImpl(private val sampleDataSource: SampleDataSource) : SampleRepository {
+class SampleRepositoryImpl(
+    private val sampleDataSource: SampleDataSource
+) : SampleRepository {
 
     override suspend fun addSample(entity: SampleEntity) {
         sampleDataSource.add(entity)

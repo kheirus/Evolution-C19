@@ -1,6 +1,6 @@
 package com.kouelaa.informe.data.repository
 
-import com.kouelaa.informe.domain.SampleEntity
+import com.kouelaa.informe.domain.entities.SampleEntity
 
 /**
  * Created by kheirus on 2020-02-11.

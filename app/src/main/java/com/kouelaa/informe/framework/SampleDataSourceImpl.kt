@@ -1,7 +1,7 @@
 package com.kouelaa.informe.framework
 
-import com.kouelaa.informe.data.local.SampleDataSource
-import com.kouelaa.informe.domain.SampleEntity
+import com.kouelaa.informe.data.datasources.local.SampleDataSource
+import com.kouelaa.informe.domain.entities.SampleEntity
 
 /**
  * Created by kheirus on 2020-02-11.

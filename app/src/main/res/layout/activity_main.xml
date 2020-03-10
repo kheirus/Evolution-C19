@@ -15,7 +15,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="40dp"
-        android:text="Get repos" />
+        android:text="Random Todo" />
 
     <TextView
         android:id="@+id/repos_tv"

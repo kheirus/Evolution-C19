@@ -1,4 +1,4 @@
-package com.kouelaa.informe.framework
+package com.kouelaa.informe.framework.remote
 
 import com.kouelaa.informe.data.datasources.remote.ApiService
 import com.kouelaa.informe.data.datasources.remote.TodoDataSource

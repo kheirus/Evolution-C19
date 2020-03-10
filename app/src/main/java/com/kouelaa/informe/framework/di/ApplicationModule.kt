@@ -1,4 +1,4 @@
-package com.kouelaa.informe.framework
+package com.kouelaa.informe.framework.di
 
 import com.google.gson.Gson
 import com.kouelaa.informe.BuildConfig
@@ -9,6 +9,8 @@ import com.kouelaa.informe.data.repository.SampleRepositoryImpl
 import com.kouelaa.informe.data.repository.TodoRepository
 import com.kouelaa.informe.data.repository.TodoRepositoryImpl
 import com.kouelaa.informe.domain.usecases.GetTodoUseCase
+import com.kouelaa.informe.framework.remote.AuthInterceptor
+import com.kouelaa.informe.framework.remote.TodoDataSourceImpl
 import com.kouelaa.informe.presentation.dashboard.MainViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -26,9 +28,18 @@ val domainModule = module {
 
     single<SampleRepository> { SampleRepositoryImpl(get()) }
     single<TodoRepository> { TodoRepositoryImpl(get()) }
-    single<TodoDataSource> { TodoDataSourceImpl(get()) }
+    single<TodoDataSource> {
+        TodoDataSourceImpl(
+            get()
+        )
+    }
     single { createOkHttpClient() }
-    single<ApiService> { createWebService(get(), BuildConfig.ENDPOINT) }
+    single<ApiService> {
+        createWebService(
+            get(),
+            BuildConfig.ENDPOINT
+        )
+    }
     single { Gson() }
     factory { GetTodoUseCase(get()) }
     single<CoroutineDispatcher> { Dispatchers.Main }

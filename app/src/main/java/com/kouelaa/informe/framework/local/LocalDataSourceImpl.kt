@@ -1,4 +1,4 @@
-package com.kouelaa.informe.framework
+package com.kouelaa.informe.framework.local
 
 import com.kouelaa.informe.data.datasources.local.LocalDataSource
 import com.kouelaa.informe.domain.entities.SampleEntity

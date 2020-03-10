@@ -1,4 +1,4 @@
-package com.kouelaa.informe.framework
+package com.kouelaa.informe.framework.viewmodel
 
 import androidx.lifecycle.ViewModel
 

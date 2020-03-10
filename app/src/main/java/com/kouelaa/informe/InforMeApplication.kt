@@ -1,8 +1,8 @@
 package com.kouelaa.informe
 
 import android.app.Application
-import com.kouelaa.informe.framework.domainModule
-import com.kouelaa.informe.framework.vmModule
+import com.kouelaa.informe.framework.di.domainModule
+import com.kouelaa.informe.framework.di.vmModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

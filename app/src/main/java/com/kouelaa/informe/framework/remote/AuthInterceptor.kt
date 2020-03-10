@@ -1,4 +1,4 @@
-package com.kouelaa.informe.framework
+package com.kouelaa.informe.framework.remote
 
 import okhttp3.Interceptor
 import okhttp3.Response

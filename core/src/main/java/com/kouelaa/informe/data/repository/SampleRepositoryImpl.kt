@@ -1,6 +1,6 @@
 package com.kouelaa.informe.data.repository
 
-import com.kouelaa.informe.data.datasources.local.SampleDataSource
+import com.kouelaa.informe.data.datasources.local.LocalDataSource
 import com.kouelaa.informe.domain.entities.SampleEntity
 
 /**
@@ -8,14 +8,14 @@ import com.kouelaa.informe.domain.entities.SampleEntity
  */
 
 class SampleRepositoryImpl(
-    private val sampleDataSource: SampleDataSource
+    private val localDataSource: LocalDataSource
 ) : SampleRepository {
 
     override suspend fun addSample(entity: SampleEntity) {
-        sampleDataSource.add(entity)
+        localDataSource.add(entity)
     }
 
     override suspend fun getSample(): SampleEntity {
-        return sampleDataSource.get()
+        return localDataSource.get()
     }
 }

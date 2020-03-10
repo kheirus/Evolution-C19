@@ -1,6 +1,6 @@
 package com.kouelaa.informe.framework
 
-import com.kouelaa.informe.data.datasources.local.SampleDataSource
+import com.kouelaa.informe.data.datasources.local.LocalDataSource
 import com.kouelaa.informe.domain.entities.SampleEntity
 
 /**
@@ -8,7 +8,7 @@ import com.kouelaa.informe.domain.entities.SampleEntity
  */
 
 // Will be a room database
-class SampleDataSourceImpl : SampleDataSource {
+class LocalDataSourceImpl : LocalDataSource {
 
     // This data will be stocked in a real database later
     private lateinit var data: String

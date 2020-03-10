@@ -4,7 +4,9 @@ import android.app.Application
 import com.kouelaa.informe.framework.domainModule
 import com.kouelaa.informe.framework.vmModule
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import timber.log.Timber
 
 /**
  * Created by kheirus on 2020-02-21.
@@ -23,10 +25,14 @@ class InforMeApplication : Application() {
                     domainModule
                 )
             )
+            if (BuildConfig.DEBUG) {
+                androidLogger()
+            }
+        }
 
-//            if (BuildConfig.DEBUG) {
-//                androidLogger()
-//            }
+        if (BuildConfig.DEBUG) {
+            Timber.uprootAll()
+            Timber.plant(Timber.DebugTree())
         }
     }
 }

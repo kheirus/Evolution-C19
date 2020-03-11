@@ -7,7 +7,7 @@ android {
     buildToolsVersion "29.0.2"
 
     defaultConfig {
-        applicationId "com.kouelaa.informe"
+        applicationId "com.kouelaa.coronavirus"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
@@ -30,15 +30,15 @@ android {
     flavorDimensions "version"
     productFlavors {
         dev {
-            resValue "string", "app_name", "InforMeDev"
-            buildConfigField "String", "ENDPOINT", "\"https://jsonplaceholder.typicode.com/\""
+            resValue "string", "app_name", "Coronavirus(COVID-19)"
+            buildConfigField "String", "ENDPOINT", "\"https://coronavirus.politologue.com/\""
             applicationIdSuffix ".dev"
             versionNameSuffix "-dev"
         }
 
         prod {
-            resValue "string", "app_name", "InforMe"
-            buildConfigField "String", "ENDPOINT", "\"https://jsonplaceholder.typicode.com/\""
+            resValue "string", "app_name", "Coronavirus(COVID-19)"
+            buildConfigField "String", "ENDPOINT", "\"https://coronavirus.politologue.com\""
         }
     }
 

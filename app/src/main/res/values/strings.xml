@@ -1,3 +1,6 @@
 <resources>
     <string name="title_dashboard">Dashboard</string>
+    <string name="confirmed">Confirmed</string>
+    <string name="deaths">Deaths</string>
+    <string name="recovered">Recovered</string>
 </resources>

@@ -8,6 +8,5 @@ import com.kouelaa.informe.domain.entities.Todo
  */
 
 interface TodoDataSource {
-
     suspend fun getTodo(id: Int): Todo
 }

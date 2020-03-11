@@ -2,8 +2,8 @@ package com.kouelaa.informe.presentation.dashboard
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.kouelaa.informe.data.usecases.GetTodoUseCase
 import com.kouelaa.informe.domain.entities.Todo
-import com.kouelaa.informe.domain.usecases.GetTodoUseCase
 import com.kouelaa.informe.framework.viewmodel.BaseViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch

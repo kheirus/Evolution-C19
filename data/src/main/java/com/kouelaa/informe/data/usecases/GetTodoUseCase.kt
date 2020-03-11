@@ -1,4 +1,4 @@
-package com.kouelaa.informe.domain.usecases
+package com.kouelaa.informe.data.usecases
 
 import com.kouelaa.informe.data.repository.TodoRepository
 import com.kouelaa.informe.domain.entities.Todo

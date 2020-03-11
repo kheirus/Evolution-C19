@@ -1,4 +1,4 @@
-package com.kouelaa.informe.domain.usecases
+package com.kouelaa.informe.data.usecases
 
 import com.kouelaa.informe.data.repository.SampleRepository
 import com.kouelaa.informe.domain.entities.SampleEntity

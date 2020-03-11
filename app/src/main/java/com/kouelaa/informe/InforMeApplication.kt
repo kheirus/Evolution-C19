@@ -19,12 +19,7 @@ class InforMeApplication : Application() {
 
         startKoin {
             androidContext(this@InforMeApplication)
-            modules(
-                listOf(
-                    vmModule,
-                    domainModule
-                )
-            )
+            modules(listOf(vmModule, domainModule))
             if (BuildConfig.DEBUG) {
                 androidLogger()
             }

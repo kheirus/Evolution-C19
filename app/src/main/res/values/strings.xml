@@ -1,6 +1,7 @@
 <resources>
     <string name="title_dashboard">Dashboard</string>
-    <string name="confirmed">Confirmed</string>
-    <string name="deaths">Deaths</string>
-    <string name="recovered">Recovered</string>
+    <string name="confirmed">Infections</string>
+    <string name="deaths">Décés</string>
+    <string name="recovered">Guérisons</string>
+    <string name="still_sick">Encore malades</string>
 </resources>

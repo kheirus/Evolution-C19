@@ -5,20 +5,21 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     android:paddingTop="?attr/actionBarSize">
 
 
     <androidx.cardview.widget.CardView
         android:id="@+id/confirmed_cv"
-        android:layout_width="135dp"
+        android:layout_width="136dp"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/colorAccent"
+        android:layout_marginBottom="10dp"
         app:cardElevation="5dp"
-        android:padding="10dp"
-        app:layout_constraintEnd_toStartOf="@+id/death_cv"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:cardCornerRadius="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/death_cv"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/death_cv">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,12 +53,12 @@
         android:id="@+id/death_cv"
         android:layout_width="136dp"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@android:color/holo_orange_dark"
+        android:layout_marginBottom="10dp"
         app:cardElevation="5dp"
-        android:padding="10dp"
-        app:layout_constraintEnd_toStartOf="@+id/recovered_cv"
-        app:layout_constraintStart_toEndOf="@+id/confirmed_cv"
-        app:layout_constraintTop_toTopOf="parent">
+        app:cardCornerRadius="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/recovered_cv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confirmed_cv">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -91,12 +92,12 @@
         android:id="@+id/recovered_cv"
         android:layout_width="136dp"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/design_default_color_primary"
-        app:cardElevation="5dp"
         android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/death_cv"
-        app:layout_constraintTop_toTopOf="@+id/death_cv">
+        app:cardElevation="5dp"
+        app:cardCornerRadius="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/death_cv"
+        app:layout_constraintTop_toBottomOf="@+id/death_cv">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -127,13 +128,26 @@
     </androidx.cardview.widget.CardView>
 
 
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/global_chart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/recovered_cv"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toEndOf="@+id/death_cv"
+        app:layout_constraintTop_toTopOf="@+id/confirmed_cv"
+        app:layout_constraintVertical_bias="1.0" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/death_cv"
+        app:layout_constraintTop_toBottomOf="@+id/recovered_cv"
+        tools:layout_editor_absoluteX="16dp"
         tools:text="text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

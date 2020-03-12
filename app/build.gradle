@@ -51,9 +51,10 @@ android {
 
 dependencies {
     def timber_version = '4.7.1'
-    def coroutines_version = "1.3.4"
+    def coroutines_version = '1.3.4'
     def retrofit_version = '2.7.2'
     def okhttp_version = '4.4.0'
+    def mpchart_version = 'v3.1.0'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -73,6 +74,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'com.google.android.material:material:1.1.0'
+
+    // MPAndroidChart
+    implementation "com.github.PhilJay:MPAndroidChart:$mpchart_version"
 
     // DI
     implementation "org.koin:koin-android:$koin_version"

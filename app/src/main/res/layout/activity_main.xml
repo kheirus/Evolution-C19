@@ -9,145 +9,67 @@
     android:paddingTop="?attr/actionBarSize">
 
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/confirmed_cv"
-        android:layout_width="136dp"
+    <TextView
+        android:id="@+id/death_tv"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        app:cardElevation="5dp"
-        app:cardCornerRadius="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/death_cv"
+        android:layout_gravity="center"
+        android:fontFamily="@font/font"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorDeath"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread_inside">
+        tools:text="1234 \n Décés" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/confirmed"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/confirmed_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text="1234" />
-        </LinearLayout>
-
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/death_cv"
-        android:layout_width="136dp"
+    <TextView
+        android:id="@+id/still_sick_tv"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        app:cardElevation="5dp"
-        app:cardCornerRadius="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/recovered_cv"
+        android:layout_gravity="center"
+        android:fontFamily="@font/font"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textColor="@color/colorStillSick"
+        app:layout_constraintBottom_toBottomOf="@+id/global_chart"
+        app:layout_constraintEnd_toStartOf="@+id/global_chart"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirmed_cv">
+        app:layout_constraintTop_toTopOf="@+id/global_chart"
+        tools:text="1234 \n Infections" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/deaths"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/death_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text="1234" />
-        </LinearLayout>
-
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/recovered_cv"
-        android:layout_width="136dp"
+    <TextView
+        android:id="@+id/recovered_tv"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        app:cardElevation="5dp"
-        app:cardCornerRadius="5dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/death_cv"
-        app:layout_constraintTop_toBottomOf="@+id/death_cv">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/recovered"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/recovered_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text="1234" />
-        </LinearLayout>
-
-
-    </androidx.cardview.widget.CardView>
+        android:layout_gravity="center"
+        android:fontFamily="@font/font"
+        android:textAlignment="center"
+        android:textColor="@color/colorRecovered"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/global_chart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/global_chart"
+        app:layout_constraintTop_toTopOf="@+id/global_chart"
+        tools:text="1234 \n Guerisons" />
 
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/global_chart"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/recovered_cv"
-        app:layout_constraintDimensionRatio="1:1"
+        android:layout_width="147dp"
+        android:layout_height="147dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toEndOf="@+id/death_cv"
-        app:layout_constraintTop_toTopOf="@+id/confirmed_cv"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/death_tv" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recovered_cv"
-        tools:layout_editor_absoluteX="16dp"
         tools:text="text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

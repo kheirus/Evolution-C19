@@ -4,11 +4,11 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="colorBackground">#0B0E23</color>
+    <color name="colorBackground">#263238</color>
 
-    <color name="colorConfirmed">#7c4dff</color>
-    <color name="colorDeath">#c62828</color>
-    <color name="colorRecovered">#009688</color>
-    <color name="colorStillSick">#b388ff</color>
+    <color name="colorConfirmed">#ffc107</color>
+    <color name="colorDeath">#d84315</color>
+    <color name="colorRecovered">#ffecb3</color>
+    <color name="colorStillSick">#ffc107</color>
 
 </resources>

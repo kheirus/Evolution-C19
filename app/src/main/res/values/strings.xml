@@ -3,5 +3,5 @@
     <string name="confirmed">Infections</string>
     <string name="deaths">Décés</string>
     <string name="recovered">Guérisons</string>
-    <string name="still_sick">Encore malades</string>
+    <string name="still_sick">Malades</string>
 </resources>

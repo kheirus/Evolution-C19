@@ -25,7 +25,12 @@ data class Global(
                 GlobalChartValue(
                     label = GlobalTypeEnum.RECOVERED,
                     value = GlobalData[0].Guerisons.toFloat()
+                ),
+                GlobalChartValue(
+                    label = GlobalTypeEnum.STILL_SICK,
+                    value = (GlobalData[0].Infection - (GlobalData[0].Deces + GlobalData[0].Guerisons)).toFloat()
                 )
+
             ))
         }
     }

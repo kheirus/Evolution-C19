@@ -118,3 +118,4 @@ output.json
 hs_err_pid*
 
 # End of https://www.gitignore.io/api/kotlin,android
+/app/src/main/assets/jdd.json

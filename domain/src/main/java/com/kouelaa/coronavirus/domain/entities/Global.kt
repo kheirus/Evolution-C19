@@ -1,5 +1,6 @@
 package com.kouelaa.coronavirus.domain.entities
 
+
 /**
  * Created by kheirus on 2020-03-11.
  */
@@ -9,7 +10,45 @@ data class Global(
     val Information: String,
     val GlobalData: List<GlobalData>,
     val PaysData: List<PaysData>
-)
+){
+    fun toGlobalCards(): List<GlobalChartValue> {
+        return mutableListOf<GlobalChartValue>().also {
+            it.addAll(listOf(
+                GlobalChartValue(
+                    label = GlobalTypeEnum.CONFIRMED,
+                    value = GlobalData[0].Infection.toFloat()
+                ),
+                GlobalChartValue(
+                    label = GlobalTypeEnum.DEATHS,
+                    value = GlobalData[0].Deces.toFloat()
+                ),
+                GlobalChartValue(
+                    label = GlobalTypeEnum.RECOVERED,
+                    value = GlobalData[0].Guerisons.toFloat()
+                )
+            ))
+        }
+    }
+
+    fun toGlobalChart():  List<GlobalChartValue>{
+        return mutableListOf<GlobalChartValue>().also {
+            it.addAll(listOf(
+                GlobalChartValue(
+                    label = GlobalTypeEnum.DEATHS,
+                    value = GlobalData[0].Deces.toFloat()
+                ),
+                GlobalChartValue(
+                    label = GlobalTypeEnum.RECOVERED,
+                    value = GlobalData[0].Guerisons.toFloat()
+                ),
+                GlobalChartValue(
+                    label = GlobalTypeEnum.STILL_SICK,
+                    value = (GlobalData[0].Infection - (GlobalData[0].Deces + GlobalData[0].Guerisons)).toFloat()
+                )
+            ))
+        }
+    }
+}
 
 data class GlobalData(
     val Date: String,
@@ -25,3 +64,5 @@ data class PaysData(
     val Pays: String,
     val GlobalData: GlobalData
 )
+
+enum class GlobalTypeEnum{CONFIRMED, RECOVERED, DEATHS, STILL_SICK}

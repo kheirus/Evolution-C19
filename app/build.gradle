@@ -55,6 +55,7 @@ dependencies {
     def retrofit_version = '2.7.2'
     def okhttp_version = '4.4.0'
     def mpchart_version = 'v3.1.0'
+    def threetenbp_version = '1.2.2'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -92,6 +93,10 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
+    // LocalDateTime
+    implementation ("com.jakewharton.threetenabp:threetenabp:$threetenbp_version"){
+        because 'we require api < 26 to use LocalDateTime'
+    }
 
     implementation project(':data')
     implementation project(':domain')

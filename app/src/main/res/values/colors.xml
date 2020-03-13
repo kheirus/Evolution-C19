@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
 
+    <color name="colorCountryName">#e8eaf6</color>
     <color name="colorBackground">#263238</color>
-
     <color name="colorConfirmed">#ffc107</color>
     <color name="colorDeath">#d84315</color>
     <color name="colorRecovered">#ffecb3</color>
     <color name="colorStillSick">#ffc107</color>
+    <color name="colorBackgroundCountry">#263238</color>
+
+    <color name="colorPrimary">@color/colorBackground</color>
+    <color name="colorPrimaryDark">@color/colorBackground</color>
+    <color name="colorAccent">@color/colorConfirmed</color>
 
 </resources>

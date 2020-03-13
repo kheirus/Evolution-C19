@@ -1,6 +1,7 @@
 package com.kouelaa.coronavirus
 
 import android.app.Application
+import com.jakewharton.threetenabp.AndroidThreeTen
 import com.kouelaa.coronavirus.framework.di.domainModule
 import com.kouelaa.coronavirus.framework.di.vmModule
 import org.koin.android.ext.koin.androidContext
@@ -16,6 +17,8 @@ class GlobalApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         // Fabric.with(this, Crashlytics())
+        AndroidThreeTen.init(this);
+
 
         startKoin {
             androidContext(this@GlobalApplication)

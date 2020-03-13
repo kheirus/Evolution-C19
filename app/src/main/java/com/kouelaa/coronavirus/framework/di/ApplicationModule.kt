@@ -7,7 +7,7 @@ import com.kouelaa.coronavirus.data.repository.GlobalRepository
 import com.kouelaa.coronavirus.data.repository.GlobalRepositoryImpl
 import com.kouelaa.coronavirus.data.usecases.GetGlobalUseCase
 import com.kouelaa.coronavirus.framework.remote.*
-import com.kouelaa.coronavirus.presentation.dashboard.MainViewModel
+import com.kouelaa.coronavirus.presentation.dashboard.GlobalViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -29,6 +29,6 @@ val domainModule = module {
 
 
 val vmModule = module {
-    viewModel { MainViewModel(get(), get()) }
+    viewModel { GlobalViewModel(get(), get()) }
 }
 

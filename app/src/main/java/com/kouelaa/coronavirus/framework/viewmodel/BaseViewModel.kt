@@ -3,7 +3,10 @@ package com.kouelaa.coronavirus.framework.viewmodel
 import androidx.lifecycle.ViewModel
 
 import kotlinx.coroutines.*
+import org.threeten.bp.LocalDate
+import org.threeten.bp.LocalDateTime
 import timber.log.Timber
+
 import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel(
@@ -37,4 +40,9 @@ abstract class BaseViewModel(
 
 fun BaseViewModel.currentTimeStamp(): Long {
     return System.currentTimeMillis() / 1000
+}
+
+fun getYesterdayDate(): LocalDateTime {
+    // TODO-(13/03/20)-kheirus: regler le probleme quand l'appli est a minuit
+    return LocalDate.now().atStartOfDay().minusDays(1)
 }

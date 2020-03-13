@@ -66,8 +66,14 @@ data class GlobalData(
 )
 
 data class PaysData(
+    val Date: String,
     val Pays: String,
-    val GlobalData: GlobalData
+    val Infection: Double,
+    val Deces: Double,
+    val Guerisons: Double,
+    val TauxDeces: Double,
+    val TauxGuerison: Double,
+    val TauxInfection: Double
 )
 
 enum class GlobalTypeEnum{CONFIRMED, RECOVERED, DEATHS, STILL_SICK}

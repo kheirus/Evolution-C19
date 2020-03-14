@@ -44,5 +44,5 @@ fun BaseViewModel.currentTimeStamp(): Long {
 
 fun getYesterdayDate(): LocalDateTime {
     // TODO-(13/03/20)-kheirus: regler le probleme quand l'appli est a minuit
-    return LocalDate.now().atStartOfDay().minusDays(1)
+    return LocalDate.now().atStartOfDay().minusDays(2)
 }

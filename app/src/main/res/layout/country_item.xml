@@ -8,19 +8,14 @@
     app:cardCornerRadius="6dp"
     app:cardElevation="8dp"
     app:cardUseCompatPadding="true"
-    android:layout_margin="2dp"
     app:cardBackgroundColor="@color/colorBackgroundCountry"
     >
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/country_container_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:padding="20dp"
         >
-
 
         <TextView
             android:id="@+id/country_tv"
@@ -31,23 +26,20 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:maxLines="1"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Chine" />
-        
-        
+
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/barchart"
             android:layout_width="0dp"
-            android:layout_height="80dp"
+            android:layout_height="90dp"
             app:layout_constraintTop_toBottomOf="@id/country_tv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             />
         
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
-
 <androidx.cardview.widget.CardView
-    android:id="@+id/container_global_chart"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
-    android:layout_height="0dp"
+    android:layout_height="wrap_content"
     app:cardCornerRadius="6dp"
     app:cardElevation="8dp"
     app:cardUseCompatPadding="true"
     android:layout_margin="2dp"
+    app:contentPadding="10dp"
     app:cardBackgroundColor="@color/colorBackgroundCountry"
-    app:layout_constraintBottom_toTopOf="@id/countries_rv"
-    app:layout_constraintTop_toBottomOf="@id/view"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
     >
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -37,7 +35,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/global_chart"
+            app:layout_constraintBottom_toTopOf="@id/global_piechart"
             tools:text="1234 \n Décés" />
 
         <TextView
@@ -50,10 +48,10 @@
             android:textAlignment="center"
             android:textSize="16sp"
             android:textColor="@color/colorStillSick"
-            app:layout_constraintBottom_toBottomOf="@+id/global_chart"
-            app:layout_constraintEnd_toStartOf="@+id/global_chart"
+            app:layout_constraintBottom_toBottomOf="@+id/global_piechart"
+            app:layout_constraintEnd_toStartOf="@+id/global_piechart"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/global_chart"
+            app:layout_constraintTop_toTopOf="@+id/global_piechart"
             tools:text="1234 \n Infections" />
 
         <TextView
@@ -66,14 +64,14 @@
             android:textAlignment="center"
             android:textColor="@color/colorRecovered"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/global_chart"
+            app:layout_constraintBottom_toBottomOf="@+id/global_piechart"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/global_chart"
-            app:layout_constraintTop_toTopOf="@+id/global_chart"
+            app:layout_constraintStart_toEndOf="@+id/global_piechart"
+            app:layout_constraintTop_toTopOf="@+id/global_piechart"
             tools:text="1234 \n Guerisons" />
 
         <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/global_chart"
+            android:id="@+id/global_piechart"
             android:layout_width="0dp"
             android:layout_height="180dp"
             app:layout_constraintEnd_toStartOf="@id/recovered_tv"
@@ -84,4 +82,3 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
-</merge>

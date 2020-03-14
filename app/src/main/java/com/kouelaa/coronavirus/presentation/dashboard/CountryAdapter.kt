@@ -9,9 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.IValueFormatter
+import com.github.mikephil.charting.formatter.LargeValueFormatter
+import com.github.mikephil.charting.utils.ViewPortHandler
 import com.kouelaa.coronavirus.R
 import com.kouelaa.coronavirus.domain.entities.PaysData
-import kotlinx.android.synthetic.main.activity_global.view.*
 import kotlinx.android.synthetic.main.country_item.view.*
 
 
@@ -62,9 +64,11 @@ class CountryAdapter(
 
                     axisLeft.apply {
                         setDrawLabels(false)
-                        setDrawLabels(false);
+                        setDrawLabels(false)
                         setDrawAxisLine(false)
                         setDrawGridLines(false)
+                        //axisMaximum = 80_000f
+
                     }
 
                     axisRight.apply {
@@ -86,6 +90,7 @@ class CountryAdapter(
 
                     val barDataSet = BarDataSet(entries, "")
                     barDataSet.setDrawValues(true)
+                    barDataSet.valueFormatter = LargeValueFormatter()
 
                     val colors = intArrayOf(
                         ContextCompat.getColor(itemView.context, R.color.colorConfirmed),
@@ -94,6 +99,7 @@ class CountryAdapter(
 
                     barDataSet.colors = colors.toMutableList()
                     barDataSet.setValueTextColors(colors.toMutableList())
+                    barDataSet.valueTextSize = 10f
 
                     val barData = BarData(barDataSet)
                     barData.barWidth = 0.9f

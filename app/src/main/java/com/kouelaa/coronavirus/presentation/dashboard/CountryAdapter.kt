@@ -14,14 +14,17 @@ import com.github.mikephil.charting.formatter.LargeValueFormatter
 import com.github.mikephil.charting.utils.ViewPortHandler
 import com.kouelaa.coronavirus.R
 import com.kouelaa.coronavirus.domain.entities.PaysData
+import kotlinx.android.synthetic.main.country_item.*
 import kotlinx.android.synthetic.main.country_item.view.*
+import kotlinx.coroutines.selects.select
 
 
 class CountryAdapter(
     private val context: Context,
-    private val countries: List<PaysData> // TODO-(12/03/20)-kheirus: passer que les dates d'aujourd'hui
+    private val countries: List<PaysData> ,
+    private val listener: (String) -> Unit
 ) : RecyclerView.Adapter<CountryAdapter.CountryViewHolder>() {
-
+    var selected = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.country_item, parent, false)
 
@@ -33,14 +36,20 @@ class CountryAdapter(
     }
 
     override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
-        holder.bind(countries.asReversed()[position])
+        holder.bind(countries.asReversed()[position],position,  listener)
+
     }
 
     inner class CountryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(country: PaysData) {
+        fun bind(country: PaysData, position: Int, listener: (String) -> Unit) {
             with(itemView){
                 country_tv.text = country.Pays
 
+                if (selected == position){
+                    country_cardview.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorConfirmed))
+                }else{
+                    country_cardview.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorBackgroundCountry))
+                }
                 with(barchart) {
                     setDrawBarShadow(false)
                     setFitBars(false)
@@ -52,7 +61,7 @@ class CountryAdapter(
                     isHighlightPerDragEnabled = false
                     isHighlightPerTapEnabled = false
                     isDoubleTapToZoomEnabled = false
-                    isClickable = false
+                    isClickable = true
                     description = null
 
                     xAxis.apply {
@@ -93,9 +102,9 @@ class CountryAdapter(
                     barDataSet.valueFormatter = LargeValueFormatter()
 
                     val colors = intArrayOf(
-                        ContextCompat.getColor(itemView.context, R.color.colorConfirmed),
-                        ContextCompat.getColor(itemView.context, R.color.colorDeath),
-                        ContextCompat.getColor(itemView.context, R.color.colorRecovered))
+                        ContextCompat.getColor(context, R.color.colorConfirmed),
+                        ContextCompat.getColor(context, R.color.colorDeath),
+                        ContextCompat.getColor(context, R.color.colorRecovered))
 
                     barDataSet.colors = colors.toMutableList()
                     barDataSet.setValueTextColors(colors.toMutableList())
@@ -105,8 +114,15 @@ class CountryAdapter(
                     barData.barWidth = 0.9f
 
                     data = barData
-                    animateY(1000)
+                    //animateY(1000)
                 }
+
+                setOnClickListener {
+                    listener(country.Pays)
+                    selected = adapterPosition
+                    notifyDataSetChanged()
+                }
+
             }
         }
     }

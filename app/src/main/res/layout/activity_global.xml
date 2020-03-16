@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
+    >
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     >
 
     <View
@@ -15,37 +23,53 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <include
-        android:id="@+id/container_global_piechart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        layout="@layout/global_piechart_item"
+        app:layout_constraintBottom_toTopOf="@id/container_global_piechart"
         />
 
     <include
         android:id="@+id/container_global_linechart"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/container_country_linechart"
+        layout="@layout/global_linechart_item"
+        />
+
+    <include
+        android:id="@+id/container_global_piechart"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/container_global_linechart"
+        app:layout_constraintBottom_toBottomOf="@id/container_global_linechart"
+        app:layout_constraintStart_toStartOf="@id/container_global_linechart"
+        app:layout_constraintEnd_toEndOf="@id/container_global_linechart"
+        layout="@layout/global_piechart_item"
+        />
+
+
+    <include
+        android:id="@+id/container_country_linechart"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/container_global_piechart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        layout="@layout/global_linechart_item"
+        app:layout_constraintBottom_toTopOf="@id/countries_rv"
+        layout="@layout/country_linechart_item"
         />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/countries_rv"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
 
-        app:layout_constraintTop_toBottomOf="@id/container_global_linechart"
+        app:layout_constraintTop_toBottomOf="@id/container_country_linechart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/country_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

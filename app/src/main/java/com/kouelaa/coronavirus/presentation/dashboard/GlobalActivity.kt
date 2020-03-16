@@ -1,26 +1,27 @@
 package com.kouelaa.coronavirus.presentation.dashboard
 
+
+import android.animation.Animator
+import android.animation.AnimatorInflater
+import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
 import android.graphics.Typeface
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.mikephil.charting.components.XAxis.XAxisPosition
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.formatter.IValueFormatter
-import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.utils.ViewPortHandler
+import com.github.mikephil.charting.formatter.LargeValueFormatter
 import com.kouelaa.coronavirus.R
-import com.kouelaa.coronavirus.domain.entities.GlobalChartValue
-import com.kouelaa.coronavirus.domain.entities.GlobalData
-import com.kouelaa.coronavirus.domain.entities.GlobalTypeEnum
-import com.kouelaa.coronavirus.domain.entities.PaysData
+import com.kouelaa.coronavirus.domain.entities.*
 import kotlinx.android.synthetic.main.activity_global.*
+import kotlinx.android.synthetic.main.country_linechart_item.*
 import kotlinx.android.synthetic.main.global_linechart_item.*
 import kotlinx.android.synthetic.main.global_piechart_item.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.math.roundToInt
 
 
 class GlobalActivity : AppCompatActivity(){
@@ -30,33 +31,72 @@ class GlobalActivity : AppCompatActivity(){
     private lateinit var countryAdapter: CountryAdapter
     private lateinit var countryLayoutManager: LinearLayoutManager
 
+    private lateinit var outAnimator: AnimatorSet
+    private lateinit var inAnimator: AnimatorSet
+    private var isChartBackVisible = false
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_global)
 
-        initGlobalPieChart()
         initGlobalLineChart()
+        initGlobalPieChart()
+
+        initCountryLineChart()
+
+        loadAnimations()
+        changeCameraDistance()
+
     }
 
     override fun onStart() {
         super.onStart()
 
         globalViewModel.global.observe(this, Observer {
-            setCardsData(it.toGlobalCards())
             setPieChartData(it.toGlobalChart())
-            setLineChartData(it.GlobalData)
-            setPieChartCenterText(it.GlobalData[0].Infection)
+            setPieChartLabels(it)
+            setGlobalLineChartData(it.GlobalData)
             setCountriesData(it.PaysData)
+        })
+
+        globalViewModel.country.observe(this, Observer {
+            country_item_country_tv.text = it
         })
     }
 
-    private fun setCountriesData(countries: List<PaysData>) {
-        val countriesForAdapter = globalViewModel.getCoutriesForAdapter(countries)
-        countryAdapter = CountryAdapter(this, countriesForAdapter)
-        countryLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        countries_rv.layoutManager = countryLayoutManager
-        countries_rv.adapter = countryAdapter
+    private fun changeCameraDistance() {
+        val distance = 8000
+        val scale = resources.displayMetrics.density * distance
+        container_global_piechart.cameraDistance = scale
+        container_global_linechart.cameraDistance = scale
     }
+
+    private fun loadAnimations() {
+        outAnimator = AnimatorInflater.loadAnimator(this, R.animator.out_animation) as AnimatorSet
+        inAnimator = AnimatorInflater.loadAnimator(this, R.animator.in_animation) as AnimatorSet
+    }
+
+    private fun animateCard() {
+        if (!inAnimator.isRunning && !outAnimator.isRunning) {
+            if (!isChartBackVisible) {
+                outAnimator.setTarget(container_global_piechart)
+                inAnimator.setTarget(container_global_linechart)
+                outAnimator.start()
+                inAnimator.start()
+                isChartBackVisible = true
+
+            } else {
+                outAnimator.setTarget(container_global_linechart)
+                inAnimator.setTarget(container_global_piechart)
+                outAnimator.start()
+                inAnimator.start()
+                isChartBackVisible = false
+            }
+        }
+    }
+
 
     private fun initGlobalPieChart() {
         global_piechart.apply {
@@ -72,20 +112,35 @@ class GlobalActivity : AppCompatActivity(){
             setCenterTextTypeface(Typeface.SANS_SERIF)
             setCenterTextSize(10f)
         }
+
+        container_global_piechart.setOnClickListener{
+            animateCard()
+        }
     }
 
     private fun initGlobalLineChart() {
         global_linechart.apply {
             setDrawBorders(false)
             setDrawGridBackground(false)
-            setPinchZoom(true)
+            setPinchZoom(false)
             isClickable = false
 
             xAxis.apply {
                 setDrawGridLinesBehindData(false)
-                setDrawLabels(false)
-                setDrawAxisLine(false)
+                setDrawLabels(true)
+                setDrawAxisLine(true)
                 setDrawGridLines(false)
+                axisLineWidth = 2f
+                position = XAxisPosition.BOTTOM
+                textSize = 7f
+                textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
+                setDrawAxisLine(true)
+                labelRotationAngle = -45f
+
+
+                // set a custom value formatter
+                // set a custom value formatter
+                //xAxis.valueFormatter = MyCustomFormatter()
             }
             axisLeft.apply {
                 setDrawLabels(true)
@@ -96,18 +151,85 @@ class GlobalActivity : AppCompatActivity(){
 
             }
             axisRight.apply {
-                setDrawLabels(false)
+                setDrawLabels(true)
                 setDrawAxisLine(true)
                 setDrawGridLines(false)
+                axisLineWidth = 2f
+                textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
+                valueFormatter = LargeValueFormatter()
+
             }
 
-            legend.isEnabled = false
+            legend.isEnabled = true
+            legend.textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
+
+            container_global_linechart.setOnClickListener {
+                animateCard()
+            }
 
         }
     }
 
-    private fun setCardsData(values: List<GlobalChartValue>) {
-        values.forEach {
+    private fun initCountryLineChart() {
+//        country_linechart.apply {
+//            setDrawBorders(false)
+//            setDrawGridBackground(false)
+//            setPinchZoom(false)
+//            isClickable = false
+//
+//            xAxis.apply {
+//                setDrawGridLinesBehindData(false)
+//                setDrawLabels(true)
+//                setDrawAxisLine(true)
+//                setDrawGridLines(false)
+//                axisLineWidth = 2f
+//                position = XAxisPosition.BOTTOM
+//                textSize = 7f
+//                textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
+//                setDrawAxisLine(true)
+//                labelRotationAngle = -45f
+//
+//
+//                // set a custom value formatter
+//                // set a custom value formatter
+//                //xAxis.valueFormatter = MyCustomFormatter()
+//            }
+//            axisLeft.apply {
+//                setDrawLabels(true)
+//                setDrawLabels(false)
+//                setDrawAxisLine(false)
+//                setDrawGridLines(false)
+//                //axisMaximum = 80_000f
+//
+//            }
+//            axisRight.apply {
+//                setDrawLabels(true)
+//                setDrawAxisLine(true)
+//                setDrawGridLines(false)
+//                axisLineWidth = 2f
+//                textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
+//                valueFormatter = LargeValueFormatter()
+//
+//            }
+//
+//            legend.isEnabled = true
+//            legend.textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
+//
+//        }
+    }
+
+    private fun setCountriesData(countries: List<PaysData>) {
+        val countriesForAdapter = globalViewModel.getCoutriesForAdapter(countries)
+        countryAdapter = CountryAdapter(this, countriesForAdapter) {globalViewModel.onClickedCountry(it)}
+        countryLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        countries_rv.layoutManager = countryLayoutManager
+        countries_rv.adapter = countryAdapter
+    }
+
+    private fun setPieChartLabels(global: Global) {
+        global_piechart.centerText = "${global.GlobalData[0].Infection} \n${getString(R.string.confirmed)}"
+
+        global.toGlobalCards().forEach {
             when(it.label){
                 GlobalTypeEnum.CONFIRMED -> Unit
                 GlobalTypeEnum.RECOVERED -> {
@@ -129,10 +251,6 @@ class GlobalActivity : AppCompatActivity(){
         }
     }
 
-    private fun setPieChartCenterText(infection: Double) {
-        global_piechart.centerText = "${infection.toInt()} \n${getString(R.string.confirmed)} "
-    }
-
     private fun setPieChartData(values: List<GlobalChartValue>) {
         val xValues = ArrayList<PieEntry>()
 
@@ -148,7 +266,7 @@ class GlobalActivity : AppCompatActivity(){
         ))
         dataSet.apply {
             setDrawValues(true)
-            valueFormatter = PercentFormatter()
+            valueFormatter = PieChartValueFormatter()
             valueTextSize = 8f
             valueTextColor = ContextCompat.getColor(this@GlobalActivity, R.color.colorBackgroundCountry)
             colors = sliceColors
@@ -159,43 +277,40 @@ class GlobalActivity : AppCompatActivity(){
         global_piechart.animateXY(2000, 2000)
     }
 
-    private fun setLineChartData(values: List<GlobalData>){
-        val entries = ArrayList<Entry>()
-        values.reversed().forEachIndexed {index, element ->
-            entries.add(Entry(index.toFloat(), element.Infection.toFloat()))
+    private fun setGlobalLineChartData(values: List<GlobalData>){
+        val entriesConfirmed = ArrayList<Entry>()
+//        val entriesRecovered = ArrayList<Entry>()
+//        val entriesDeaths = ArrayList<Entry>()
+        val valuesChart = values.reversed()
+
+        valuesChart.forEachIndexed {index, element ->
+            entriesConfirmed.add(Entry(index.toFloat(), element.Infection.toFloat()))
+//            entriesRecovered.add(Entry(index.toFloat(), element.Guerisons.toFloat()))
+//            entriesDeaths.add(Entry(index.toFloat(), element.Deces.toFloat()))
         }
 
-        val lineDataSet = LineDataSet(entries, "")
+        val lineDataSetConfirmed = LineDataSet(entriesConfirmed, "")
+//        var lineDataSetRecovered = LineDataSet(entriesRecovered, "")
+//        var lineDataSetDeaths = LineDataSet(entriesDeaths, "")
 
-        lineDataSet.apply {
+        lineDataSetConfirmed.apply {
             setDrawValues(false)
             axisDependency = YAxis.AxisDependency.RIGHT
             lineWidth = 2f
+            color = ContextCompat.getColor(this@GlobalActivity, R.color.colorConfirmed)
+            mode = LineDataSet.Mode.LINEAR
+            isHighlightEnabled = true
             setDrawCircleHole(false)
             setDrawCircles(false)
-            color = ContextCompat.getColor(this@GlobalActivity, R.color.colorConfirmed)
-            mode = LineDataSet.Mode.HORIZONTAL_BEZIER
             setDrawHighlightIndicators(true)
             setDrawHorizontalHighlightIndicator(false)
-            setDrawVerticalHighlightIndicator(false)
+            setDrawVerticalHighlightIndicator(true)
+
         }
 
-
-        val lineData = LineData(lineDataSet)
-
+        val lineData = LineData(lineDataSetConfirmed)
+        global_linechart.xAxis.valueFormatter = LineChartLabelFormatter(valuesChart)
         global_linechart.data = lineData
         global_linechart.animateXY(1000, 1000)
     }
-
-    class MyFormatter(val symbol: String = "") : IValueFormatter {
-        override fun getFormattedValue(
-            value: Float,
-            entry: Entry,
-            dataSetIndex: Int,
-            viewPortHandler: ViewPortHandler
-        ): String {
-            return value.roundToInt().toString() + symbol // append a unit with value
-        }
-    }
-
 }

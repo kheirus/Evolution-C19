@@ -3,18 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/country_cardview"
     android:layout_width="150dp"
     android:layout_height="wrap_content"
     app:cardCornerRadius="6dp"
     app:cardElevation="8dp"
     app:cardUseCompatPadding="true"
+    app:contentPadding="3dp"
     app:cardBackgroundColor="@color/colorBackgroundCountry"
     >
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/country_container_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="20dp"
+        android:background="@color/colorBackgroundCountry"
         >
 
         <TextView
@@ -29,7 +31,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Chine" />
+            tools:text="Chine"
+            />
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/barchart"

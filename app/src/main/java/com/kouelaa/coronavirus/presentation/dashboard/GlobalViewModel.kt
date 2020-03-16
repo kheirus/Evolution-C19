@@ -21,6 +21,9 @@ class GlobalViewModel(
     private val _global = MutableLiveData<Global>()
     val global: LiveData<Global> get() = _global
 
+    private val _country = MutableLiveData<String>()
+    val country: LiveData<String> get() = _country
+
     override fun handleException() {
 
     }
@@ -31,6 +34,10 @@ class GlobalViewModel(
             .filter { it.Pays != "Autres" }
             .filter { it.Date.split("T")[0] == dateNow[0] }
             .sortedBy { it.Infection }
+    }
+
+    fun onClickedCountry(country: String) {
+        _country.value = country
     }
 
     init {

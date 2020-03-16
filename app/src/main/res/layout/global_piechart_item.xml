@@ -29,7 +29,7 @@
             android:layout_gravity="center"
             android:fontFamily="@font/font"
             android:textAlignment="center"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             android:textColor="@color/colorDeath"
             app:layout_constraintEnd_toEndOf="parent"
@@ -46,10 +46,9 @@
             android:layout_gravity="center"
             android:fontFamily="@font/font"
             android:textAlignment="center"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@color/colorStillSick"
             app:layout_constraintBottom_toBottomOf="@+id/global_piechart"
-            app:layout_constraintEnd_toStartOf="@+id/global_piechart"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/global_piechart"
             tools:text="1234 \n Infections" />
@@ -63,20 +62,19 @@
             android:fontFamily="@font/font"
             android:textAlignment="center"
             android:textColor="@color/colorRecovered"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/global_piechart"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/global_piechart"
             app:layout_constraintTop_toTopOf="@+id/global_piechart"
             tools:text="1234 \n Guerisons" />
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/global_piechart"
             android:layout_width="0dp"
-            android:layout_height="180dp"
-            app:layout_constraintEnd_toStartOf="@id/recovered_tv"
-            app:layout_constraintStart_toEndOf="@id/still_sick_tv"
-            app:layout_constraintTop_toBottomOf="@+id/death_tv"
+            android:layout_height="160dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             />
 

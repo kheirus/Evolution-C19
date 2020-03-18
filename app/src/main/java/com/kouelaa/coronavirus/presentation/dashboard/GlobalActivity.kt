@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.*
@@ -42,10 +43,11 @@ class GlobalActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_global)
 
-        initGlobalLineChart()
+
         initGlobalPieChart()
 
-        initCountryLineChart()
+        initLineChart(global_linechart)
+        initLineChart(country_linechart)
 
         loadAnimations()
         changeCameraDistance()
@@ -172,8 +174,9 @@ class GlobalActivity : AppCompatActivity(){
         }
     }
 
-    private fun initGlobalLineChart() {
-        global_linechart.apply {
+
+    private fun initLineChart(chart: LineChart){
+        chart.apply {
             setDrawBorders(false)
             setDrawGridBackground(false)
             setPinchZoom(false)
@@ -183,55 +186,6 @@ class GlobalActivity : AppCompatActivity(){
             legend.textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
             description = null
             legend.isEnabled = false
-
-            xAxis.apply {
-                setDrawGridLinesBehindData(false)
-                setDrawLabels(true)
-                setDrawAxisLine(true)
-                setDrawGridLines(false)
-                axisLineWidth = 2f
-                position = XAxisPosition.BOTTOM
-                textSize = 7f
-                textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
-                setDrawAxisLine(true)
-                labelRotationAngle = -45f
-
-
-                // set a custom value formatter
-                // set a custom value formatter
-                //xAxis.valueFormatter = MyCustomFormatter()
-            }
-            axisLeft.apply {
-                setDrawLabels(true)
-                setDrawLabels(false)
-                setDrawAxisLine(false)
-                setDrawGridLines(false)
-                //axisMaximum = 80_000f
-
-            }
-            axisRight.apply {
-                setDrawLabels(true)
-                setDrawAxisLine(true)
-                setDrawGridLines(false)
-                axisLineWidth = 2f
-                textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
-                valueFormatter = LargeValueFormatter()
-
-            }
-
-            container_global_linechart.setOnClickListener {
-                animateCard()
-            }
-
-        }
-    }
-
-    private fun initCountryLineChart() {
-        country_linechart.apply {
-            setDrawBorders(false)
-            setDrawGridBackground(false)
-            setPinchZoom(false)
-            isClickable = false
 
             xAxis.apply {
                 setDrawGridLinesBehindData(false)
@@ -248,7 +202,6 @@ class GlobalActivity : AppCompatActivity(){
             }
 
             axisLeft.apply {
-                setDrawLabels(true)
                 setDrawLabels(false)
                 setDrawAxisLine(false)
                 setDrawGridLines(false)
@@ -262,11 +215,6 @@ class GlobalActivity : AppCompatActivity(){
                 textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
                 valueFormatter = LargeValueFormatter()
             }
-
-            legend.isEnabled = false
-            legend.textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
-            description = null
-
         }
     }
 
@@ -284,16 +232,9 @@ class GlobalActivity : AppCompatActivity(){
         global.toGlobalCards().forEach {
             when(it.label){
                 GlobalTypeEnum.CONFIRMED -> Unit
-                GlobalTypeEnum.RECOVERED -> {
-                    recovered_tv.text = getString(R.string.recovered) + "\n"+ it.value.toInt().toString()
-                }
-                GlobalTypeEnum.DEATHS -> {
-                    death_tv.text = getString(R.string.deaths)+ "\n" + it.value.toInt().toString()
-
-                }
-                GlobalTypeEnum.STILL_SICK -> {
-                    still_sick_tv.text = getString(R.string.still_sick)+ "\n" + it.value.toInt().toString()
-                }
+                GlobalTypeEnum.RECOVERED -> recovered_tv.text = getString(R.string.recovered) + "\n"+ it.value.toInt().toString()
+                GlobalTypeEnum.DEATHS -> death_tv.text = getString(R.string.deaths)+ "\n" + it.value.toInt().toString()
+                GlobalTypeEnum.STILL_SICK -> still_sick_tv.text = getString(R.string.still_sick)+ "\n" + it.value.toInt().toString()
             }
         }
     }

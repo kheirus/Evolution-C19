@@ -3,17 +3,12 @@ package com.kouelaa.coronavirus.presentation.dashboard
 
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
-import android.graphics.Typeface
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.XAxis.XAxisPosition
-import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.formatter.LargeValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.kouelaa.coronavirus.R
@@ -197,47 +192,44 @@ class GlobalActivity : AppCompatActivity(){
         country_item_date_tv.text = lastValue.date.toChartLabelDate()
         country_item_confirmed_tv.text = lastValue.confirmed.toInt().toString()
         country_item_death_tv.text = lastValue.death.toInt().toString()
+        country_item_recovered_tv.text = lastValue.recovered.toInt().toString()
 
         val entriesConfirmed = ArrayList<Entry>()
+        val entriesRecovered = ArrayList<Entry>()
+        val entriesDeaths = ArrayList<Entry>()
 
         values.forEachIndexed { index, element ->
             entriesConfirmed.add(Entry(index.toFloat(), element.confirmed.toFloat(), element))
+            entriesRecovered.add(Entry(index.toFloat(), element.recovered.toFloat(), element))
+            entriesDeaths.add(Entry(index.toFloat(), element.death.toFloat(), element))
         }
 
         val lineDataSetConfirmed = LineDataSet(entriesConfirmed, "")
+        val lineDataSetRecovered = LineDataSet(entriesRecovered, "")
+        val lineDataSetDeaths = LineDataSet(entriesDeaths, "")
 
-        lineDataSetConfirmed.apply {
-            setDrawValues(false)
-            axisDependency = YAxis.AxisDependency.RIGHT
-            lineWidth = 1f
-            color = ContextCompat.getColor(this@GlobalActivity, R.color.colorConfirmed)
-            mode = LineDataSet.Mode.CUBIC_BEZIER
-            isHighlightEnabled = true
-            setDrawCircleHole(false)
-            setDrawCircles(false)
-            setDrawHighlightIndicators(true)
-            setDrawHorizontalHighlightIndicator(false)
-            setDrawVerticalHighlightIndicator(true)
+        lineDataSetConfirmed.setParams(this, R.color.colorConfirmed)
+        lineDataSetRecovered.setParams(this, R.color.colorRecovered)
+        lineDataSetDeaths.setParams(this, R.color.colorDeath)
 
-            val lineData = LineData(lineDataSetConfirmed)
-            country_linechart.xAxis.valueFormatter = LineChartCountryLabelFormatter(values)
-            country_linechart.data = lineData
+        val lineData = LineData(lineDataSetConfirmed, lineDataSetRecovered, lineDataSetDeaths)
 
+        country_linechart.xAxis.valueFormatter = LineChartCountryLabelFormatter(values)
+        country_linechart.data = lineData
 
-            country_linechart.highlightValue((values.size-1).toFloat(), 0, true)
-            country_linechart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
-                override fun onNothingSelected() {}
+        country_linechart.highlightValue((values.size-1).toFloat(), 0, true)
+        country_linechart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+            override fun onNothingSelected() {}
 
-                override fun onValueSelected(e: Entry?, h: Highlight?) {
-                    val data  = e?.data as CountryValue
-                    country_item_date_tv.text = data.date.toChartLabelDate()
-                    country_item_confirmed_tv.text = data.confirmed.toInt().toString()
-                    country_item_death_tv.text = data.death.toInt().toString()
-                }
-            })
-
-            country_linechart.animateXY(1000, 1000)
-        }
+            override fun onValueSelected(entry: Entry?, highlight: Highlight?) {
+                val data  = entry?.data as? CountryValue?
+                country_item_date_tv.text = data?.date?.toChartLabelDate() ?: ""
+                country_item_confirmed_tv.text = data?.confirmed?.toInt().toString()
+                country_item_death_tv.text = data?.death?.toInt().toString()
+                country_item_recovered_tv.text = data?.recovered?.toInt().toString()
+            }
+        })
+        country_linechart.animateXY(1000, 1000)
     }
 
     private fun setCountriesData(countries: List<PaysData>) {

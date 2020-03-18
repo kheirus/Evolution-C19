@@ -3,6 +3,6 @@
     <string name="confirmed">Infections</string>
     <string name="deaths">Décés</string>
     <string name="recovered">Guérisons</string>
-    <string name="still_sick">Malades</string>
+    <string name="still_sick"></string>
     <string name="global_cases">Nombre total de cas</string>
 </resources>

@@ -155,9 +155,9 @@ class GlobalActivity : AppCompatActivity(){
         val valuesChart = values.reversed()
 
         global_item_date_tv.text = lastValue.Date.toChartLabelDate()
-        global_item_confirmed_tv.text = getString(R.string.confirmed) + ": " + lastValue.Infection.toInt().toString()
-        global_item_death_tv.text = getString(R.string.deaths)+ ": " + lastValue.Deces.toInt().toString()
-        global_item_recovered_tv.text = getString(R.string.recovered) + ": " + lastValue.Guerisons.toInt().toString()
+        global_item_confirmed_tv.text = lastValue.Infection.toInt().toString()
+        global_item_death_tv.text = lastValue.Deces.toInt().toString()
+        global_item_recovered_tv.text = lastValue.Guerisons.toInt().toString()
 
         val entriesConfirmed = ArrayList<Entry>()
         val entriesRecovered = ArrayList<Entry>()

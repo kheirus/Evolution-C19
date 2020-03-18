@@ -27,8 +27,46 @@
             android:textStyle="bold"
             android:maxLines="2"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Corée du Sud" />
+
+        <TextView
+            android:id="@+id/country_item_date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font"
+            android:textColor="@color/colorCountryName"
+            android:textSize="13sp"
+            android:maxLines="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/country_item_country_tv"
+            tools:text="21 mars 20" />
+
+        <TextView
+            android:id="@+id/country_item_confirmed_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font"
+            android:textColor="@color/colorConfirmed"
+            android:textSize="13sp"
+            android:maxLines="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/country_item_date_tv"
+            tools:text="82000" />
+
+        <TextView
+            android:id="@+id/country_item_death_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font"
+            android:textColor="@color/colorDeath"
+            android:textSize="13sp"
+            android:maxLines="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/country_item_confirmed_tv"
+            tools:text="2172" />
+
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/country_linechart"
@@ -38,7 +76,7 @@
             app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/country_item_country_tv"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

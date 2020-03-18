@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     app:cardCornerRadius="6dp"
     app:cardElevation="8dp"
     app:cardUseCompatPadding="true"
@@ -26,10 +26,60 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:maxLines="2"
-            android:text="Total Infections"
+            android:text="@string/global_cases"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             />
+
+        <TextView
+            android:id="@+id/global_item_date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font"
+            android:textColor="@color/colorCountryName"
+            android:textSize="13sp"
+            android:maxLines="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/global_item_country_tv"
+            tools:text="21 mars 20" />
+
+        <TextView
+            android:id="@+id/global_item_confirmed_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font"
+            android:textColor="@color/colorConfirmed"
+            android:textSize="13sp"
+            android:maxLines="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/global_item_date_tv"
+            tools:text="82000" />
+
+        <TextView
+            android:id="@+id/global_item_death_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font"
+            android:textColor="@color/colorDeath"
+            android:textSize="13sp"
+            android:maxLines="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/global_item_confirmed_tv"
+            tools:text="82000" />
+
+        <TextView
+            android:id="@+id/global_item_recovered_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/font"
+            android:textColor="@color/colorRecovered"
+            android:textSize="13sp"
+            android:maxLines="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/global_item_death_tv"
+            tools:text="2172" />
+
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/global_linechart"

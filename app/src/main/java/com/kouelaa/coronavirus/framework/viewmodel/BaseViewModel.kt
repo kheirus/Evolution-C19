@@ -37,12 +37,3 @@ abstract class BaseViewModel(
     abstract fun handleException()
 
 }
-
-fun BaseViewModel.currentTimeStamp(): Long {
-    return System.currentTimeMillis() / 1000
-}
-
-fun getYesterdayDate(): LocalDateTime {
-    // TODO-(13/03/20)-kheirus: regler le probleme quand l'appli est a minuit
-    return LocalDate.now().atStartOfDay().minusDays(2)
-}

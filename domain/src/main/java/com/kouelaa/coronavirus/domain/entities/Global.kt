@@ -53,6 +53,25 @@ data class Global(
             ))
         }
     }
+
+    fun toCountryLineChart(country: String): CountryChartValue{
+       val listCountries =  this.PaysData
+           .filter { it.Pays == country }
+           .sortedBy { it.Date }
+
+        val listChartValue = mutableListOf<CountryValue>()
+       listCountries.forEachIndexed {index, data ->
+           listChartValue.add(index, CountryValue(
+               date = data.Date,
+               confirmed = data.Infection,
+               recovered = data.Guerisons,
+               death = data.Deces
+               ))
+       }
+
+        return CountryChartValue(country, listChartValue)
+
+    }
 }
 
 data class GlobalData(

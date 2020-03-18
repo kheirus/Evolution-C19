@@ -1,9 +1,7 @@
 package com.kouelaa.coronavirus.presentation.dashboard
 
 
-import android.animation.Animator
 import android.animation.AnimatorInflater
-import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.graphics.Typeface
 import android.os.Bundle
@@ -15,6 +13,8 @@ import com.github.mikephil.charting.components.XAxis.XAxisPosition
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.LargeValueFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.kouelaa.coronavirus.R
 import com.kouelaa.coronavirus.domain.entities.*
 import kotlinx.android.synthetic.main.activity_global.*
@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.country_linechart_item.*
 import kotlinx.android.synthetic.main.global_linechart_item.*
 import kotlinx.android.synthetic.main.global_piechart_item.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.math.roundToInt
 
 
 class GlobalActivity : AppCompatActivity(){
@@ -59,11 +60,64 @@ class GlobalActivity : AppCompatActivity(){
             setPieChartLabels(it)
             setGlobalLineChartData(it.GlobalData)
             setCountriesData(it.PaysData)
+
+            // Display first country data
+            // TODO-(18/03/20)-kheirus: regler l'index 0
+            globalViewModel.onClickedCountry("Chine")
         })
 
-        globalViewModel.country.observe(this, Observer {
-            country_item_country_tv.text = it
+        globalViewModel.countryData.observe(this, Observer {
+            country_item_country_tv.text = it.country
+            setCountriesLineChartDate(it.values)
         })
+    }
+
+    private fun setCountriesLineChartDate(values: List<CountryValue>) {
+        // TODO-(18/03/20)-kheirus: trouver une meilleure façon de les init
+        country_item_date_tv.text = "-"
+        country_item_confirmed_tv.text = "-"
+        country_item_death_tv.text = "-"
+
+        val entriesConfirmed = ArrayList<Entry>()
+
+        values.forEachIndexed { index, element ->
+            entriesConfirmed.add(Entry(index.toFloat(), element.confirmed.toFloat(), element))
+        }
+
+        val lineDataSetConfirmed = LineDataSet(entriesConfirmed, "")
+
+        lineDataSetConfirmed.apply {
+            setDrawValues(false)
+            axisDependency = YAxis.AxisDependency.RIGHT
+            lineWidth = 1f
+            color = ContextCompat.getColor(this@GlobalActivity, R.color.colorConfirmed)
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            isHighlightEnabled = true
+            setDrawCircleHole(false)
+            setDrawCircles(false)
+            setDrawHighlightIndicators(true)
+            setDrawHorizontalHighlightIndicator(false)
+            setDrawVerticalHighlightIndicator(true)
+
+            val lineData = LineData(lineDataSetConfirmed)
+            country_linechart.xAxis.valueFormatter = LineChartCountryLabelFormatter(values)
+            country_linechart.data = lineData
+            country_linechart.animateXY(1000, 1000)
+
+            country_linechart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+                override fun onNothingSelected() {
+                    //
+                }
+
+                override fun onValueSelected(e: Entry?, h: Highlight?) {
+                    val data  = e?.data as CountryValue
+                    country_item_date_tv.text = data.date.toChartLabelDate()
+                    // TODO-(18/03/20)-kheirus: extract string ressources
+                    country_item_confirmed_tv.text = data.confirmed.toInt().toString()
+                    country_item_death_tv.text = data.death.toInt().toString()
+                }
+            })
+        }
     }
 
     private fun changeCameraDistance() {
@@ -97,7 +151,6 @@ class GlobalActivity : AppCompatActivity(){
         }
     }
 
-
     private fun initGlobalPieChart() {
         global_piechart.apply {
             isRotationEnabled = false
@@ -120,6 +173,59 @@ class GlobalActivity : AppCompatActivity(){
 
     private fun initGlobalLineChart() {
         global_linechart.apply {
+            setDrawBorders(false)
+            setDrawGridBackground(false)
+            setPinchZoom(false)
+            isClickable = false
+            legend.isEnabled = true
+            legend.textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
+            description = null
+            legend.isEnabled = false
+
+            xAxis.apply {
+                setDrawGridLinesBehindData(false)
+                setDrawLabels(true)
+                setDrawAxisLine(true)
+                setDrawGridLines(false)
+                axisLineWidth = 2f
+                position = XAxisPosition.BOTTOM
+                textSize = 7f
+                textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
+                setDrawAxisLine(true)
+                labelRotationAngle = -45f
+
+
+                // set a custom value formatter
+                // set a custom value formatter
+                //xAxis.valueFormatter = MyCustomFormatter()
+            }
+            axisLeft.apply {
+                setDrawLabels(true)
+                setDrawLabels(false)
+                setDrawAxisLine(false)
+                setDrawGridLines(false)
+                //axisMaximum = 80_000f
+
+            }
+            axisRight.apply {
+                setDrawLabels(true)
+                setDrawAxisLine(true)
+                setDrawGridLines(false)
+                axisLineWidth = 2f
+                textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
+                valueFormatter = LargeValueFormatter()
+
+            }
+
+            container_global_linechart.setOnClickListener {
+                animateCard()
+            }
+
+        }
+    }
+
+    private fun initCountryLineChart() {
+        country_linechart.apply {
             setDrawBorders(false)
             setDrawGridBackground(false)
             setPinchZoom(false)
@@ -160,62 +266,11 @@ class GlobalActivity : AppCompatActivity(){
 
             }
 
-            legend.isEnabled = true
+            legend.isEnabled = false
             legend.textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
-
-            container_global_linechart.setOnClickListener {
-                animateCard()
-            }
+            description = null
 
         }
-    }
-
-    private fun initCountryLineChart() {
-//        country_linechart.apply {
-//            setDrawBorders(false)
-//            setDrawGridBackground(false)
-//            setPinchZoom(false)
-//            isClickable = false
-//
-//            xAxis.apply {
-//                setDrawGridLinesBehindData(false)
-//                setDrawLabels(true)
-//                setDrawAxisLine(true)
-//                setDrawGridLines(false)
-//                axisLineWidth = 2f
-//                position = XAxisPosition.BOTTOM
-//                textSize = 7f
-//                textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
-//                setDrawAxisLine(true)
-//                labelRotationAngle = -45f
-//
-//
-//                // set a custom value formatter
-//                // set a custom value formatter
-//                //xAxis.valueFormatter = MyCustomFormatter()
-//            }
-//            axisLeft.apply {
-//                setDrawLabels(true)
-//                setDrawLabels(false)
-//                setDrawAxisLine(false)
-//                setDrawGridLines(false)
-//                //axisMaximum = 80_000f
-//
-//            }
-//            axisRight.apply {
-//                setDrawLabels(true)
-//                setDrawAxisLine(true)
-//                setDrawGridLines(false)
-//                axisLineWidth = 2f
-//                textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
-//                valueFormatter = LargeValueFormatter()
-//
-//            }
-//
-//            legend.isEnabled = true
-//            legend.textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
-//
-//        }
     }
 
     private fun setCountriesData(countries: List<PaysData>) {
@@ -227,25 +282,20 @@ class GlobalActivity : AppCompatActivity(){
     }
 
     private fun setPieChartLabels(global: Global) {
-        global_piechart.centerText = "${global.GlobalData[0].Infection} \n${getString(R.string.confirmed)}"
+        global_piechart.centerText = "${getString(R.string.confirmed)} \n ${global.GlobalData[0].Infection}"
 
         global.toGlobalCards().forEach {
             when(it.label){
                 GlobalTypeEnum.CONFIRMED -> Unit
                 GlobalTypeEnum.RECOVERED -> {
-                    recovered_tv.apply {
-                        text = getString(R.string.recovered) + "\n"+ it.value.toInt().toString()
-                    }
+                    recovered_tv.text = getString(R.string.recovered) + "\n"+ it.value.toInt().toString()
                 }
                 GlobalTypeEnum.DEATHS -> {
-                    death_tv.apply {
-                        text = getString(R.string.deaths)+ "\n" + it.value.toInt().toString()
-                    }
+                    death_tv.text = getString(R.string.deaths)+ "\n" + it.value.toInt().toString()
+
                 }
                 GlobalTypeEnum.STILL_SICK -> {
-                    still_sick_tv.apply {
-                        text = getString(R.string.still_sick)+ "\n" + it.value.toInt().toString()
-                    }
+                    still_sick_tv.text = getString(R.string.still_sick)+ "\n" + it.value.toInt().toString()
                 }
             }
         }
@@ -278,10 +328,18 @@ class GlobalActivity : AppCompatActivity(){
     }
 
     private fun setGlobalLineChartData(values: List<GlobalData>){
+        val lastValue = values[0]
+        val valuesChart = values.reversed()
+
+        global_item_date_tv.text = lastValue.Date.toChartLabelDate()
+        global_item_confirmed_tv.text = getString(R.string.confirmed) + ": " + lastValue.Infection.toInt().toString()
+        global_item_death_tv.text = getString(R.string.deaths)+ ": " + lastValue.Deces.toInt().toString()
+        global_item_recovered_tv.text = getString(R.string.recovered) + ": " + lastValue.Guerisons.toInt().toString()
+
         val entriesConfirmed = ArrayList<Entry>()
 //        val entriesRecovered = ArrayList<Entry>()
 //        val entriesDeaths = ArrayList<Entry>()
-        val valuesChart = values.reversed()
+
 
         valuesChart.forEachIndexed {index, element ->
             entriesConfirmed.add(Entry(index.toFloat(), element.Infection.toFloat()))
@@ -298,7 +356,7 @@ class GlobalActivity : AppCompatActivity(){
             axisDependency = YAxis.AxisDependency.RIGHT
             lineWidth = 2f
             color = ContextCompat.getColor(this@GlobalActivity, R.color.colorConfirmed)
-            mode = LineDataSet.Mode.LINEAR
+            mode = LineDataSet.Mode.CUBIC_BEZIER
             isHighlightEnabled = true
             setDrawCircleHole(false)
             setDrawCircles(false)

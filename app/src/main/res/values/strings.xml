@@ -1,8 +1,11 @@
 <resources>
     <string name="title_dashboard">Dashboard</string>
-    <string name="confirmed">Infections</string>
+    <string name="confirmed">Cas</string>
     <string name="deaths">Décés</string>
     <string name="recovered">Guérisons</string>
-    <string name="still_sick">Encore infectés</string>
+    <string name="still_sick">Infections</string>
     <string name="global_cases">Nombre total de cas</string>
+    <string name="confirmed_label">Cas inféctés</string>
+    <string name="recovered_label">Cas guéris</string>
+    <string name="death_label">Cas décédés</string>
 </resources>

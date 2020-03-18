@@ -23,7 +23,6 @@ import kotlinx.android.synthetic.main.country_linechart_item.*
 import kotlinx.android.synthetic.main.global_linechart_item.*
 import kotlinx.android.synthetic.main.global_piechart_item.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import kotlin.math.roundToInt
 
 
 class GlobalActivity : AppCompatActivity(){
@@ -43,15 +42,12 @@ class GlobalActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_global)
 
-
         initGlobalPieChart()
-
-        initLineChart(global_linechart)
-        initLineChart(country_linechart)
+        initGlobalLineChart()
+        initCoutryLineChart()
 
         loadAnimations()
         changeCameraDistance()
-
     }
 
     override fun onStart() {
@@ -72,6 +68,127 @@ class GlobalActivity : AppCompatActivity(){
             country_item_country_tv.text = it.country
             setCountriesLineChartDate(it.values)
         })
+    }
+
+    private fun changeCameraDistance() {
+        val distance = 8000
+        val scale = resources.displayMetrics.density * distance
+        container_global_piechart.cameraDistance = scale
+        container_global_linechart.cameraDistance = scale
+    }
+
+    private fun loadAnimations() {
+        outAnimator = AnimatorInflater.loadAnimator(this, R.animator.out_animation) as AnimatorSet
+        inAnimator = AnimatorInflater.loadAnimator(this, R.animator.in_animation) as AnimatorSet
+    }
+
+    private fun animateCard() {
+        if (!inAnimator.isRunning && !outAnimator.isRunning) {
+            if (!isChartBackVisible) {
+                outAnimator.setTarget(container_global_piechart)
+                inAnimator.setTarget(container_global_linechart)
+                outAnimator.start()
+                inAnimator.start()
+                isChartBackVisible = true
+
+            } else {
+                outAnimator.setTarget(container_global_linechart)
+                inAnimator.setTarget(container_global_piechart)
+                outAnimator.start()
+                inAnimator.start()
+                isChartBackVisible = false
+            }
+        }
+    }
+
+    private fun initGlobalPieChart() {
+        global_piechart.setParams()
+        container_global_piechart.setOnClickListener{
+            animateCard()
+        }
+    }
+
+    private fun initGlobalLineChart(){
+        global_linechart.setParams()
+    }
+
+    private fun initCoutryLineChart(){
+        country_linechart.setParams()
+    }
+
+    private fun setPieChartData(values: List<GlobalChartValue>) {
+        val xValues = ArrayList<PieEntry>()
+
+        values.forEach {
+            xValues.add(PieEntry(it.value))
+        }
+        val dataSet = PieDataSet(xValues, null)
+        val sliceColors = mutableListOf<Int>()
+        sliceColors.addAll(listOf(
+            ContextCompat.getColor(this, R.color.colorDeath),
+            ContextCompat.getColor(this, R.color.colorRecovered),
+            ContextCompat.getColor(this, R.color.colorStillSick)
+        ))
+        dataSet.apply {
+            setDrawValues(true)
+            valueFormatter = PieChartValueFormatter()
+            valueTextSize = 8f
+            valueTextColor = ContextCompat.getColor(this@GlobalActivity, R.color.colorBackgroundCountry)
+            colors = sliceColors
+        }
+        val pieData = PieData(dataSet)
+        global_piechart.data = pieData
+
+        global_piechart.animateXY(2000, 2000)
+    }
+
+    private fun setPieChartLabels(global: Global) {
+        global_piechart.centerText = "${getString(R.string.confirmed)} \n ${global.GlobalData[0].Infection.toInt()}"
+
+        global.toGlobalCards().forEach {
+            when(it.label){
+                GlobalTypeEnum.CONFIRMED -> Unit
+                GlobalTypeEnum.RECOVERED -> recovered_tv.text = getString(R.string.recovered) + "\n"+ it.value.toInt().toString()
+                GlobalTypeEnum.DEATHS -> death_tv.text = getString(R.string.deaths)+ "\n" + it.value.toInt().toString()
+                GlobalTypeEnum.STILL_SICK -> still_sick_tv.text = getString(R.string.still_sick)+ "\n" + it.value.toInt().toString()
+            }
+        }
+    }
+
+    private fun setGlobalLineChartData(values: List<GlobalData>){
+        val lastValue = values[0]
+        val valuesChart = values.reversed()
+
+        global_item_date_tv.text = lastValue.Date.toChartLabelDate()
+        global_item_confirmed_tv.text = getString(R.string.confirmed) + ": " + lastValue.Infection.toInt().toString()
+        global_item_death_tv.text = getString(R.string.deaths)+ ": " + lastValue.Deces.toInt().toString()
+        global_item_recovered_tv.text = getString(R.string.recovered) + ": " + lastValue.Guerisons.toInt().toString()
+
+        val entriesConfirmed = ArrayList<Entry>()
+        val entriesRecovered = ArrayList<Entry>()
+        val entriesDeaths = ArrayList<Entry>()
+
+        valuesChart.forEachIndexed {index, element ->
+            entriesConfirmed.add(Entry(index.toFloat(), element.Infection.toFloat()))
+            entriesRecovered.add(Entry(index.toFloat(), element.Guerisons.toFloat()))
+            entriesDeaths.add(Entry(index.toFloat(), element.Deces.toFloat()))
+        }
+
+        val lineDataSetConfirmed = LineDataSet(entriesConfirmed, "")
+        val lineDataSetRecovered = LineDataSet(entriesRecovered, "")
+        val lineDataSetDeaths = LineDataSet(entriesDeaths, "")
+
+        lineDataSetConfirmed.setParams(this, R.color.colorConfirmed)
+        lineDataSetRecovered.setParams(this, R.color.colorRecovered)
+        lineDataSetDeaths.setParams(this, R.color.colorDeath)
+
+        val lineData = LineData()
+        lineData.addDataSet(lineDataSetConfirmed)
+        lineData.addDataSet(lineDataSetRecovered)
+        lineData.addDataSet(lineDataSetDeaths)
+        global_linechart.xAxis.valueFormatter = LineChartLabelFormatter(valuesChart)
+        global_linechart.data = lineData
+        global_linechart.animateXY(1000, 1000)
     }
 
     private fun setCountriesLineChartDate(values: List<CountryValue>) {
@@ -123,101 +240,6 @@ class GlobalActivity : AppCompatActivity(){
         }
     }
 
-    private fun changeCameraDistance() {
-        val distance = 8000
-        val scale = resources.displayMetrics.density * distance
-        container_global_piechart.cameraDistance = scale
-        container_global_linechart.cameraDistance = scale
-    }
-
-    private fun loadAnimations() {
-        outAnimator = AnimatorInflater.loadAnimator(this, R.animator.out_animation) as AnimatorSet
-        inAnimator = AnimatorInflater.loadAnimator(this, R.animator.in_animation) as AnimatorSet
-    }
-
-    private fun animateCard() {
-        if (!inAnimator.isRunning && !outAnimator.isRunning) {
-            if (!isChartBackVisible) {
-                outAnimator.setTarget(container_global_piechart)
-                inAnimator.setTarget(container_global_linechart)
-                outAnimator.start()
-                inAnimator.start()
-                isChartBackVisible = true
-
-            } else {
-                outAnimator.setTarget(container_global_linechart)
-                inAnimator.setTarget(container_global_piechart)
-                outAnimator.start()
-                inAnimator.start()
-                isChartBackVisible = false
-            }
-        }
-    }
-
-    private fun initGlobalPieChart() {
-        global_piechart.apply {
-            isRotationEnabled = false
-            legend.isEnabled = false
-            description.isEnabled = false
-            setTouchEnabled(false)
-            setUsePercentValues(true)
-            isDrawHoleEnabled = true
-            setHoleColor(ContextCompat.getColor(context, R.color.colorBackground))
-            setDrawCenterText(true)
-            setCenterTextColor(ContextCompat.getColor(context, R.color.colorConfirmed))
-            setCenterTextTypeface(Typeface.SANS_SERIF)
-            setCenterTextSize(10f)
-        }
-
-        container_global_piechart.setOnClickListener{
-            animateCard()
-        }
-    }
-
-
-    private fun initLineChart(chart: LineChart){
-        chart.apply {
-            setDrawBorders(false)
-            setDrawGridBackground(false)
-            setPinchZoom(false)
-            setScaleEnabled(false)
-            isClickable = false
-            legend.isEnabled = true
-            legend.textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
-            description = null
-            legend.isEnabled = false
-
-            xAxis.apply {
-                setDrawGridLinesBehindData(false)
-                setDrawLabels(true)
-                setDrawAxisLine(true)
-                setDrawGridLines(false)
-                setScaleEnabled(false)
-                axisLineWidth = 2f
-                position = XAxisPosition.BOTTOM
-                textSize = 7f
-                textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
-                setDrawAxisLine(true)
-                labelRotationAngle = -45f
-            }
-
-            axisLeft.apply {
-                setDrawLabels(false)
-                setDrawAxisLine(false)
-                setDrawGridLines(false)
-            }
-
-            axisRight.apply {
-                setDrawLabels(true)
-                setDrawAxisLine(true)
-                setDrawGridLines(false)
-                axisLineWidth = 2f
-                textColor = ContextCompat.getColor(context, R.color.colorConfirmed)
-                valueFormatter = LargeValueFormatter()
-            }
-        }
-    }
-
     private fun setCountriesData(countries: List<PaysData>) {
         val countriesForAdapter = globalViewModel.getCoutriesForAdapter(countries)
         countryAdapter = CountryAdapter(this, countriesForAdapter) {globalViewModel.onClickedCountry(it)}
@@ -226,87 +248,6 @@ class GlobalActivity : AppCompatActivity(){
         countries_rv.adapter = countryAdapter
     }
 
-    private fun setPieChartLabels(global: Global) {
-        global_piechart.centerText = "${getString(R.string.confirmed)} \n ${global.GlobalData[0].Infection.toInt()}"
-
-        global.toGlobalCards().forEach {
-            when(it.label){
-                GlobalTypeEnum.CONFIRMED -> Unit
-                GlobalTypeEnum.RECOVERED -> recovered_tv.text = getString(R.string.recovered) + "\n"+ it.value.toInt().toString()
-                GlobalTypeEnum.DEATHS -> death_tv.text = getString(R.string.deaths)+ "\n" + it.value.toInt().toString()
-                GlobalTypeEnum.STILL_SICK -> still_sick_tv.text = getString(R.string.still_sick)+ "\n" + it.value.toInt().toString()
-            }
-        }
-    }
-
-    private fun setPieChartData(values: List<GlobalChartValue>) {
-        val xValues = ArrayList<PieEntry>()
-
-        values.forEach {
-            xValues.add(PieEntry(it.value))
-        }
-        val dataSet = PieDataSet(xValues, null)
-        val sliceColors = mutableListOf<Int>()
-        sliceColors.addAll(listOf(
-            ContextCompat.getColor(this, R.color.colorDeath),
-            ContextCompat.getColor(this, R.color.colorRecovered),
-            ContextCompat.getColor(this, R.color.colorStillSick)
-        ))
-        dataSet.apply {
-            setDrawValues(true)
-            valueFormatter = PieChartValueFormatter()
-            valueTextSize = 8f
-            valueTextColor = ContextCompat.getColor(this@GlobalActivity, R.color.colorBackgroundCountry)
-            colors = sliceColors
-        }
-        val pieData = PieData(dataSet)
-        global_piechart.data = pieData
-
-        global_piechart.animateXY(2000, 2000)
-    }
-
-    private fun setGlobalLineChartData(values: List<GlobalData>){
-        val lastValue = values[0]
-        val valuesChart = values.reversed()
-
-        global_item_date_tv.text = lastValue.Date.toChartLabelDate()
-        global_item_confirmed_tv.text = getString(R.string.confirmed) + ": " + lastValue.Infection.toInt().toString()
-        global_item_death_tv.text = getString(R.string.deaths)+ ": " + lastValue.Deces.toInt().toString()
-        global_item_recovered_tv.text = getString(R.string.recovered) + ": " + lastValue.Guerisons.toInt().toString()
-
-        val entriesConfirmed = ArrayList<Entry>()
-//        val entriesRecovered = ArrayList<Entry>()
-//        val entriesDeaths = ArrayList<Entry>()
 
 
-        valuesChart.forEachIndexed {index, element ->
-            entriesConfirmed.add(Entry(index.toFloat(), element.Infection.toFloat()))
-//            entriesRecovered.add(Entry(index.toFloat(), element.Guerisons.toFloat()))
-//            entriesDeaths.add(Entry(index.toFloat(), element.Deces.toFloat()))
-        }
-
-        val lineDataSetConfirmed = LineDataSet(entriesConfirmed, "")
-//        var lineDataSetRecovered = LineDataSet(entriesRecovered, "")
-//        var lineDataSetDeaths = LineDataSet(entriesDeaths, "")
-
-        lineDataSetConfirmed.apply {
-            setDrawValues(false)
-            axisDependency = YAxis.AxisDependency.RIGHT
-            lineWidth = 2f
-            color = ContextCompat.getColor(this@GlobalActivity, R.color.colorConfirmed)
-            mode = LineDataSet.Mode.CUBIC_BEZIER
-            isHighlightEnabled = true
-            setDrawCircleHole(false)
-            setDrawCircles(false)
-            setDrawHighlightIndicators(true)
-            setDrawHorizontalHighlightIndicator(false)
-            setDrawVerticalHighlightIndicator(true)
-
-        }
-
-        val lineData = LineData(lineDataSetConfirmed)
-        global_linechart.xAxis.valueFormatter = LineChartLabelFormatter(valuesChart)
-        global_linechart.data = lineData
-        global_linechart.animateXY(1000, 1000)
-    }
 }

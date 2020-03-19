@@ -15,7 +15,7 @@ data class Global(
     @SerializedName("GlobalData")
     val globalData: List<GlobalData>,
     @SerializedName("PaysData")
-    val coutriesData: List<PaysData>
+    val coutriesData: List<CountryData>
 ){
     fun toGlobalCards(): List<GlobalChartValue> {
         return mutableListOf<GlobalChartValue>().also {
@@ -90,7 +90,7 @@ data class GlobalData(
     val recovered: Double
 )
 
-data class PaysData(
+data class CountryData(
     @SerializedName("Date")
     val date: String,
     @SerializedName("Pays")

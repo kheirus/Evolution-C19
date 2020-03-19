@@ -8,6 +8,7 @@
     <color name="colorRecovered">#ffecb3</color>
     <color name="colorStillSick">#ffc107</color>
     <color name="colorBackgroundCountry">#263238</color>
+    <color name="colorBackgroundLight">#455a64</color>
 
     <color name="colorPrimary">@color/colorBackground</color>
     <color name="colorPrimaryDark">@color/colorBackground</color>

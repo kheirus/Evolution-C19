@@ -55,7 +55,6 @@ class GlobalActivity : AppCompatActivity(){
             setCountriesData(it.coutriesData)
 
             // Display first country data
-            // TODO-(18/03/20)-kheirus: regler l'index 0
             globalViewModel.onClickedCountry("Chine")
         })
 
@@ -128,7 +127,7 @@ class GlobalActivity : AppCompatActivity(){
             setDrawValues(true)
             valueFormatter = PieChartValueFormatter()
             valueTextSize = 8f
-            valueTextColor = ContextCompat.getColor(this@GlobalActivity, R.color.colorBackgroundCountry)
+            valueTextColor = ContextCompat.getColor(this@GlobalActivity, R.color.colorBackgroundLight)
             colors = sliceColors
         }
         val pieData = PieData(dataSet)

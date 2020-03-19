@@ -88,6 +88,7 @@ fun LineChart.setParams(){
         textColor = getColor(context, R.color.colorConfirmed)
         setDrawAxisLine(true)
         labelRotationAngle = -45f
+        axisLineColor = getColor(context, R.color.colorBackgroundLight)
     }
 
     axisLeft.apply {
@@ -103,6 +104,7 @@ fun LineChart.setParams(){
         axisLineWidth = 2f
         textColor = getColor(context, R.color.colorConfirmed)
         valueFormatter = LargeValueFormatter()
+        axisLineColor = getColor(context, R.color.colorBackgroundLight)
     }
 }
 
@@ -113,10 +115,9 @@ fun PieChart.setParams(){
     setTouchEnabled(false)
     setUsePercentValues(true)
     isDrawHoleEnabled = true
-    setHoleColor(ContextCompat.getColor(context, R.color.colorBackground))
+    setHoleColor(getColor(context, R.color.colorBackground))
     setDrawCenterText(true)
-    setCenterTextColor(ContextCompat.getColor(context, R.color.colorConfirmed))
-    setCenterTextTypeface(Typeface.SANS_SERIF)
+    setCenterTextColor(getColor(context, R.color.colorConfirmed))
     setCenterTextSize(10f)
 }
 

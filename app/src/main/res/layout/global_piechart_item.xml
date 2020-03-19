@@ -37,6 +37,15 @@
             app:layout_constraintBottom_toTopOf="@id/global_piechart"
             tools:text="1234 \n Décés" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/death_tv"
+            app:layout_constraintBottom_toBottomOf="@id/death_tv"
+            android:src="@drawable/ic_rotate"
+
+            />
         <TextView
             android:id="@+id/still_sick_tv"
             android:layout_width="wrap_content"

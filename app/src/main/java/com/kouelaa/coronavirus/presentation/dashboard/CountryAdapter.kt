@@ -11,13 +11,13 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.LargeValueFormatter
 import com.kouelaa.coronavirus.R
-import com.kouelaa.coronavirus.domain.entities.PaysData
+import com.kouelaa.coronavirus.domain.entities.CountryData
 import kotlinx.android.synthetic.main.country_item.view.*
 
 
 class CountryAdapter(
     private val context: Context,
-    private val countries: List<PaysData> ,
+    private val countries: List<CountryData>,
     private val listener: (String) -> Unit
 ) : RecyclerView.Adapter<CountryAdapter.CountryViewHolder>() {
     var selected = 0
@@ -37,7 +37,7 @@ class CountryAdapter(
     }
 
     inner class CountryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(country: PaysData, position: Int, listener: (String) -> Unit) {
+        fun bind(country: CountryData, position: Int, listener: (String) -> Unit) {
             with(itemView){
                 country_tv.text = country.country
 

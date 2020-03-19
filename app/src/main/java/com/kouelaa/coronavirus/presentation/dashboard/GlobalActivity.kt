@@ -232,7 +232,7 @@ class GlobalActivity : AppCompatActivity(){
         country_linechart.animateXY(1000, 1000)
     }
 
-    private fun setCountriesData(countries: List<PaysData>) {
+    private fun setCountriesData(countries: List<CountryData>) {
         val countriesForAdapter = globalViewModel.getCoutriesForAdapter(countries)
         countryAdapter = CountryAdapter(this, countriesForAdapter) {globalViewModel.onClickedCountry(it)}
         countryLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)

@@ -8,4 +8,17 @@
     <string name="confirmed_label">Cas inféctés</string>
     <string name="recovered_label">Cas guéris</string>
     <string name="death_label">Cas décédés</string>
+
+    <string name="about_toolbar">À propos</string>
+    <string name="about_app_title">À propos de l\'application</string>
+    <string name="about_text">"Cette application présente une évolution de l'épidémie du Coronavirus COVID-19 jour par jour.
+Le fichier source que j'utilise pour dessiner les graphiques se met à jour une fois par jour.
+La source de mes données est en accès libre sur le site https://www.data.gouv.fr/fr/datasets/coronavirus-covid19-evolution-par-pays-et-dans-le-monde-maj-quotidienne/#_
+et sur le site https://coronavirus.politologue.com/
+Cette application a été réalisée sur mon temps libre, dans le but d'avoir une application Android native qui répond à
+un besoin précis, celui d'afficher l'évolution du Coronavirus (COVID-19) jour par jour dans le monde et par pays.
+Cette application à un but non lucratif, n'affiche pas de publicité, ne demande aucune autorisation particulière.
+J'espère que la vie de l'application sera très court, celui de l'épidémie."
+</string>
+
 </resources>

@@ -3,6 +3,7 @@ package com.kouelaa.coronavirus.presentation.dashboard
 
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -13,6 +14,7 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.kouelaa.coronavirus.R
 import com.kouelaa.coronavirus.domain.entities.*
+import com.kouelaa.coronavirus.presentation.about.AboutActivity
 import kotlinx.android.synthetic.main.activity_global.*
 import kotlinx.android.synthetic.main.country_linechart_item.*
 import kotlinx.android.synthetic.main.global_linechart_item.*
@@ -40,6 +42,7 @@ class GlobalActivity : AppCompatActivity(){
         initGlobalPieChart()
         initGlobalLineChart()
         initCoutryLineChart()
+        initToolbar()
 
         loadAnimations()
         changeCameraDistance()
@@ -92,6 +95,13 @@ class GlobalActivity : AppCompatActivity(){
                 inAnimator.start()
                 isChartBackVisible = false
             }
+        }
+    }
+
+    private fun initToolbar() {
+        about_toolbar.setOnClickListener {
+            startActivity(Intent(this, AboutActivity::class.java))
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
         }
     }
 
@@ -238,7 +248,5 @@ class GlobalActivity : AppCompatActivity(){
         countries_rv.layoutManager = countryLayoutManager
         countries_rv.adapter = countryAdapter
     }
-
-
 
 }

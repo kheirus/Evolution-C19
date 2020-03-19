@@ -12,11 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="20dp">
+
         <TextView
             android:id="@+id/about_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorConfirmed"
+            android:textColor="@color/colorCountryName"
+            android:textSize="17sp"
             android:textStyle="bold"
             android:text="@string/about_app_title"
             app:layout_constraintTop_toTopOf="parent"
@@ -25,14 +27,89 @@
             />
 
         <TextView
+            android:id="@+id/about_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="@color/colorCountryName"
             android:textAlignment="textStart"
+            android:textSize="12sp"
+            android:autoLink="all"
             android:text="@string/about_text"
             app:layout_constraintTop_toBottomOf="@id/about_title"
             app:layout_constraintStart_toStartOf="@id/about_title"
             app:layout_constraintEnd_toEndOf="@id/about_title"
+            />
+
+        <TextView
+            android:id="@+id/about_developer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorCountryName"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:text="@string/about_developer"
+            android:paddingTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/about_text"
+            app:layout_constraintStart_toStartOf="@id/about_text"
+            app:layout_constraintEnd_toEndOf="@id/about_text"
+
+            />
+
+        <TextView
+            android:id="@+id/about_developer_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorCountryName"
+            android:textAlignment="textStart"
+            android:textSize="12sp"
+            android:autoLink="all"
+            android:text="@string/about_developer_text"
+            app:layout_constraintTop_toBottomOf="@id/about_developer"
+            app:layout_constraintStart_toStartOf="@id/about_developer"
+            app:layout_constraintEnd_toEndOf="@id/about_developer"
+            />
+
+        <TextView
+            android:id="@+id/about_libs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorCountryName"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:text="@string/about_libs"
+            android:paddingTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/about_developer_text"
+            app:layout_constraintStart_toStartOf="@id/about_developer_text"
+            app:layout_constraintEnd_toEndOf="@id/about_developer_text"
+
+            />
+
+        <TextView
+            android:id="@+id/about_libs_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorCountryName"
+            android:textSize="12sp"
+            android:autoLink="all"
+            android:text="@string/about_libs_text"
+            app:layout_constraintTop_toBottomOf="@id/about_libs"
+            app:layout_constraintStart_toStartOf="@id/about_libs"
+            app:layout_constraintEnd_toEndOf="@id/about_libs"
+            />
+
+        <TextView
+            android:id="@+id/about_copyrigh"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBackgroundLight"
+            android:textSize="10sp"
+            android:textStyle="italic"
+            android:gravity="center"
+            android:text="@string/copyright"
+            android:paddingTop="30dp"
+            app:layout_constraintTop_toBottomOf="@id/about_libs_text"
+            app:layout_constraintStart_toStartOf="@id/about_libs_text"
+            app:layout_constraintEnd_toEndOf="@id/about_libs_text"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

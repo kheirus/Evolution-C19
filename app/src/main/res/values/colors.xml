@@ -12,6 +12,6 @@
 
     <color name="colorPrimary">@color/colorBackground</color>
     <color name="colorPrimaryDark">@color/colorBackground</color>
-    <color name="colorAccent">@color/colorConfirmed</color>
+    <color name="colorAccent">#90caf9</color>
 
 </resources>

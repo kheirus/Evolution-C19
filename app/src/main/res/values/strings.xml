@@ -11,14 +11,33 @@
 
     <string name="about_toolbar">À propos</string>
     <string name="about_app_title">À propos de l\'application</string>
-    <string name="about_text">"Cette application présente une évolution de l'épidémie du Coronavirus COVID-19 jour par jour.
-Le fichier source que j'utilise pour dessiner les graphiques se met à jour une fois par jour.
-La source de mes données est en accès libre sur le site https://www.data.gouv.fr/fr/datasets/coronavirus-covid19-evolution-par-pays-et-dans-le-monde-maj-quotidienne/#_
-et sur le site https://coronavirus.politologue.com/
+    <string name="about_text">
+        "Cette application présente une évolution de l'épidémie du Coronavirus COVID-19 jour par jour.\n
+Le fichier source que j'utilise pour dessiner les graphiques se met à jour une fois par jour.\n
+Ce fichier source est en accès libre sur le site  https://www.data.gouv.fr/fr/datasets/coronavirus-covid19-evolution-par-pays-et-dans-le-monde-maj-quotidienne/#_\n
+et sur le site https://coronavirus.politologue.com/.\n
 Cette application a été réalisée sur mon temps libre, dans le but d'avoir une application Android native qui répond à
-un besoin précis, celui d'afficher l'évolution du Coronavirus (COVID-19) jour par jour dans le monde et par pays.
+un besoin précis: celui d'afficher l'évolution du Coronavirus (COVID-19) jour par jour dans le monde et par pays.\n
 Cette application à un but non lucratif, n'affiche pas de publicité, ne demande aucune autorisation particulière.
-J'espère que la vie de l'application sera très court, celui de l'épidémie."
 </string>
+    <string name="about_developer">"À propos du développeur"</string>
+    <string name="about_developer_text">
+        "Si vous avez des questions concernant l'application (et non pas le Coronavirus), des bugs à remonter, des suggestions ou remarques, n'hésitez pas à me contacter sur :
+Mail: kheireddine.ouelaa@gmail.com
+Linkedin: https://www.linkedin.com/in/kheireddineouelaa/"</string>
+
+    <string name="about_libs">"Open Source Libraries"</string>
+
+    <string name="about_libs_text">
+    "MPAndroidChart: https://github.com/PhilJay/MPAndroidChart
+Gson: https://github.com/google/gson
+Retrofit: https://square.github.io/retrofit/
+OkHttp: https://square.github.io/okhttp/
+ThreeTenABP: https://github.com/JakeWharton/ThreeTenABP
+Timber: https://github.com/JakeWharton/timber
+Koin: https://github.com/InsertKoinIO/koin"
+</string>
+
+    <string name="copyright">Copyright 2020, Kheireddine Ouelaa. All rights reserved.</string>
 
 </resources>

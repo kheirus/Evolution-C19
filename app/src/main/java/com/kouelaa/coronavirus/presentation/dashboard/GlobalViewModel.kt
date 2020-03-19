@@ -27,11 +27,11 @@ class GlobalViewModel(
     }
 
     fun getCoutriesForAdapter(countries: List<PaysData>): List<PaysData> {
-        val dateNow = countries[0].Date
+        val dateNow = countries[0].date
         return countries
-            .filter { it.Pays != "Autres" }
-            .filter { it.Date == dateNow }
-            .sortedBy { it.Infection }
+            .filter { it.country != "Autres" }
+            .filter { it.date == dateNow }
+            .sortedBy { it.confirmed }
     }
 
     fun onClickedCountry(country: String) {

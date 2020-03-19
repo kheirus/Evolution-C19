@@ -51,8 +51,8 @@ class GlobalActivity : AppCompatActivity(){
         globalViewModel.global.observe(this, Observer {
             setPieChartData(it.toGlobalChart())
             setPieChartLabels(it)
-            setGlobalLineChartData(it.GlobalData)
-            setCountriesData(it.PaysData)
+            setGlobalLineChartData(it.globalData)
+            setCountriesData(it.coutriesData)
 
             // Display first country data
             // TODO-(18/03/20)-kheirus: regler l'index 0
@@ -138,7 +138,7 @@ class GlobalActivity : AppCompatActivity(){
     }
 
     private fun setPieChartLabels(global: Global) {
-        global_piechart.centerText = "${getString(R.string.confirmed)} \n ${global.GlobalData[0].Infection.toInt()}"
+        global_piechart.centerText = "${getString(R.string.confirmed)} \n ${global.globalData[0].confirmed.toInt()}"
 
         global.toGlobalCards().forEach {
             when(it.label){
@@ -154,19 +154,19 @@ class GlobalActivity : AppCompatActivity(){
         val lastValue = values[0]
         val valuesChart = values.reversed()
 
-        global_item_date_tv.text = lastValue.Date.toChartLabelDate()
-        global_item_confirmed_tv.text = lastValue.Infection.toInt().toString()
-        global_item_death_tv.text = lastValue.Deces.toInt().toString()
-        global_item_recovered_tv.text = lastValue.Guerisons.toInt().toString()
+        global_item_date_tv.text = lastValue.date.toChartLabelDate()
+        global_item_confirmed_tv.text = lastValue.confirmed.toInt().toString()
+        global_item_death_tv.text = lastValue.deaths.toInt().toString()
+        global_item_recovered_tv.text = lastValue.recovered.toInt().toString()
 
         val entriesConfirmed = ArrayList<Entry>()
         val entriesRecovered = ArrayList<Entry>()
         val entriesDeaths = ArrayList<Entry>()
 
         valuesChart.forEachIndexed {index, element ->
-            entriesConfirmed.add(Entry(index.toFloat(), element.Infection.toFloat()))
-            entriesRecovered.add(Entry(index.toFloat(), element.Guerisons.toFloat()))
-            entriesDeaths.add(Entry(index.toFloat(), element.Deces.toFloat()))
+            entriesConfirmed.add(Entry(index.toFloat(), element.confirmed.toFloat()))
+            entriesRecovered.add(Entry(index.toFloat(), element.recovered.toFloat()))
+            entriesDeaths.add(Entry(index.toFloat(), element.deaths.toFloat()))
         }
 
         val lineDataSetConfirmed = LineDataSet(entriesConfirmed, "")

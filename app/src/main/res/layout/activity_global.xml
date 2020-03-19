@@ -47,7 +47,7 @@
             android:id="@+id/color_code_confirmed_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_label_recovered"
+            android:drawableStart="@drawable/ic_label_confirmed"
             android:gravity="center"
             android:text="@string/confirmed_label"
             android:textColor="@color/colorConfirmed"

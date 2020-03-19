@@ -1,34 +1,40 @@
 package com.kouelaa.coronavirus.domain.entities
 
+import com.google.gson.annotations.SerializedName
+
 
 /**
  * Created by kheirus on 2020-03-11.
  */
 
 data class Global(
-    val Source: String,
-    val Information: String,
-    val GlobalData: List<GlobalData>,
-    val PaysData: List<PaysData>
+    @SerializedName("Source")
+    val source: String,
+    @SerializedName("Information")
+    val information: String,
+    @SerializedName("GlobalData")
+    val globalData: List<GlobalData>,
+    @SerializedName("PaysData")
+    val coutriesData: List<PaysData>
 ){
     fun toGlobalCards(): List<GlobalChartValue> {
         return mutableListOf<GlobalChartValue>().also {
             it.addAll(listOf(
                 GlobalChartValue(
                     label = GlobalTypeEnum.CONFIRMED,
-                    value = GlobalData[0].Infection.toFloat()
+                    value = globalData[0].confirmed.toFloat()
                 ),
                 GlobalChartValue(
                     label = GlobalTypeEnum.DEATHS,
-                    value = GlobalData[0].Deces.toFloat()
+                    value = globalData[0].deaths.toFloat()
                 ),
                 GlobalChartValue(
                     label = GlobalTypeEnum.RECOVERED,
-                    value = GlobalData[0].Guerisons.toFloat()
+                    value = globalData[0].recovered.toFloat()
                 ),
                 GlobalChartValue(
                     label = GlobalTypeEnum.STILL_SICK,
-                    value = (GlobalData[0].Infection - (GlobalData[0].Deces + GlobalData[0].Guerisons)).toFloat()
+                    value = (globalData[0].confirmed - (globalData[0].deaths + globalData[0].recovered)).toFloat()
                 )
 
             ))
@@ -40,59 +46,61 @@ data class Global(
             it.addAll(listOf(
                 GlobalChartValue(
                     label = GlobalTypeEnum.DEATHS,
-                    value = GlobalData[0].Deces.toFloat()
+                    value = globalData[0].deaths.toFloat()
                 ),
                 GlobalChartValue(
                     label = GlobalTypeEnum.RECOVERED,
-                    value = GlobalData[0].Guerisons.toFloat()
+                    value = globalData[0].recovered.toFloat()
                 ),
                 GlobalChartValue(
                     label = GlobalTypeEnum.STILL_SICK,
-                    value = (GlobalData[0].Infection - (GlobalData[0].Deces + GlobalData[0].Guerisons)).toFloat()
+                    value = (globalData[0].confirmed - (globalData[0].deaths + globalData[0].recovered)).toFloat()
                 )
             ))
         }
     }
 
     fun toCountryLineChart(country: String): CountryChartValue{
-       val listCountries =  this.PaysData
-           .filter { it.Pays == country }
-           .sortedBy { it.Date }
+        val listCountries =  this.coutriesData
+            .filter { it.country == country }
+            .sortedBy { it.date }
 
         val listChartValue = mutableListOf<CountryValue>()
-       listCountries.forEachIndexed {index, data ->
-           listChartValue.add(index, CountryValue(
-               date = data.Date,
-               confirmed = data.Infection,
-               recovered = data.Guerisons,
-               death = data.Deces
-               ))
-       }
+        listCountries.forEachIndexed {index, data ->
+            listChartValue.add(index, CountryValue(
+                date = data.date,
+                confirmed = data.confirmed,
+                recovered = data.recovered,
+                death = data.death
+            ))
+        }
 
         return CountryChartValue(country, listChartValue)
-
     }
 }
 
 data class GlobalData(
-    val Date: String,
-    val Infection: Double,
-    val Deces: Double,
-    val Guerisons: Double,
-    val TauxDeces: Double,
-    val TauxGuerison: Double,
-    val TauxInfection: Double
+    @SerializedName("Date")
+    val date: String,
+    @SerializedName("Infection")
+    val confirmed: Double,
+    @SerializedName("Deces")
+    val deaths: Double,
+    @SerializedName("Guerisons")
+    val recovered: Double
 )
 
 data class PaysData(
-    val Date: String,
-    val Pays: String,
-    val Infection: Double,
-    val Deces: Double,
-    val Guerisons: Double,
-    val TauxDeces: Double,
-    val TauxGuerison: Double,
-    val TauxInfection: Double
+    @SerializedName("Date")
+    val date: String,
+    @SerializedName("Pays")
+    val country: String,
+    @SerializedName("Infection")
+    val confirmed: Double,
+    @SerializedName("Deces")
+    val death: Double,
+    @SerializedName("Guerisons")
+    val recovered: Double
 )
 
 enum class GlobalTypeEnum{CONFIRMED, RECOVERED, DEATHS, STILL_SICK}

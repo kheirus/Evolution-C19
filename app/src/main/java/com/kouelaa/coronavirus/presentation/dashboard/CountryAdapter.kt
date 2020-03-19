@@ -9,14 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.formatter.LargeValueFormatter
-import com.github.mikephil.charting.utils.ViewPortHandler
 import com.kouelaa.coronavirus.R
 import com.kouelaa.coronavirus.domain.entities.PaysData
-import kotlinx.android.synthetic.main.country_item.*
 import kotlinx.android.synthetic.main.country_item.view.*
-import kotlinx.coroutines.selects.select
 
 
 class CountryAdapter(
@@ -43,7 +39,7 @@ class CountryAdapter(
     inner class CountryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(country: PaysData, position: Int, listener: (String) -> Unit) {
             with(itemView){
-                country_tv.text = country.Pays
+                country_tv.text = country.country
 
                 if (selected == position){
                     country_cardview.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorConfirmed))
@@ -88,9 +84,9 @@ class CountryAdapter(
 
                     legend.isEnabled = false
 
-                    val confirmed = country.Infection.toFloat()
-                    val death = country.Deces.toFloat()
-                    val recovered = country.Guerisons.toFloat()
+                    val confirmed = country.confirmed.toFloat()
+                    val death = country.death.toFloat()
+                    val recovered = country.recovered.toFloat()
 
                     val entries = ArrayList<BarEntry>()
                     entries.add(BarEntry(0f, confirmed))
@@ -118,7 +114,7 @@ class CountryAdapter(
                 }
 
                 setOnClickListener {
-                    listener(country.Pays)
+                    listener(country.country)
                     selected = adapterPosition
                     notifyDataSetChanged()
                 }

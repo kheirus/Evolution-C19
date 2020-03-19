@@ -30,7 +30,7 @@ class PieChartValueFormatter : ValueFormatter() {
 // TODO-(17/03/20)-kheirus: faire une seule fonction de formatter qui prend une liste de string date
 class LineChartLabelFormatter(private val datas: List<GlobalData>) : ValueFormatter() {
     override fun getFormattedValue(value: Float): String {
-        return datas[value.toInt()].Date.toChartLabelDate()
+        return datas[value.toInt()].date.toChartLabelDate()
     }
 }
 

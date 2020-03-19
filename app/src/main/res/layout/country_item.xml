@@ -9,7 +9,7 @@
     app:cardCornerRadius="6dp"
     app:cardElevation="8dp"
     app:cardUseCompatPadding="true"
-    app:contentPadding="3dp"
+    app:contentPadding="2dp"
     app:cardBackgroundColor="@color/colorBackgroundCountry"
     >
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,11 +23,11 @@
             android:id="@+id/country_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/font"
+            app:autoSizeTextType="uniform"
             android:textColor="@color/colorCountryName"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:maxLines="1"
+            android:minLines="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

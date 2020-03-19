@@ -1,18 +1,12 @@
 
 - crashlytics
-- font sur les chart
 - bouton info pour les source et les devs
 - afficher la date et mention que tout les 1 jour le fichier ce met à jour
 - gros loader
 - message d'erreur en cas de pas de donnée
 - icon pour tourner la carte globale pie chart
-- icons pour les 3 cas
-- vérifier wording "malade"
 - afficher source et licence
 - afficher mail de contact
 - signer l'appli
-- to int() infection centre
-- refacto code init chart
-- extract string files
 
 

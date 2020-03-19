@@ -46,43 +46,8 @@ class CountryAdapter(
                 }else{
                     country_cardview.setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorBackgroundCountry))
                 }
-                with(barchart) {
-                    setDrawBarShadow(false)
-                    setFitBars(false)
-                    setDrawBorders(false)
-                    setDrawGridBackground(false)
-                    setDrawValueAboveBar(true)
-                    setPinchZoom(false)
-                    isHighlightFullBarEnabled = false
-                    isHighlightPerDragEnabled = false
-                    isHighlightPerTapEnabled = false
-                    isDoubleTapToZoomEnabled = false
-                    isClickable = true
-                    description = null
-
-                    xAxis.apply {
-                        setDrawGridLinesBehindData(false)
-                        setDrawLabels(false)
-                        setDrawAxisLine(false)
-                        setDrawGridLines(false)
-                    }
-
-                    axisLeft.apply {
-                        setDrawLabels(false)
-                        setDrawLabels(false)
-                        setDrawAxisLine(false)
-                        setDrawGridLines(false)
-                        //axisMaximum = 80_000f
-
-                    }
-
-                    axisRight.apply {
-                        setDrawLabels(false)
-                        setDrawAxisLine(false)
-                        setDrawGridLines(false)
-                    }
-
-                    legend.isEnabled = false
+                with(country_item_barchart) {
+                    setParams()
 
                     val confirmed = country.confirmed.toFloat()
                     val death = country.death.toFloat()
@@ -107,10 +72,9 @@ class CountryAdapter(
                     barDataSet.valueTextSize = 10f
 
                     val barData = BarData(barDataSet)
-                    barData.barWidth = 0.9f
+                    barData.barWidth = 0.8f
 
                     data = barData
-                    //animateY(1000)
                 }
 
                 setOnClickListener {

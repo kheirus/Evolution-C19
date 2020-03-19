@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Typeface
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.*
+import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.XAxis
@@ -27,19 +28,18 @@ class PieChartValueFormatter : ValueFormatter() {
     }
 }
 
-// TODO-(17/03/20)-kheirus: faire une seule fonction de formatter qui prend une liste de string date
-class LineChartLabelFormatter(private val datas: List<GlobalData>) : ValueFormatter() {
+class LineChartLabelFormatter(private val data: List<GlobalData>) : ValueFormatter() {
     override fun getFormattedValue(value: Float): String {
-        return datas[value.toInt()].date.toChartLabelDate()
+        return data[value.toInt()].date.toChartLabelDate()
     }
 }
 
-class LineChartCountryLabelFormatter(private val datas: List<CountryValue>) : ValueFormatter() {
+class LineChartCountryLabelFormatter(private val data: List<CountryValue>) : ValueFormatter() {
     override fun getFormattedValue(value: Float): String {
-        return if (value < datas.size) {
-            datas[value.toInt()].date.toChartLabelDate()
+        return if (value < data.size) {
+            data[value.toInt()].date.toChartLabelDate()
         } else {
-            datas[datas.size-1].date.toChartLabelDate()
+            data[data.size-1].date.toChartLabelDate()
         }
     }
 }
@@ -118,4 +118,42 @@ fun PieChart.setParams(){
     setCenterTextColor(ContextCompat.getColor(context, R.color.colorConfirmed))
     setCenterTextTypeface(Typeface.SANS_SERIF)
     setCenterTextSize(10f)
+}
+
+fun BarChart.setParams(){
+    setDrawBarShadow(false)
+    setFitBars(false)
+    setDrawBorders(false)
+    setDrawGridBackground(false)
+    setDrawValueAboveBar(true)
+    setPinchZoom(false)
+    setTouchEnabled(true)
+    isHighlightFullBarEnabled = false
+    isHighlightPerDragEnabled = false
+    isHighlightPerTapEnabled = false
+    isDoubleTapToZoomEnabled = false
+    isClickable = true
+    description = null
+    legend.isEnabled = false
+
+    xAxis.apply {
+        setDrawGridLinesBehindData(false)
+        setDrawLabels(false)
+        setDrawAxisLine(false)
+        setDrawGridLines(false)
+    }
+
+    axisLeft.apply {
+        setDrawLabels(false)
+        setDrawLabels(false)
+        setDrawAxisLine(false)
+        setDrawGridLines(false)
+    }
+
+    axisRight.apply {
+        setDrawLabels(false)
+        setDrawAxisLine(false)
+        setDrawGridLines(false)
+    }
+
 }

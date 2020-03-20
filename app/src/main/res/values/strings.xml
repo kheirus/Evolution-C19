@@ -17,9 +17,9 @@
     <string name="about_app_title">À propos de l\'application</string>
     <string name="about_text">
         "Cette application présente une évolution de l'épidémie du Coronavirus COVID-19 jour par jour.\n
+La source de données : https://coronavirus.politologue.com - Les données proposées dans ce fichier sont une compilation des données proposées par le CSSE (The Johns Hopkins University) https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6\n
 Le fichier source que j'utilise pour dessiner les graphiques se met à jour une fois par jour.\n
 Ce fichier source est en accès libre sur le site  https://www.data.gouv.fr/fr/datasets/coronavirus-covid19-evolution-par-pays-et-dans-le-monde-maj-quotidienne/#_\n
-et sur le site https://coronavirus.politologue.com/.\n
 Cette application a été réalisée sur mon temps libre, dans le but d'avoir une application Android native qui répond à
 un besoin précis: celui d'afficher l'évolution du Coronavirus (COVID-19) jour par jour dans le monde et par pays.\n
 Cette application à un but non lucratif, n'affiche pas de publicité, ne demande aucune autorisation particulière.
@@ -28,15 +28,15 @@ Cette application à un but non lucratif, n'affiche pas de publicité, ne demand
     <string name="about_developer_text">
         "Si vous avez des questions concernant l'application (et non pas le Coronavirus), des bugs à remonter, des suggestions ou remarques, n'hésitez pas à me contacter sur :
 Mail: kheireddine.ouelaa@gmail.com
-Linkedin: https://www.linkedin.com/in/kheireddineouelaa/"</string>
+Linkedin: https://www.linkedin.com/in/kheireddineouelaa"</string>
 
     <string name="about_libs">"Open Source Libraries"</string>
 
     <string name="about_libs_text">
     "MPAndroidChart: https://github.com/PhilJay/MPAndroidChart
 Gson: https://github.com/google/gson
-Retrofit: https://square.github.io/retrofit/
-OkHttp: https://square.github.io/okhttp/
+Retrofit: https://square.github.io/retrofit
+OkHttp: https://square.github.io/okhttp
 ThreeTenABP: https://github.com/JakeWharton/ThreeTenABP
 Timber: https://github.com/JakeWharton/timber
 Koin: https://github.com/InsertKoinIO/koin"

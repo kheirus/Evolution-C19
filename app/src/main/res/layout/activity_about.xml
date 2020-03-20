@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.core.widget.NestedScrollView
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.core.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorBackground"
-    android:padding="18dp"
-    >
+    android:padding="18dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container_about"
@@ -98,18 +97,34 @@
             />
 
         <TextView
+            android:id="@+id/about_version"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBackgroundLight"
+            android:paddingTop="30dp"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:gravity="center|bottom"
+            tools:text="Evolution C19 version 1.0"
+            app:layout_constraintTop_toBottomOf="@id/about_libs_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+
+            />
+
+        <TextView
             android:id="@+id/about_copyrigh"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="@color/colorBackgroundLight"
-            android:textSize="11sp"
+            android:textSize="12sp"
             android:textStyle="italic"
             android:gravity="center|bottom"
             android:text="@string/copyright"
-            android:paddingTop="30dp"
-            app:layout_constraintTop_toBottomOf="@id/about_libs_text"
-            app:layout_constraintStart_toStartOf="@id/about_libs_text"
-            app:layout_constraintEnd_toEndOf="@id/about_libs_text"
+
+            app:layout_constraintTop_toBottomOf="@id/about_version"
+            app:layout_constraintStart_toStartOf="@id/about_version"
+            app:layout_constraintEnd_toEndOf="@id/about_version"
             app:layout_constraintBottom_toBottomOf="parent"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>

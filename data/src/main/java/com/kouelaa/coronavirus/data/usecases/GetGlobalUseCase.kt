@@ -10,5 +10,5 @@ import com.kouelaa.coronavirus.domain.entities.Global
 class GetGlobalUseCase (
     private val globalRepository: GlobalRepository
 ){
-    suspend operator fun invoke(): Global = globalRepository.getGlobal()
+    suspend operator fun invoke(): Global? = globalRepository.getGlobal()
 }

@@ -9,6 +9,10 @@
     <string name="recovered_label">Cas guéris</string>
     <string name="death_label">Cas décédés</string>
 
+    <string name="dialog_title">Oups</string>
+    <string name="dialog_text">"Un problème est survenu, veuillez réessayer dans quelques instants.\nNous nous excusons pour la gêne occasionnée !"</string>
+    <string name="loading">Chargement...</string>
+
     <string name="about_toolbar">À propos</string>
     <string name="about_app_title">À propos de l\'application</string>
     <string name="about_text">
@@ -39,5 +43,6 @@ Koin: https://github.com/InsertKoinIO/koin"
 </string>
 
     <string name="copyright">Copyright 2020, Kheireddine Ouelaa. All rights reserved.</string>
+
 
 </resources>

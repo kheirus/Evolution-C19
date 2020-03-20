@@ -16,8 +16,8 @@ class GlobalViewModel(
 
 ) : BaseViewModel(dispatcher) {
 
-    private val _global = MutableLiveData<Global>()
-    val global: LiveData<Global> get() = _global
+    private val _global = MutableLiveData<Global?>()
+    val global: LiveData<Global?> get() = _global
 
     private val _countryData = MutableLiveData<CountryChartValue>()
     val countryData: LiveData<CountryChartValue> get() = _countryData

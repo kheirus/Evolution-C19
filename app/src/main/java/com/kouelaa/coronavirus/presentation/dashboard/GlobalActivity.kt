@@ -5,6 +5,9 @@ import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.WindowManager
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -46,19 +49,26 @@ class GlobalActivity : AppCompatActivity(){
 
         loadAnimations()
         changeCameraDistance()
+        showLoading()
     }
 
     override fun onStart() {
         super.onStart()
 
-        globalViewModel.global.observe(this, Observer {
-            setPieChartData(it.toGlobalChart())
-            setPieChartLabels(it)
-            setGlobalLineChartData(it.globalData)
-            setCountriesData(it.coutriesData)
+        globalViewModel.global.observe(this, Observer {global ->
+            hideLoading()
+            if (global == null){
+                showErrorDialog()
+            }else{
+                setPieChartData(global.toGlobalChart())
+                setPieChartLabels(global)
+                setGlobalLineChartData(global.globalData)
+                setCountriesData(global.coutriesData)
 
-            // Display first country data
-            globalViewModel.onClickedCountry("Chine")
+                // Display first country data
+                globalViewModel.onClickedCountry("Chine")
+            }
+
         })
 
         globalViewModel.countryData.observe(this, Observer {
@@ -66,6 +76,31 @@ class GlobalActivity : AppCompatActivity(){
             setCountriesLineChartDate(it.values)
         })
     }
+
+
+    private fun showLoading() {
+        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        loader.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        loader.visibility = View.GONE
+    }
+
+    fun showErrorDialog(): AlertDialog.Builder {
+        val dialog = AlertDialog.Builder(this)
+        dialog.setTitle(getString(R.string.dialog_title))
+        dialog.setMessage(getString(R.string.dialog_text))
+        dialog.setPositiveButton(android.R.string.yes) { _, _ ->
+            finish()
+        }
+        dialog.show()
+
+        return dialog
+    }
+
+
 
     private fun changeCameraDistance() {
         val distance = 8000

@@ -9,7 +9,6 @@
 - afficher mail de contact
 - signer l'appli
 
-
 Cette application présente une évolution de l'épidémie du Coronavirus COVID-19 jour par jour.
 Le fichier source que j'utilise pour dessiner les graphiques se met à jour une fois par jour.
 La source de mes données est en accès libre sur le site https://www.data.gouv.fr/fr/datasets/coronavirus-covid19-evolution-par-pays-et-dans-le-monde-maj-quotidienne/#_

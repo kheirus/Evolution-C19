@@ -31,14 +31,14 @@ android {
     productFlavors {
         dev {
             resValue "string", "app_name", "Coronavirus(COVID-19)"
-            buildConfigField "String", "ENDPOINT", "\"https://coronavirus.politologue.com/\""
+            buildConfigField "String", "ENDPOINT", "\"https://storage.googleapis.com/\""
             applicationIdSuffix ".dev"
             versionNameSuffix "-dev"
         }
 
         prod {
             resValue "string", "app_name", "Coronavirus(COVID-19)"
-            buildConfigField "String", "ENDPOINT", "\"https://coronavirus.politologue.com\""
+            buildConfigField "String", "ENDPOINT", "\"https://storage.googleapis.com/\""
         }
     }
 

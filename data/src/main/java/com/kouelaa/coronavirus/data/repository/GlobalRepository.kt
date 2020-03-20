@@ -8,5 +8,5 @@ import com.kouelaa.coronavirus.domain.entities.Global
  */
 
 interface GlobalRepository {
-    suspend fun getGlobal() : Global
+    suspend fun getGlobal() : Global?
 }

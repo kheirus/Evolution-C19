@@ -9,10 +9,12 @@ import okhttp3.ResponseBody
  */
 class GlobalDataSourceImpl(private val apiService: ApiService) : GlobalDataSource {
 
-    override suspend fun getGlobal(): Global {
-
-        // TODO-(11/03/20)-kheirus: check null
-       return apiService.getGlobal().body()!!
+    override suspend fun getGlobal(): Global? {
+        val response = apiService.getGlobal()
+        return when {
+            response.isSuccessful -> response.body()
+            else -> null
+        }
     }
 
 }

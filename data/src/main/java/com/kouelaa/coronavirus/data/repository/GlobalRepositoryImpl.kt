@@ -10,7 +10,7 @@ import com.kouelaa.coronavirus.domain.entities.Global
 class GlobalRepositoryImpl(
     private val globalDataSource: GlobalDataSource
 ) : GlobalRepository {
-    override suspend fun getGlobal(): Global {
+    override suspend fun getGlobal(): Global? {
         return globalDataSource.getGlobal()
     }
 

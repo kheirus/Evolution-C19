@@ -8,6 +8,6 @@ import retrofit2.http.GET
  * Created by kheirus on 2020-03-09.
  */
 interface ApiService {
-    @GET("/data/coronavirus/coronacsv.aspx?format=json")
+    @GET("corona-back/corona-numbers.json")
     suspend fun getGlobal(): Response<Global>
 }

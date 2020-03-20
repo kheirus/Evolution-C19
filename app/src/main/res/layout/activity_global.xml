@@ -1,127 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container_global"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
     >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/container"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground"
+        >
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/about_toolbar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="4dp"
-            app:cardElevation="5dp"
-            app:cardUseCompatPadding="true"
-            android:layout_margin="2dp"
-            app:contentPadding="5dp"
-            app:cardBackgroundColor="@color/colorBackground"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-        <TextView
-            android:id="@+id/about_tv"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_info"
-            android:padding="3dp"
-            android:text="Evolution du COVID-19"
-            android:drawablePadding="-24dp"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textColor="@color/colorBackgroundLight"
-            android:textAlignment="center"
-             />
-        </androidx.cardview.widget.CardView>
+            android:layout_height="match_parent"
+            >
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/about_toolbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="4dp"
+                app:cardElevation="5dp"
+                app:cardUseCompatPadding="true"
+                android:layout_margin="2dp"
+                app:contentPadding="5dp"
+                app:cardBackgroundColor="@color/colorBackground"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <TextView
+                    android:id="@+id/about_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/ic_info"
+                    android:padding="3dp"
+                    android:text="Evolution du COVID-19"
+                    android:drawablePadding="-24dp"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorBackgroundLight"
+                    android:textAlignment="center"
+                    />
+            </androidx.cardview.widget.CardView>
 
 
-        <include
-            android:id="@+id/container_global_linechart"
-            layout="@layout/global_linechart_item"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/about_toolbar" />
+            <include
+                android:id="@+id/container_global_linechart"
+                layout="@layout/global_linechart_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/about_toolbar" />
 
-        <include
-            android:id="@+id/container_global_piechart"
-            layout="@layout/global_piechart_item"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/container_global_linechart"
-            app:layout_constraintEnd_toEndOf="@id/container_global_linechart"
-            app:layout_constraintStart_toStartOf="@id/container_global_linechart"
-            app:layout_constraintTop_toTopOf="@id/container_global_linechart" />
+            <include
+                android:id="@+id/container_global_piechart"
+                layout="@layout/global_piechart_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/container_global_linechart"
+                app:layout_constraintEnd_toEndOf="@id/container_global_linechart"
+                app:layout_constraintStart_toStartOf="@id/container_global_linechart"
+                app:layout_constraintTop_toTopOf="@id/container_global_linechart" />
 
-        <TextView
-            android:id="@+id/color_code_confirmed_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_label_confirmed"
-            android:gravity="center"
-            android:text="@string/confirmed_label"
-            android:textColor="@color/colorConfirmed"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@id/container_country_linechart"
-            app:layout_constraintEnd_toStartOf="@+id/color_code_death_tv"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/container_global_piechart" />
+            <TextView
+                android:id="@+id/color_code_confirmed_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_label_confirmed"
+                android:gravity="center"
+                android:text="@string/confirmed_label"
+                android:textColor="@color/colorConfirmed"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@id/container_country_linechart"
+                app:layout_constraintEnd_toStartOf="@+id/color_code_death_tv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/container_global_piechart" />
 
-        <TextView
-            android:id="@+id/color_code_death_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_label_death"
-            android:gravity="center"
-            android:text="@string/death_label"
-            android:textColor="@color/colorDeath"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/color_code_confirmed_tv"
-            app:layout_constraintEnd_toStartOf="@+id/color_code_recovered_tv"
-            app:layout_constraintStart_toEndOf="@+id/color_code_confirmed_tv"
-            app:layout_constraintTop_toTopOf="@id/color_code_confirmed_tv" />
+            <TextView
+                android:id="@+id/color_code_death_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_label_death"
+                android:gravity="center"
+                android:text="@string/death_label"
+                android:textColor="@color/colorDeath"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@id/color_code_confirmed_tv"
+                app:layout_constraintEnd_toStartOf="@+id/color_code_recovered_tv"
+                app:layout_constraintStart_toEndOf="@+id/color_code_confirmed_tv"
+                app:layout_constraintTop_toTopOf="@id/color_code_confirmed_tv" />
 
-        <TextView
-            android:id="@+id/color_code_recovered_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_label_recovered"
-            android:gravity="center"
-            android:text="@string/recovered_label"
-            android:textColor="@color/colorRecovered"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/color_code_death_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/color_code_death_tv"
-            app:layout_constraintTop_toTopOf="@id/color_code_death_tv" />
+            <TextView
+                android:id="@+id/color_code_recovered_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_label_recovered"
+                android:gravity="center"
+                android:text="@string/recovered_label"
+                android:textColor="@color/colorRecovered"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@id/color_code_death_tv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/color_code_death_tv"
+                app:layout_constraintTop_toTopOf="@id/color_code_death_tv" />
 
 
-        <include
-            android:id="@+id/container_country_linechart"
-            layout="@layout/country_linechart_item"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/container_global_piechart" />
+            <include
+                android:id="@+id/container_country_linechart"
+                layout="@layout/country_linechart_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/container_global_piechart" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/countries_rv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/container_country_linechart"
-            tools:listitem="@layout/country_item" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/countries_rv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/container_country_linechart"
+                tools:listitem="@layout/country_item" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/loader"
+        android:visibility="gone"
+        layout="@layout/loader_item"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

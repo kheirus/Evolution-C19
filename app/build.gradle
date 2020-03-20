@@ -1,13 +1,15 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
 
     defaultConfig {
-        applicationId "com.kouelaa.coronavirus"
+        applicationId "com.kouelaa.evolutionc19"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
@@ -30,14 +32,14 @@ android {
     flavorDimensions "version"
     productFlavors {
         dev {
-            resValue "string", "app_name", "Coronavirus(COVID-19)"
+            resValue "string", "app_name", "Evolution C19"
             buildConfigField "String", "ENDPOINT", "\"https://storage.googleapis.com/\""
             applicationIdSuffix ".dev"
             versionNameSuffix "-dev"
         }
 
         prod {
-            resValue "string", "app_name", "Coronavirus(COVID-19)"
+            resValue "string", "app_name", "Evolution C19"
             buildConfigField "String", "ENDPOINT", "\"https://storage.googleapis.com/\""
         }
     }
@@ -56,6 +58,8 @@ dependencies {
     def okhttp_version = '4.4.0'
     def mpchart_version = 'v3.1.0'
     def threetenbp_version = '1.2.2'
+    def firebase_version = '17.2.3'
+    def crashlytics_version = '17.0.0-beta02'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -97,6 +101,10 @@ dependencies {
     implementation ("com.jakewharton.threetenabp:threetenabp:$threetenbp_version"){
         because 'we require api < 26 to use LocalDateTime'
     }
+
+    // Firebase + Chrashlytics + Analytics
+    implementation "com.google.firebase:firebase-analytics:$firebase_version"
+    implementation "com.google.firebase:firebase-crashlytics:$crashlytics_version"
 
     implementation project(':data')
     implementation project(':domain')

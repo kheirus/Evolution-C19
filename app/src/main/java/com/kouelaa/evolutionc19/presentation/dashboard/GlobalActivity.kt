@@ -5,8 +5,13 @@ import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -22,6 +27,8 @@ import kotlinx.android.synthetic.main.activity_global.*
 import kotlinx.android.synthetic.main.country_linechart_item.*
 import kotlinx.android.synthetic.main.global_linechart_item.*
 import kotlinx.android.synthetic.main.global_piechart_item.*
+import kotlinx.android.synthetic.main.search_item.*
+import kotlinx.android.synthetic.main.search_item.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -46,6 +53,7 @@ class GlobalActivity : AppCompatActivity(){
         initGlobalLineChart()
         initCoutryLineChart()
         initToolbar()
+        initSearchButton()
 
         loadAnimations()
         changeCameraDistance()
@@ -88,7 +96,7 @@ class GlobalActivity : AppCompatActivity(){
         loader.visibility = View.GONE
     }
 
-    fun showErrorDialog(): AlertDialog.Builder {
+    private fun showErrorDialog(): AlertDialog.Builder {
         val dialog = AlertDialog.Builder(this)
         dialog.setTitle(getString(R.string.dialog_title))
         dialog.setMessage(getString(R.string.dialog_text))
@@ -99,8 +107,6 @@ class GlobalActivity : AppCompatActivity(){
 
         return dialog
     }
-
-
 
     private fun changeCameraDistance() {
         val distance = 8000
@@ -153,6 +159,31 @@ class GlobalActivity : AppCompatActivity(){
 
     private fun initCoutryLineChart(){
         country_linechart.setParams()
+    }
+
+    private fun initSearchButton() {
+        val text = ""
+        search_btn.setOnClickListener {
+            val dialogBuilder = AlertDialog.Builder(this)
+            val dialog = layoutInflater.inflate(R.layout.search_item, null)
+            dialogBuilder.setView(dialog)
+
+            val mDialog = dialogBuilder.show()
+
+            dialog.search_edit_text.setOnEditorActionListener { textView, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    dialog.search_find_tv.text = textView.text
+                    val index = globalViewModel.onSearchCountry(textView.text.toString())
+                    countryAdapter.selected = index
+                    countryLayoutManager.scrollToPosition(index)
+
+                }
+                mDialog.dismiss()
+                false
+            }
+
+        }
+
     }
 
     private fun setPieChartData(values: List<GlobalChartValue>) {

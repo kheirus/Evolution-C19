@@ -22,25 +22,48 @@ class GlobalViewModel(
     private val _countryData = MutableLiveData<CountryChartValue>()
     val countryData: LiveData<CountryChartValue> get() = _countryData
 
-    override fun handleException() {
+    private val _searchCountry = MutableLiveData<String>()
+    val searchCountry: LiveData<String> get() = _searchCountry
 
-    }
-
-    fun getCoutriesForAdapter(countries: List<CountryData>): List<CountryData> {
-        val dateNow = countries[0].date
-        return countries
-            .filter { it.country != "Autres" }
-            .filter { it.date == dateNow }
-            .sortedBy { it.confirmed }
-    }
-
-    fun onClickedCountry(country: String) {
-        _countryData.value = _global.value?.toCountryLineChart(country)
-    }
+    private lateinit var coutriesForAdapter: List<CountryData>
 
     init {
         launch {
             _global.value = getGlobalUseCase()
         }
     }
+
+    override fun handleException() {
+
+    }
+
+    fun getCoutriesForAdapter(countries: List<CountryData>): List<CountryData> {
+        val dateNow = countries[0].date
+        coutriesForAdapter = countries
+            .filter { it.country != "Autres" }
+            .filter { it.date == dateNow }
+            .sortedBy { it.confirmed }
+
+        return coutriesForAdapter
+    }
+
+    fun onClickedCountry(country: String) {
+        _countryData.value = _global.value?.toCountryLineChart(country)
+    }
+
+    fun onSearchCountry(country: String): Int {
+        onClickedCountry(country)
+        return getIndexCountry(country)
+    }
+
+    private fun getIndexCountry(country: String): Int{
+        coutriesForAdapter.reversed().forEachIndexed { index, countryData ->
+                if (countryData.country == country){
+                    return index
+                }
+            }
+        return 0
+    }
+
+
 }

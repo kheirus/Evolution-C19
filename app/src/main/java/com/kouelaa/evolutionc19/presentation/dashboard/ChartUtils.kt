@@ -127,11 +127,12 @@ fun BarChart.setParams(){
     setDrawValueAboveBar(true)
     setPinchZoom(false)
     setTouchEnabled(true)
+    setScaleEnabled(false)
+    isClickable = false
     isHighlightFullBarEnabled = false
     isHighlightPerDragEnabled = false
     isHighlightPerTapEnabled = false
     isDoubleTapToZoomEnabled = false
-    isClickable = true
     description = null
     legend.isEnabled = false
 

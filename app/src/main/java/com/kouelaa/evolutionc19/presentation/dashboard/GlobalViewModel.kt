@@ -2,6 +2,7 @@ package com.kouelaa.evolutionc19.presentation.dashboard
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.kouelaa.evolutionc19.common.normalize
 import com.kouelaa.evolutionc19.data.usecases.GetGlobalUseCase
 import com.kouelaa.evolutionc19.domain.entities.CountryChartValue
 import com.kouelaa.evolutionc19.domain.entities.Global
@@ -57,7 +58,8 @@ class GlobalViewModel(
      */
     fun onSearchCountry(countrySearched: String) {
         coutriesForAdapter.reversed().forEach {
-            if (it.country.contains(countrySearched, ignoreCase = true)){
+            val normalizedCountry = it.country.normalize()
+            if (normalizedCountry.contains(countrySearched, ignoreCase = true)){
                 _searchCountry.value = SearchedCountry(true, getIndexCountry(it.country))
                 onClickedCountry(it.country)
                 return

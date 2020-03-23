@@ -1,17 +1,17 @@
 <resources>
-    <string name="title_dashboard">Dashboard</string>
     <string name="confirmed">Cas</string>
-    <string name="deaths">Décés</string>
+    <string name="deaths">Décès</string>
     <string name="recovered">Guérisons</string>
     <string name="still_sick">Infections</string>
     <string name="global_cases">Nombre total de cas</string>
-    <string name="confirmed_label">Cas inféctés</string>
+    <string name="confirmed_label">Cas infectés</string>
     <string name="recovered_label">Cas guéris</string>
     <string name="death_label">Cas décédés</string>
 
     <string name="dialog_title">Oups</string>
     <string name="dialog_text">"Un problème est survenu, veuillez réessayer dans quelques instants.\nNous nous excusons pour la gêne occasionnée !"</string>
     <string name="loading">Chargement…</string>
+    <string name="toast_error_country_not_found">Vérifiez votre saisie</string>
 
     <string name="about_toolbar">À propos</string>
     <string name="about_app_title">À propos de l\'application</string>
@@ -44,6 +44,5 @@ Koin: https://github.com/InsertKoinIO/koin"
 </string>
 
     <string name="copyright">Copyright 2020, Kheireddine Ouelaa. All rights reserved.</string>
-
 
 </resources>

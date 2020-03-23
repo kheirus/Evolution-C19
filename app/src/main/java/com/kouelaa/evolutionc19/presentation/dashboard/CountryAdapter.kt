@@ -75,6 +75,10 @@ class CountryAdapter(
                     barData.barWidth = 0.8f
 
                     data = barData
+
+                    setOnClickListener {
+                        itemView.callOnClick()
+                    }
                 }
 
                 setOnClickListener {

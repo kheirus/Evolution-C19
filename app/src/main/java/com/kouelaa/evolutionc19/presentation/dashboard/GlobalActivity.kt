@@ -5,9 +5,6 @@ import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
@@ -27,7 +24,6 @@ import kotlinx.android.synthetic.main.activity_global.*
 import kotlinx.android.synthetic.main.country_linechart_item.*
 import kotlinx.android.synthetic.main.global_linechart_item.*
 import kotlinx.android.synthetic.main.global_piechart_item.*
-import kotlinx.android.synthetic.main.search_item.*
 import kotlinx.android.synthetic.main.search_item.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -42,7 +38,7 @@ class GlobalActivity : AppCompatActivity(){
     private lateinit var outAnimator: AnimatorSet
     private lateinit var inAnimator: AnimatorSet
     private var isChartBackVisible = false
-
+    private lateinit var searchDialog: AlertDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,12 +72,20 @@ class GlobalActivity : AppCompatActivity(){
                 // Display first country data
                 globalViewModel.onClickedCountry("Chine")
             }
-
         })
 
-        globalViewModel.countryData.observe(this, Observer {
-            country_item_country_tv.text = it.country
-            setCountriesLineChartDate(it.values)
+        globalViewModel.countryData.observe(this, Observer {countryChartValue ->
+            country_item_country_tv.text = countryChartValue.country
+            setCountriesLineChartDate(countryChartValue.values)
+        })
+
+        globalViewModel.searchCountry.observe(this, Observer {countrySearched ->
+            if (countrySearched.found){
+                countryAdapter.selected = countrySearched.index
+                countryLayoutManager.scrollToPosition(countrySearched.index)
+            }else{
+                Toast.makeText(this, getString(R.string.toast_error_country_not_found), Toast.LENGTH_SHORT).show()
+            }
         })
     }
 
@@ -162,28 +166,22 @@ class GlobalActivity : AppCompatActivity(){
     }
 
     private fun initSearchButton() {
-        val text = ""
         search_btn.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(this)
             val dialog = layoutInflater.inflate(R.layout.search_item, null)
             dialogBuilder.setView(dialog)
 
-            val mDialog = dialogBuilder.show()
+            searchDialog = dialogBuilder.show()
 
             dialog.search_edit_text.setOnEditorActionListener { textView, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     dialog.search_find_tv.text = textView.text
-                    val index = globalViewModel.onSearchCountry(textView.text.toString())
-                    countryAdapter.selected = index
-                    countryLayoutManager.scrollToPosition(index)
-
+                    globalViewModel.onSearchCountry(textView.text.toString())
                 }
-                mDialog.dismiss()
+                searchDialog.dismiss()
                 false
             }
-
         }
-
     }
 
     private fun setPieChartData(values: List<GlobalChartValue>) {

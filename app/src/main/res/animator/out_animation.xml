@@ -11,5 +11,5 @@
         android:valueTo="0.0"
         android:propertyName="alpha"
         android:startOffset="500"
-        android:duration="0" />
+        android:duration="1" />
 </set>

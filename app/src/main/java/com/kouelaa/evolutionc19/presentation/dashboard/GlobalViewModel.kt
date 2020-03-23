@@ -7,6 +7,7 @@ import com.kouelaa.evolutionc19.domain.entities.CountryChartValue
 import com.kouelaa.evolutionc19.domain.entities.Global
 import com.kouelaa.evolutionc19.domain.entities.CountryData
 import com.kouelaa.evolutionc19.framework.viewmodel.BaseViewModel
+import com.kouelaa.evolutionc19.presentation.models.SearchedCountry
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
@@ -22,8 +23,8 @@ class GlobalViewModel(
     private val _countryData = MutableLiveData<CountryChartValue>()
     val countryData: LiveData<CountryChartValue> get() = _countryData
 
-    private val _searchCountry = MutableLiveData<String>()
-    val searchCountry: LiveData<String> get() = _searchCountry
+    private val _searchCountry = MutableLiveData<SearchedCountry>()
+    val searchCountry: LiveData<SearchedCountry> get() = _searchCountry
 
     private lateinit var coutriesForAdapter: List<CountryData>
 
@@ -51,19 +52,29 @@ class GlobalViewModel(
         _countryData.value = _global.value?.toCountryLineChart(country)
     }
 
-    fun onSearchCountry(country: String): Int {
-        onClickedCountry(country)
-        return getIndexCountry(country)
+    /**
+     * @param countrySearched Can be like "Alg" | "algeri" | "algérie" for Algérie
+     */
+    fun onSearchCountry(countrySearched: String) {
+        coutriesForAdapter.reversed().forEach {
+            if (it.country.contains(countrySearched, ignoreCase = true)){
+                _searchCountry.value = SearchedCountry(true, getIndexCountry(it.country))
+                onClickedCountry(it.country)
+                return
+            }
+        }
+        _searchCountry.value = SearchedCountry(false, 0)
     }
 
+    /**
+     * Allow layout manager to scroll to index
+     */
     private fun getIndexCountry(country: String): Int{
         coutriesForAdapter.reversed().forEachIndexed { index, countryData ->
-                if (countryData.country == country){
-                    return index
-                }
+            if (countryData.country == country){
+                return index
             }
+        }
         return 0
     }
-
-
 }

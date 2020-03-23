@@ -44,6 +44,7 @@ Koin: https://github.com/InsertKoinIO/koin"
 </string>
 
     <string name="copyright">Copyright 2020, Kheireddine Ouelaa. All rights reserved.</string>
+    <string name="toast_error_country_not_found">Vérifiez votre saisie</string>
 
 
 </resources>

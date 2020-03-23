@@ -7,6 +7,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -22,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_global.*
 import kotlinx.android.synthetic.main.country_linechart_item.*
 import kotlinx.android.synthetic.main.global_linechart_item.*
 import kotlinx.android.synthetic.main.global_piechart_item.*
+import kotlinx.android.synthetic.main.search_item.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -35,7 +38,7 @@ class GlobalActivity : AppCompatActivity(){
     private lateinit var outAnimator: AnimatorSet
     private lateinit var inAnimator: AnimatorSet
     private var isChartBackVisible = false
-
+    private lateinit var searchDialog: AlertDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +49,7 @@ class GlobalActivity : AppCompatActivity(){
         initGlobalLineChart()
         initCoutryLineChart()
         initToolbar()
+        initSearchButton()
 
         loadAnimations()
         changeCameraDistance()
@@ -68,12 +72,20 @@ class GlobalActivity : AppCompatActivity(){
                 // Display first country data
                 globalViewModel.onClickedCountry("Chine")
             }
-
         })
 
-        globalViewModel.countryData.observe(this, Observer {
-            country_item_country_tv.text = it.country
-            setCountriesLineChartDate(it.values)
+        globalViewModel.countryData.observe(this, Observer {countryChartValue ->
+            country_item_country_tv.text = countryChartValue.country
+            setCountriesLineChartDate(countryChartValue.values)
+        })
+
+        globalViewModel.searchCountry.observe(this, Observer {countrySearched ->
+            if (countrySearched.found){
+                countryAdapter.selected = countrySearched.index
+                countryLayoutManager.scrollToPosition(countrySearched.index)
+            }else{
+                Toast.makeText(this, getString(R.string.toast_error_country_not_found), Toast.LENGTH_SHORT).show()
+            }
         })
     }
 
@@ -88,7 +100,7 @@ class GlobalActivity : AppCompatActivity(){
         loader.visibility = View.GONE
     }
 
-    fun showErrorDialog(): AlertDialog.Builder {
+    private fun showErrorDialog(): AlertDialog.Builder {
         val dialog = AlertDialog.Builder(this)
         dialog.setTitle(getString(R.string.dialog_title))
         dialog.setMessage(getString(R.string.dialog_text))
@@ -99,8 +111,6 @@ class GlobalActivity : AppCompatActivity(){
 
         return dialog
     }
-
-
 
     private fun changeCameraDistance() {
         val distance = 8000
@@ -155,6 +165,25 @@ class GlobalActivity : AppCompatActivity(){
         country_linechart.setParams()
     }
 
+    private fun initSearchButton() {
+        search_btn.setOnClickListener {
+            val dialogBuilder = AlertDialog.Builder(this)
+            val dialog = layoutInflater.inflate(R.layout.search_item, null)
+            dialogBuilder.setView(dialog)
+
+            searchDialog = dialogBuilder.show()
+
+            dialog.search_edit_text.setOnEditorActionListener { textView, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    dialog.search_find_tv.text = textView.text
+                    globalViewModel.onSearchCountry(textView.text.toString())
+                }
+                searchDialog.dismiss()
+                false
+            }
+        }
+    }
+
     private fun setPieChartData(values: List<GlobalChartValue>) {
         val xValues = ArrayList<PieEntry>()
 
@@ -178,7 +207,7 @@ class GlobalActivity : AppCompatActivity(){
         val pieData = PieData(dataSet)
         global_piechart.data = pieData
 
-        global_piechart.animateXY(2000, 2000)
+        global_piechart.animateXY(1000, 1000)
     }
 
     private fun setPieChartLabels(global: Global) {
@@ -273,7 +302,7 @@ class GlobalActivity : AppCompatActivity(){
                 country_item_recovered_tv.text = data?.recovered?.toInt().toString()
             }
         })
-        country_linechart.animateXY(1000, 1000)
+        country_linechart.animateXY(1000, 200)
     }
 
     private fun setCountriesData(countries: List<CountryData>) {

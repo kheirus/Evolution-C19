@@ -1,3 +1,4 @@
+
 # Evolution C19
 
 Cette application présente l'évolution de l'épidémie du Coronavirus COVID-19 jour par jour.
@@ -14,3 +15,24 @@ Cette application a été réalisée sur mon temps libre, dans le but d'avoir un
 un besoin précis: celui d'afficher l'évolution du Coronavirus (COVID-19) jour par jour dans le monde et par pays.
 
 Cette application à un but non lucratif, n'affiche pas de publicité, ne demande aucune autorisation particulière.
+
+
+###Images
+
+Image:
+
+![](/screenshots/global_screen.jpg)
+
+> Global screen
+
+![](/screenshots/france_screen.jpg)
+
+> Country details
+
+![](/screenshots/research_screen.jpg)
+
+> Search screen
+
+![](/screenshots/research_result_screen.jpg)
+
+> Search result screen

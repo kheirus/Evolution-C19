@@ -17,26 +17,20 @@ un besoin précis: celui d'afficher l'évolution du Coronavirus (COVID-19) jour 
 Cette application à un but non lucratif, n'affiche pas de publicité, ne demande aucune autorisation particulière.
 
 
-###Images
+### Démonstration de l'application :
 
-Image:
+![Démo](/screenshots/demo.gif)
 
-![](/screenshots/demo.mp4)
+### Quelques screenshots :
 
->Demo
+![Écran global](/screenshots/global_screen.jpg)
 
-![](/screenshots/global_screen.jpg)
 
-> Global screen
+![Détails d'un pays](/screenshots/france_screen.jpg)
 
-![](/screenshots/france_screen.jpg)
 
-> Country details
+![Écran de recherche](/screenshots/research_screen.jpg)
 
-![](/screenshots/research_screen.jpg)
 
-> Search screen
+![Résultat après recherche](/screenshots/research_result_screen.jpg)
 
-![](/screenshots/research_result_screen.jpg)
-
-> Search result screen

@@ -10,6 +10,7 @@
 
     <string name="dialog_title">Oups</string>
     <string name="dialog_text">"Un problème est survenu, veuillez réessayer dans quelques instants.\nNous nous excusons pour la gêne occasionnée !"</string>
+    <string name="search_dialog_hint">Chercher un pays</string>
     <string name="loading">Chargement…</string>
     <string name="toast_error_country_not_found">Vérifiez votre saisie</string>
 

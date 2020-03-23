@@ -21,6 +21,10 @@ Cette application à un but non lucratif, n'affiche pas de publicité, ne demand
 
 Image:
 
+![](/screenshots/research_rdemo.mp4)
+
+>Demo
+
 ![](/screenshots/global_screen.jpg)
 
 > Global screen

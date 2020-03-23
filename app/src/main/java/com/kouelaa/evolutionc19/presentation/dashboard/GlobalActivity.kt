@@ -175,7 +175,6 @@ class GlobalActivity : AppCompatActivity(){
 
             dialog.search_edit_text.setOnEditorActionListener { textView, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    dialog.search_find_tv.text = textView.text
                     globalViewModel.onSearchCountry(textView.text.toString())
                 }
                 searchDialog.dismiss()

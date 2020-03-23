@@ -207,7 +207,7 @@ class GlobalActivity : AppCompatActivity(){
         val pieData = PieData(dataSet)
         global_piechart.data = pieData
 
-        global_piechart.animateXY(2000, 2000)
+        global_piechart.animateXY(1000, 1000)
     }
 
     private fun setPieChartLabels(global: Global) {
@@ -302,7 +302,7 @@ class GlobalActivity : AppCompatActivity(){
                 country_item_recovered_tv.text = data?.recovered?.toInt().toString()
             }
         })
-        country_linechart.animateXY(1000, 1000)
+        country_linechart.animateXY(1000, 200)
     }
 
     private fun setCountriesData(countries: List<CountryData>) {

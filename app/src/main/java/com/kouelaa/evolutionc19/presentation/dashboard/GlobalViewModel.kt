@@ -59,7 +59,7 @@ class GlobalViewModel(
     fun onSearchCountry(countrySearched: String) {
         coutriesForAdapter.reversed().forEach {
             val normalizedCountry = it.country.normalize()
-            if (normalizedCountry.contains(countrySearched, ignoreCase = true)){
+            if (normalizedCountry.contains(countrySearched.normalize(), ignoreCase = true)){
                 _searchCountry.value = SearchedCountry(true, getIndexCountry(it.country))
                 onClickedCountry(it.country)
                 return

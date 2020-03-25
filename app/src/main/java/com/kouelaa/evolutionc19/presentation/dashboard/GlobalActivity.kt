@@ -18,6 +18,7 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.kouelaa.evolutionc19.R
+import com.kouelaa.evolutionc19.common.toKFormatter
 import com.kouelaa.evolutionc19.domain.entities.*
 import com.kouelaa.evolutionc19.presentation.about.AboutActivity
 import kotlinx.android.synthetic.main.activity_global.*
@@ -210,14 +211,14 @@ class GlobalActivity : AppCompatActivity(){
     }
 
     private fun setPieChartLabels(global: Global) {
-        global_piechart.centerText = "${getString(R.string.confirmed)} \n ${global.globalData[0].confirmed.toInt()}"
+        global_piechart.centerText = "${getString(R.string.confirmed)} \n ${global.globalData[0].confirmed.toKFormatter()}"
 
         global.toGlobalCards().forEach {
             when(it.label){
                 GlobalTypeEnum.CONFIRMED -> Unit
-                GlobalTypeEnum.RECOVERED -> recovered_tv.text = getString(R.string.recovered) + "\n"+ it.value.toInt().toString()
-                GlobalTypeEnum.DEATHS -> death_tv.text = getString(R.string.deaths)+ "\n" + it.value.toInt().toString()
-                GlobalTypeEnum.STILL_SICK -> still_sick_tv.text = getString(R.string.still_sick)+ "\n" + it.value.toInt().toString()
+                GlobalTypeEnum.RECOVERED -> recovered_tv.text = getString(R.string.recovered) + "\n"+ it.value.toKFormatter()
+                GlobalTypeEnum.DEATHS -> death_tv.text = getString(R.string.deaths)+ "\n" + it.value.toKFormatter()
+                GlobalTypeEnum.STILL_SICK -> still_sick_tv.text = getString(R.string.still_sick)+ "\n" + it.value.toKFormatter()
             }
         }
     }
@@ -227,9 +228,9 @@ class GlobalActivity : AppCompatActivity(){
         val valuesChart = values.reversed()
 
         global_item_date_tv.text = lastValue.date.toChartLabelDate()
-        global_item_confirmed_tv.text = lastValue.confirmed.toInt().toString()
-        global_item_death_tv.text = lastValue.deaths.toInt().toString()
-        global_item_recovered_tv.text = lastValue.recovered.toInt().toString()
+        global_item_confirmed_tv.text = lastValue.confirmed.toKFormatter()
+        global_item_death_tv.text = lastValue.deaths.toKFormatter()
+        global_item_recovered_tv.text = lastValue.recovered.toKFormatter()
 
         val entriesConfirmed = ArrayList<Entry>()
         val entriesRecovered = ArrayList<Entry>()
@@ -262,9 +263,9 @@ class GlobalActivity : AppCompatActivity(){
 
         val lastValue = values[values.size-1]
         country_item_date_tv.text = lastValue.date.toChartLabelDate()
-        country_item_confirmed_tv.text = lastValue.confirmed.toInt().toString()
-        country_item_death_tv.text = lastValue.death.toInt().toString()
-        country_item_recovered_tv.text = lastValue.recovered.toInt().toString()
+        country_item_confirmed_tv.text = lastValue.confirmed.toKFormatter()
+        country_item_death_tv.text = lastValue.death.toKFormatter()
+        country_item_recovered_tv.text = lastValue.recovered.toKFormatter()
 
         val entriesConfirmed = ArrayList<Entry>()
         val entriesRecovered = ArrayList<Entry>()
@@ -296,9 +297,9 @@ class GlobalActivity : AppCompatActivity(){
             override fun onValueSelected(entry: Entry?, highlight: Highlight?) {
                 val data  = entry?.data as? CountryValue?
                 country_item_date_tv.text = data?.date?.toChartLabelDate() ?: ""
-                country_item_confirmed_tv.text = data?.confirmed?.toInt().toString()
-                country_item_death_tv.text = data?.death?.toInt().toString()
-                country_item_recovered_tv.text = data?.recovered?.toInt().toString()
+                country_item_confirmed_tv.text = data?.confirmed?.toKFormatter()
+                country_item_death_tv.text = data?.death?.toKFormatter()
+                country_item_recovered_tv.text = data?.recovered?.toKFormatter()
             }
         })
         country_linechart.animateXY(1000, 200)

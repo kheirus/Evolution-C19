@@ -75,7 +75,7 @@ class GlobalActivity : AppCompatActivity(){
             }
         })
 
-        globalViewModel.countryData.observe(this, Observer {countryChartValue ->
+        globalViewModel.countryChartData.observe(this, Observer { countryChartValue ->
             country_item_country_tv.text = countryChartValue.country
             setCountriesLineChartDate(countryChartValue.values)
         })
@@ -87,6 +87,19 @@ class GlobalActivity : AppCompatActivity(){
             }else{
                 Toast.makeText(this, getString(R.string.toast_error_country_not_found), Toast.LENGTH_SHORT).show()
             }
+        })
+
+        globalViewModel.selectHighlightValues.observe(this, Observer {
+            globalViewModel.calculateValuesForHighlight(it)
+        })
+
+        globalViewModel.countryExtraValues.observe(this, Observer { extra ->
+            country_item_date_tv.text = extra.countryValue.date.toChartLabelDate()
+            country_item_confirmed_tv.text = extra.countryValue.confirmed.toKFormatter()
+            country_item_death_tv.text = extra.countryValue.death.toKFormatter()
+            country_item_recovered_tv.text = extra.countryValue.recovered.toKFormatter()
+
+
         })
     }
 
@@ -293,13 +306,10 @@ class GlobalActivity : AppCompatActivity(){
         country_linechart.highlightValue((values.size-1).toFloat(), 0, true)
         country_linechart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onNothingSelected() {}
-
             override fun onValueSelected(entry: Entry?, highlight: Highlight?) {
-                val data  = entry?.data as? CountryValue?
-                country_item_date_tv.text = data?.date?.toChartLabelDate() ?: ""
-                country_item_confirmed_tv.text = data?.confirmed?.toKFormatter()
-                country_item_death_tv.text = data?.death?.toKFormatter()
-                country_item_recovered_tv.text = data?.recovered?.toKFormatter()
+                val data  = entry?.data as CountryValue
+
+                globalViewModel.onChangeSelectHighlight(data)
             }
         })
         country_linechart.animateXY(1000, 200)

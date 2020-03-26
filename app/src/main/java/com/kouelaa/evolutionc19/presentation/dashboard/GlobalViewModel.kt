@@ -7,7 +7,9 @@ import com.kouelaa.evolutionc19.data.usecases.GetGlobalUseCase
 import com.kouelaa.evolutionc19.domain.entities.CountryChartValue
 import com.kouelaa.evolutionc19.domain.entities.Global
 import com.kouelaa.evolutionc19.domain.entities.CountryData
+import com.kouelaa.evolutionc19.domain.entities.CountryValue
 import com.kouelaa.evolutionc19.framework.viewmodel.BaseViewModel
+import com.kouelaa.evolutionc19.presentation.models.ExtraDataCountry
 import com.kouelaa.evolutionc19.presentation.models.SearchedCountry
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -21,11 +23,17 @@ class GlobalViewModel(
     private val _global = MutableLiveData<Global?>()
     val global: LiveData<Global?> get() = _global
 
-    private val _countryData = MutableLiveData<CountryChartValue>()
-    val countryData: LiveData<CountryChartValue> get() = _countryData
+    private val _countryChartData = MutableLiveData<CountryChartValue>()
+    val countryChartData: LiveData<CountryChartValue> get() = _countryChartData
 
     private val _searchCountry = MutableLiveData<SearchedCountry>()
     val searchCountry: LiveData<SearchedCountry> get() = _searchCountry
+
+    private val _selectHighlightValues = MutableLiveData<CountryValue>()
+    val selectHighlightValues: LiveData<CountryValue> get() = _selectHighlightValues
+
+    private val _countryExtraValues = MutableLiveData<ExtraDataCountry>()
+    val countryExtraValues: LiveData<ExtraDataCountry> get() = _countryExtraValues
 
     private lateinit var coutriesForAdapter: List<CountryData>
 
@@ -50,7 +58,7 @@ class GlobalViewModel(
     }
 
     fun onClickedCountry(country: String) {
-        _countryData.value = _global.value?.toCountryLineChart(country)
+        _countryChartData.value = _global.value?.toCountryLineChart(country)
     }
 
     /**
@@ -78,5 +86,30 @@ class GlobalViewModel(
             }
         }
         return 0
+    }
+
+    fun calculateValuesForHighlight(lastValue: CountryValue){
+        val listValues = _countryChartData.value?.values
+        val indexHighlighted = listValues?.indexOf(lastValue)
+
+        if (indexHighlighted != null && indexHighlighted > 1){
+            val beforeLastValue = listValues[indexHighlighted - 1]
+            val countryExtraValue = ExtraDataCountry(
+                countryValue = lastValue,
+                newConfirmed = lastValue.confirmed - beforeLastValue.confirmed,
+                newRecovered = lastValue.recovered - beforeLastValue.recovered,
+                newDeath = lastValue.death - beforeLastValue.death
+            )
+            _countryExtraValues.value = countryExtraValue
+        }
+    }
+
+    /**
+     * To lighten the computation in the listener setOnChartValueSelectedListener ()
+     * we prefer to pass throuw a LiveData that can notify change to the ui and
+     * the calculation will be done on another function in viewModel
+     */
+    fun onChangeSelectHighlight(value: CountryValue){
+        _selectHighlightValues.value = value
     }
 }

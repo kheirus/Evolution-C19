@@ -21,6 +21,7 @@ import com.kouelaa.evolutionc19.R
 import com.kouelaa.evolutionc19.common.toKFormatter
 import com.kouelaa.evolutionc19.domain.entities.*
 import com.kouelaa.evolutionc19.presentation.about.AboutActivity
+import com.kouelaa.evolutionc19.presentation.models.ExtraDataCountry
 import kotlinx.android.synthetic.main.activity_global.*
 import kotlinx.android.synthetic.main.country_linechart_item.*
 import kotlinx.android.synthetic.main.global_linechart_item.*
@@ -71,7 +72,7 @@ class GlobalActivity : AppCompatActivity(){
                 setCountriesData(global.coutriesData)
 
                 // Display first country data
-                globalViewModel.onClickedCountry("Chine")
+                globalViewModel.onClickedCountry(getString(R.string.first_country_to_display))
             }
         })
 
@@ -94,11 +95,7 @@ class GlobalActivity : AppCompatActivity(){
         })
 
         globalViewModel.countryExtraValues.observe(this, Observer { extra ->
-            country_item_date_tv.text = extra.countryValue.date.toChartLabelDate()
-            country_item_confirmed_tv.text = extra.countryValue.confirmed.toKFormatter()
-            country_item_death_tv.text = extra.countryValue.death.toKFormatter()
-            country_item_recovered_tv.text = extra.countryValue.recovered.toKFormatter()
-
+            initExtraCountryValues(extra)
 
         })
     }
@@ -197,6 +194,19 @@ class GlobalActivity : AppCompatActivity(){
         }
     }
 
+    private fun initExtraCountryValues(extra: ExtraDataCountry) {
+        country_item_date_tv.text = extra.countryValue.date.toChartLabelDate()
+
+        country_item_confirmed_tv.text = extra.countryValue.confirmed.toKFormatter()
+        country_item_new_confirmed_tv.text = getString(R.string._plus) + extra.newConfirmed.toKFormatter()
+
+        country_item_death_tv.text = extra.countryValue.death.toKFormatter()
+        country_item_new_death_tv.text = getString(R.string._plus) + extra.newDeath.toKFormatter()
+
+        country_item_recovered_tv.text = extra.countryValue.recovered.toKFormatter()
+        country_item_new_recovered_tv.text = getString(R.string._plus) + extra.newRecovered.toKFormatter()
+    }
+
     private fun setPieChartData(values: List<GlobalChartValue>) {
         val xValues = ArrayList<PieEntry>()
 
@@ -275,10 +285,7 @@ class GlobalActivity : AppCompatActivity(){
     private fun setCountriesLineChartDate(values: List<CountryValue>) {
 
         val lastValue = values[values.size-1]
-        country_item_date_tv.text = lastValue.date.toChartLabelDate()
-        country_item_confirmed_tv.text = lastValue.confirmed.toKFormatter()
-        country_item_death_tv.text = lastValue.death.toKFormatter()
-        country_item_recovered_tv.text = lastValue.recovered.toKFormatter()
+        globalViewModel.calculateValuesForHighlight(lastValue)
 
         val entriesConfirmed = ArrayList<Entry>()
         val entriesRecovered = ArrayList<Entry>()

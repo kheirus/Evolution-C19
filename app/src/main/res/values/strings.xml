@@ -1,4 +1,5 @@
 <resources>
+    <string name="_plus">+</string>
     <string name="confirmed">Cas</string>
     <string name="deaths">Décès</string>
     <string name="recovered">Guérisons</string>
@@ -7,6 +8,8 @@
     <string name="confirmed_label">Cas infectés</string>
     <string name="recovered_label">Cas guéris</string>
     <string name="death_label">Cas décédés</string>
+
+    <string name="first_country_to_display">Chine</string>
 
     <string name="dialog_title">Oups</string>
     <string name="dialog_text">"Un problème est survenu, veuillez réessayer dans quelques instants.\nNous nous excusons pour la gêne occasionnée !"</string>
@@ -45,5 +48,6 @@ Koin: https://github.com/InsertKoinIO/koin"
 </string>
 
     <string name="copyright">Copyright 2020, Kheireddine Ouelaa. All rights reserved.</string>
+
 
 </resources>

@@ -72,7 +72,7 @@ class GlobalActivity : AppCompatActivity(){
                 setCountriesData(global.coutriesData)
 
                 // Display first country data
-                globalViewModel.onClickedCountry(getString(R.string.first_country_to_display))
+                globalViewModel.onClickFirstCountry()
             }
         })
 
@@ -86,7 +86,7 @@ class GlobalActivity : AppCompatActivity(){
                 countryAdapter.selected = countrySearched.index
                 countryLayoutManager.scrollToPosition(countrySearched.index)
             }else{
-                Toast.makeText(this, getString(R.string.toast_error_country_not_found), Toast.LENGTH_SHORT).show()
+                dialogErrorCountryNotFound()
             }
         })
 
@@ -100,6 +100,10 @@ class GlobalActivity : AppCompatActivity(){
         })
     }
 
+    private fun dialogErrorCountryNotFound() {
+        Toast.makeText(this, getString(R.string.toast_error_country_not_found), Toast.LENGTH_SHORT)
+            .show()
+    }
 
     private fun showLoading() {
         window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
@@ -195,7 +199,7 @@ class GlobalActivity : AppCompatActivity(){
     }
 
     private fun initExtraCountryValues(extra: ExtraDataCountry) {
-        country_item_date_tv.text = extra.countryValue.date.toChartLabelDate()
+        country_item_date_tv.text = extra.countryValue.date.toExtraChartLabelDate()
 
         country_item_confirmed_tv.text = extra.countryValue.confirmed.toKFormatter()
         country_item_new_confirmed_tv.text = getString(R.string._plus) + extra.newConfirmed.toKFormatter()
@@ -250,7 +254,7 @@ class GlobalActivity : AppCompatActivity(){
         val lastValue = values[0]
         val valuesChart = values.reversed()
 
-        global_item_date_tv.text = lastValue.date.toChartLabelDate()
+        global_item_date_tv.text = lastValue.date.toExtraChartLabelDate()
         global_item_confirmed_tv.text = lastValue.confirmed.toKFormatter()
         global_item_death_tv.text = lastValue.deaths.toKFormatter()
         global_item_recovered_tv.text = lastValue.recovered.toKFormatter()
@@ -311,14 +315,29 @@ class GlobalActivity : AppCompatActivity(){
         country_linechart.data = lineData
 
         country_linechart.highlightValue((values.size-1).toFloat(), 0, true)
+
+        year_before.setOnClickListener {
+            val xHighlighted = country_linechart.highlighted[0].x
+            if (xHighlighted > 0f){
+                country_linechart.highlightValue(xHighlighted - 1, 0, true)
+            }
+        }
+
+        year_next.setOnClickListener {
+            val xHighlighted = country_linechart.highlighted[0].x
+            if (xHighlighted < values.size - 1 ){
+                country_linechart.highlightValue(xHighlighted + 1, 0, true)
+            }
+        }
+
         country_linechart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onNothingSelected() {}
             override fun onValueSelected(entry: Entry?, highlight: Highlight?) {
                 val data  = entry?.data as CountryValue
-
                 globalViewModel.onChangeSelectHighlight(data)
             }
         })
+
         country_linechart.animateXY(1000, 200)
     }
 

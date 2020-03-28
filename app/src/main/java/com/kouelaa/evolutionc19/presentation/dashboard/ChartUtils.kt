@@ -1,3 +1,5 @@
+@file:Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+
 package com.kouelaa.evolutionc19.presentation.dashboard
 
 
@@ -15,6 +17,7 @@ import com.kouelaa.evolutionc19.R
 import com.kouelaa.evolutionc19.domain.entities.CountryValue
 import com.kouelaa.evolutionc19.domain.entities.GlobalData
 import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created by kheirus on 15/03/2020.
@@ -43,8 +46,15 @@ class LineChartCountryLabelFormatter(private val data: List<CountryValue>) : Val
 }
 
 fun String.toChartLabelDate(): String{
-    val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-    val formatter = SimpleDateFormat("dd MMM yy")
+    val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.FRANCE)
+    val formatter = SimpleDateFormat("dd MMM", Locale.FRANCE)
+    return formatter.format(parser.parse(this))
+
+}
+
+fun String.toExtraChartLabelDate(): String{
+    val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.FRANCE)
+    val formatter = SimpleDateFormat("dd MMM yy", Locale.FRANCE)
     return formatter.format(parser.parse(this))
 
 }

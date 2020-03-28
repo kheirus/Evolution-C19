@@ -61,6 +61,11 @@ class GlobalViewModel(
         _countryChartData.value = _global.value?.toCountryLineChart(country)
     }
 
+    fun onClickFirstCountry() {
+        val country= coutriesForAdapter.reversed()[0].country
+        _countryChartData.value = _global.value?.toCountryLineChart(country)
+    }
+
     /**
      * @param countrySearched Can be like "Alg" | "algeri" | "algérie" for Algérie
      */

@@ -2,9 +2,12 @@
 
 - clean code
 - lint
-- mentionner donnée globale dans le pie chart
-- icon retourner la carte
-- bug animation sur samsung s8 et samsung A50
+- bug animation
+- icon + nom appli dans toolbar
+- remove inappropriate files from git
+- deux bouton +1jr -1jr pour défiler sur les jours de pays
+- notf firebase pour les maj
+- make custom views
 
 
 

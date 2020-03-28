@@ -86,7 +86,6 @@ class CountryAdapter(
                     selected = adapterPosition
                     notifyDataSetChanged()
                 }
-
             }
         }
     }

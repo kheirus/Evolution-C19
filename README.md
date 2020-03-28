@@ -22,15 +22,11 @@ Cette application à un but non lucratif, n'affiche pas de publicité, ne demand
 ![Démo](/screenshots/demo.gif)
 
 ### Quelques screenshots :
-
-![Écran global](/screenshots/global_screen.jpg)
-
-
-![Détails d'un pays](/screenshots/france_screen.jpg)
-
-
-![Écran de recherche](/screenshots/research_screen.jpg)
-
-
-![Résultat après recherche](/screenshots/research_result_screen.jpg)
-
+<p float="center">
+<img src="/screenshots/global_screen.jpg" width="40%" height="20%">
+<img src="/screenshots/france_screen.jpg" width="40%" height="20%">
+</p>
+<p float="center">
+<img src="/screenshots/research_screen.jpg" width="40%" height="20%">
+<img src="/screenshots/research_result_screen.jpg" width="40%" height="20%">
+</p>

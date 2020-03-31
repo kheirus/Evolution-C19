@@ -2,22 +2,31 @@ package com.kouelaa.evolutionc19.presentation.dashboard
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.gson.Gson
+import com.kouelaa.evolutionc19.R
 import com.kouelaa.evolutionc19.common.normalize
 import com.kouelaa.evolutionc19.data.usecases.GetGlobalUseCase
 import com.kouelaa.evolutionc19.domain.entities.CountryChartValue
 import com.kouelaa.evolutionc19.domain.entities.Global
 import com.kouelaa.evolutionc19.domain.entities.CountryData
 import com.kouelaa.evolutionc19.domain.entities.CountryValue
+import com.kouelaa.evolutionc19.framework.remote.REMOTE_FAILED_LOG
+import com.kouelaa.evolutionc19.framework.remote.REMOTE_KEY
+import com.kouelaa.evolutionc19.framework.remote.REMOTE_SUCCESS_LOG
 import com.kouelaa.evolutionc19.framework.viewmodel.BaseViewModel
+import com.kouelaa.evolutionc19.presentation.models.DialogUpdateModel
 import com.kouelaa.evolutionc19.presentation.models.ExtraDataCountry
 import com.kouelaa.evolutionc19.presentation.models.SearchedCountry
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class GlobalViewModel(
-    dispatcher: CoroutineDispatcher,
-    val getGlobalUseCase: GetGlobalUseCase
-
+    val getGlobalUseCase: GetGlobalUseCase,
+    private val remoteConfig: FirebaseRemoteConfig,
+    private val gson: Gson,
+    dispatcher: CoroutineDispatcher
 ) : BaseViewModel(dispatcher) {
 
     private val _global = MutableLiveData<Global?>()
@@ -35,22 +44,43 @@ class GlobalViewModel(
     private val _countryExtraValues = MutableLiveData<ExtraDataCountry>()
     val countryExtraValues: LiveData<ExtraDataCountry> get() = _countryExtraValues
 
+    private val _dialogUpdate = MutableLiveData<DialogUpdateModel>()
+    val dialogUpdate: LiveData<DialogUpdateModel> get() = _dialogUpdate
+
     private lateinit var coutriesForAdapter: List<CountryData>
 
     init {
         launch {
             _global.value = getGlobalUseCase()
         }
+
+        initRemoteConfig()
     }
 
     override fun handleException() {
+        // TODO-(31/03/20)-kheirus: handle exception
+    }
 
+    private fun initRemoteConfig(){
+        remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val updated = task.result
+                Timber.d("%s: %s", REMOTE_SUCCESS_LOG, updated)
+
+                val json = remoteConfig.getString(REMOTE_KEY)
+                val dialogUpdateFromRemote = gson.fromJson<DialogUpdateModel>(json, DialogUpdateModel::class.java)
+                _dialogUpdate.value = dialogUpdateFromRemote
+
+            }else{
+                Timber.d(REMOTE_FAILED_LOG)
+            }
+        }
     }
 
     fun getCoutriesForAdapter(countries: List<CountryData>): List<CountryData> {
         val dateNow = countries[0].date
         coutriesForAdapter = countries
-            .filter { it.country != "Autres" }
+            .filter { it.country != SearchedCountry.OTHER_COUNTRIES }
             .filter { it.date == dateNow }
             .sortedBy { it.confirmed }
 

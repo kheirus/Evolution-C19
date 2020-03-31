@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>dialog_update</key>
+        <value>
+            {
+            "id": 1,
+            "title": "Mise à jour disponible",
+            "content": "Mettez à jour votre application",
+            "url": "https://github.com/kheirus/Evolution-C19-app/blob/master/evolution-c19-v1.1.apk"
+            }
+        </value>
+    </entry>
+</defaultsMap>

@@ -1,5 +1,8 @@
 <resources>
     <string name="_plus">+</string>
+    <string name="_ignore">Annuler</string>
+    <string name="_update">Mettre à jour</string>
+
     <string name="confirmed">Cas</string>
     <string name="deaths">Décès</string>
     <string name="recovered">Guérisons</string>
@@ -48,6 +51,5 @@ Koin: https://github.com/InsertKoinIO/koin"
 </string>
 
     <string name="copyright">Copyright 2020, Kheireddine Ouelaa. All rights reserved.</string>
-
 
 </resources>

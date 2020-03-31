@@ -4,6 +4,7 @@ package com.kouelaa.evolutionc19.presentation.dashboard
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -21,6 +22,7 @@ import com.kouelaa.evolutionc19.R
 import com.kouelaa.evolutionc19.common.toKFormatter
 import com.kouelaa.evolutionc19.domain.entities.*
 import com.kouelaa.evolutionc19.presentation.about.AboutActivity
+import com.kouelaa.evolutionc19.presentation.models.DialogUpdateModel
 import com.kouelaa.evolutionc19.presentation.models.ExtraDataCountry
 import kotlinx.android.synthetic.main.activity_global.*
 import kotlinx.android.synthetic.main.country_linechart_item.*
@@ -98,6 +100,32 @@ class GlobalActivity : AppCompatActivity(){
             initExtraCountryValues(extra)
 
         })
+
+        globalViewModel.dialogUpdate.observe(this, Observer {
+            showDialogUpdate(it)
+        })
+    }
+
+    private fun showDialogUpdate(dialogModel: DialogUpdateModel) {
+        val dialog = AlertDialog.Builder(this)
+
+        dialog.apply {
+            setTitle(dialogModel.title)
+            setMessage(dialogModel.content)
+            setCancelable(false)
+            setNegativeButton(R.string._ignore) { mDialog, _ ->
+                mDialog.cancel()
+            }
+            setPositiveButton(R.string._update) { mDialog, _ ->
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(dialogModel.url))
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent)
+                }
+                mDialog.cancel()
+                // TODO-(31/03/20)-kheirus: here save this click to not show dialog another time
+            }
+        }.show()
+
     }
 
     private fun dialogErrorCountryNotFound() {

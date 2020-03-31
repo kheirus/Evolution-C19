@@ -1,5 +1,6 @@
 package com.kouelaa.evolutionc19.framework.di
 
+
 import com.google.gson.Gson
 import com.kouelaa.evolutionc19.BuildConfig
 import com.kouelaa.evolutionc19.data.datasources.remote.GlobalDataSource
@@ -18,8 +19,11 @@ val domainModule = module {
 
     single<GlobalRepository> { GlobalRepositoryImpl(get()) }
     single<GlobalDataSource> { GlobalDataSourceImpl(get()) }
-    single { createOkHttpClient() }
-    single<ApiService> { createRetrofitClient(get(), BuildConfig.ENDPOINT) }
+
+    single { initOkHttpClient() }
+    single { initRemoteConfig() }
+    single<ApiService> { initRetrofitClient(get(), BuildConfig.ENDPOINT) }
+
     single { Gson() }
 
     factory { GetGlobalUseCase(get()) }
@@ -29,6 +33,5 @@ val domainModule = module {
 
 
 val vmModule = module {
-    viewModel { GlobalViewModel(get(), get()) }
+    viewModel { GlobalViewModel(get(), get(), get(), get()) }
 }
-

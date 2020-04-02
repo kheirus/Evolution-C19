@@ -4,19 +4,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
+import com.kouelaa.evolutionc19.common.Event
 import com.kouelaa.evolutionc19.common.VERSION_CODE
 import com.kouelaa.evolutionc19.common.normalize
+import com.kouelaa.evolutionc19.common.toDialogModel
 import com.kouelaa.evolutionc19.data.usecases.GlobalUseCase
 import com.kouelaa.evolutionc19.data.usecases.DialogInfoUseCase
 import com.kouelaa.evolutionc19.domain.entities.CountryChartValue
 import com.kouelaa.evolutionc19.domain.entities.Global
 import com.kouelaa.evolutionc19.domain.entities.CountryData
 import com.kouelaa.evolutionc19.domain.entities.CountryValue
+import com.kouelaa.evolutionc19.framework.remote.REMOTE_DIALOG_INFO_KEY
 import com.kouelaa.evolutionc19.framework.remote.REMOTE_FAILED_LOG
-import com.kouelaa.evolutionc19.framework.remote.REMOTE_KEY
+import com.kouelaa.evolutionc19.framework.remote.REMOTE_DIALOG_UPDATE_KEY
 import com.kouelaa.evolutionc19.framework.remote.REMOTE_SUCCESS_LOG
 import com.kouelaa.evolutionc19.framework.viewmodel.BaseViewModel
-import com.kouelaa.evolutionc19.presentation.models.DialogUpdateModel
+import com.kouelaa.evolutionc19.presentation.models.DialogModel
 import com.kouelaa.evolutionc19.presentation.models.ExtraDataCountry
 import com.kouelaa.evolutionc19.presentation.models.SearchedCountry
 import kotlinx.coroutines.CoroutineDispatcher
@@ -46,8 +49,11 @@ class GlobalViewModel(
     private val _countryExtraValues = MutableLiveData<ExtraDataCountry>()
     val countryExtraValues: LiveData<ExtraDataCountry> get() = _countryExtraValues
 
-    private val _dialogUpdate = MutableLiveData<DialogUpdateModel>()
-    val dialogUpdate: LiveData<DialogUpdateModel> get() = _dialogUpdate
+    private val _dialogUpdate = MutableLiveData<DialogModel>()
+    val dialogUpdate: LiveData<DialogModel> get() = _dialogUpdate
+
+    private val _dialogInfo = MutableLiveData<Event<DialogModel>>()
+    val dialogInfo: LiveData<Event<DialogModel>> get() = _dialogInfo
 
     private lateinit var coutriesForAdapter: List<CountryData>
 
@@ -56,29 +62,35 @@ class GlobalViewModel(
             _global.value = globalUseCase()
         }
 
-        initDialogUpdate()
+        initDialogs()
     }
 
     override fun handleException() {
         // TODO-(31/03/20)-kheirus: handle exception
     }
 
-    private fun initDialogUpdate(){
+    private fun initDialogs(){
+        launch {
+            val isAlreadyReadInfo = dialogInfoUseCase()
+            remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Timber.d("%s: %s", REMOTE_SUCCESS_LOG, task.result)
 
-        remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val updated = task.result
-                Timber.d("%s: %s", REMOTE_SUCCESS_LOG, updated)
+                    // Handle Dialog for update
+                    val dialogUpdateModel = remoteConfig.toDialogModel(REMOTE_DIALOG_UPDATE_KEY, gson)
+                    if (dialogUpdateModel.version > VERSION_CODE){
+                        _dialogUpdate.value = dialogUpdateModel
+                    }
 
-                val json = remoteConfig.getString(REMOTE_KEY)
-                val dialogModel = gson.fromJson<DialogUpdateModel>(json, DialogUpdateModel::class.java)
+                    // Handle Dialog for general informations
+                    val dialogInfoModel = remoteConfig.toDialogModel(REMOTE_DIALOG_INFO_KEY, gson)
+                    if (dialogInfoModel.version == VERSION_CODE && !isAlreadyReadInfo) {
+                        _dialogInfo.value = Event(dialogInfoModel)
+                    }
 
-                if (dialogModel.version > VERSION_CODE){
-                    _dialogUpdate.value = dialogModel
+                }else{
+                    Timber.d(REMOTE_FAILED_LOG)
                 }
-
-            }else{
-                Timber.d(REMOTE_FAILED_LOG)
             }
         }
     }

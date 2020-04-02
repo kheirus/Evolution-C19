@@ -14,4 +14,19 @@
             }
         </value>
     </entry>
+
+    <entry>
+        <key>dialog_information</key>
+        <value>
+            {
+            "version": 12,
+            "title": "Information",
+            "content": "Avec la dernière mise à jour, vous pouvez suivre mainteant l'évolution du virus heure par heure pour la journée en cours.\nLes données sont actualisées au fur et à mesure que les nouveaux chiffrent sont publiquement partagées un peu partout dans le monde.",
+            "button": {
+            "label": "Compris",
+            "url": null
+            }
+            }
+        </value>
+    </entry>
 </defaultsMap>

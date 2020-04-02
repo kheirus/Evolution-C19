@@ -10,7 +10,8 @@ import com.kouelaa.evolutionc19.R
  * Created by kheirus on 30/03/2020.
  */
 
-const val REMOTE_KEY = "dialog_update"
+const val REMOTE_DIALOG_UPDATE_KEY = "dialog_update"
+const val REMOTE_DIALOG_INFO_KEY = "dialog_information"
 const val REMOTE_FAILED_LOG = "Firebase Remote Config failed to update"
 const val REMOTE_SUCCESS_LOG = "Firebase Remote Config update successfully"
 

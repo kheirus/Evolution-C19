@@ -1,12 +1,12 @@
 <resources>
-    <string name="_plus">+</string>
+    <string name="_plus">+%1$s</string>
     <string name="_ignore">Annuler</string>
     <string name="_update">Mettre à jour</string>
 
-    <string name="confirmed">Cas</string>
-    <string name="deaths">Décès</string>
-    <string name="recovered">Guérisons</string>
-    <string name="still_sick">Infections</string>
+    <string name="confirmed">Cas\n%1$s</string>
+    <string name="recovered">Guérisons\n%1$s</string>
+    <string name="deaths">Décès\n%1$s</string>
+    <string name="still_sick">Infections\n%1$s</string>
     <string name="global_cases">Nombre total de cas</string>
     <string name="confirmed_label">Cas infectés</string>
     <string name="recovered_label">Cas guéris</string>

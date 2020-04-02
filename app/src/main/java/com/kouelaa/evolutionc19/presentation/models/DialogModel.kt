@@ -3,7 +3,7 @@ package com.kouelaa.evolutionc19.presentation.models
 /**
  * Created by kheirus on 23/03/2020.
  */
-data class DialogUpdateModel (
+data class DialogModel (
     val version: Int,
     val title: String,
     val content: String,
@@ -12,5 +12,5 @@ data class DialogUpdateModel (
 
 data class ButtonModel (
     val label: String,
-    val url: String
+    val url: String?
 )

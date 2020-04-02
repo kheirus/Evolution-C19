@@ -7,5 +7,10 @@ data class DialogUpdateModel (
     val version: Int,
     val title: String,
     val content: String,
+    val button: ButtonModel
+)
+
+data class ButtonModel (
+    val label: String,
     val url: String
 )

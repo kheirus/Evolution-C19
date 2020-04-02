@@ -4,9 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
-import com.kouelaa.evolutionc19.R
+import com.kouelaa.evolutionc19.common.VERSION_CODE
 import com.kouelaa.evolutionc19.common.normalize
-import com.kouelaa.evolutionc19.data.usecases.GetGlobalUseCase
+import com.kouelaa.evolutionc19.data.usecases.GlobalUseCase
+import com.kouelaa.evolutionc19.data.usecases.DialogInfoUseCase
 import com.kouelaa.evolutionc19.domain.entities.CountryChartValue
 import com.kouelaa.evolutionc19.domain.entities.Global
 import com.kouelaa.evolutionc19.domain.entities.CountryData
@@ -23,7 +24,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class GlobalViewModel(
-    val getGlobalUseCase: GetGlobalUseCase,
+    private val globalUseCase: GlobalUseCase,
+    private val dialogInfoUseCase: DialogInfoUseCase,
     private val remoteConfig: FirebaseRemoteConfig,
     private val gson: Gson,
     dispatcher: CoroutineDispatcher
@@ -51,25 +53,29 @@ class GlobalViewModel(
 
     init {
         launch {
-            _global.value = getGlobalUseCase()
+            _global.value = globalUseCase()
         }
 
-        initRemoteConfig()
+        initDialogUpdate()
     }
 
     override fun handleException() {
         // TODO-(31/03/20)-kheirus: handle exception
     }
 
-    private fun initRemoteConfig(){
+    private fun initDialogUpdate(){
+
         remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val updated = task.result
                 Timber.d("%s: %s", REMOTE_SUCCESS_LOG, updated)
 
                 val json = remoteConfig.getString(REMOTE_KEY)
-                val dialogUpdateFromRemote = gson.fromJson<DialogUpdateModel>(json, DialogUpdateModel::class.java)
-                _dialogUpdate.value = dialogUpdateFromRemote
+                val dialogModel = gson.fromJson<DialogUpdateModel>(json, DialogUpdateModel::class.java)
+
+                if (dialogModel.version > VERSION_CODE){
+                    _dialogUpdate.value = dialogModel
+                }
 
             }else{
                 Timber.d(REMOTE_FAILED_LOG)
@@ -141,10 +147,16 @@ class GlobalViewModel(
 
     /**
      * To lighten the computation in the listener setOnChartValueSelectedListener ()
-     * we prefer to pass throuw a LiveData that can notify change to the ui and
+     * we prefer to pass through a LiveData that can notify change to the ui and
      * the calculation will be done on another function in viewModel
      */
     fun onChangeSelectHighlight(value: CountryValue){
         _selectHighlightValues.value = value
+    }
+
+    fun onClickPositiveButtonDialogInfo() {
+        launch {
+            dialogInfoUseCase(true)
+        }
     }
 }

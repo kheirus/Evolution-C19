@@ -1,17 +1,13 @@
 package com.kouelaa.evolutionc19.common
 
-import android.icu.text.CompactDecimalFormat
-import android.icu.text.NumberFormat
-import android.icu.util.ULocale
 import java.text.DecimalFormat
 import java.text.Normalizer
-import java.util.*
-import kotlin.math.abs
 
 /**
  * Created by kheirus on 23/03/2020.
  */
 
+const val VERSION_CODE = 12
 
 /**
  * Normalize string - convert to lowercase, replace diacritics and trim trailing whitespaces

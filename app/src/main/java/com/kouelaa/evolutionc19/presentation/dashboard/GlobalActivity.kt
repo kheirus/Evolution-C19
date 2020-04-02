@@ -112,20 +112,17 @@ class GlobalActivity : AppCompatActivity(){
         dialog.apply {
             setTitle(dialogModel.title)
             setMessage(dialogModel.content)
-            setCancelable(false)
             setNegativeButton(R.string._ignore) { mDialog, _ ->
                 mDialog.cancel()
             }
-            setPositiveButton(R.string._update) { mDialog, _ ->
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(dialogModel.url))
+            setPositiveButton(dialogModel.button.label) { mDialog, _ ->
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(dialogModel.button.url))
                 if (intent.resolveActivity(packageManager) != null) {
                     startActivity(intent)
                 }
                 mDialog.cancel()
-                // TODO-(31/03/20)-kheirus: here save this click to not show dialog another time
             }
         }.show()
-
     }
 
     private fun dialogErrorCountryNotFound() {
@@ -342,7 +339,7 @@ class GlobalActivity : AppCompatActivity(){
         country_linechart.xAxis.valueFormatter = LineChartCountryLabelFormatter(values)
         country_linechart.data = lineData
 
-        country_linechart.highlightValue((values.size-1).toFloat(), 0, true)
+        country_linechart.highlightValue((values.size - 1).toFloat(), 0, true)
 
         year_before.setOnClickListener {
             val xHighlighted = country_linechart.highlighted[0].x
@@ -376,5 +373,4 @@ class GlobalActivity : AppCompatActivity(){
         countries_rv.layoutManager = countryLayoutManager
         countries_rv.adapter = countryAdapter
     }
-
 }

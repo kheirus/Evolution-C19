@@ -7,7 +7,7 @@ import com.kouelaa.evolutionc19.domain.entities.Global
  * Created by kheirus on 2020-03-11.
  */
 
-class GetGlobalUseCase (
+class GlobalUseCase (
     private val globalRepository: GlobalRepository
 ){
     suspend operator fun invoke(): Global? = globalRepository.getGlobal()

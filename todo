@@ -5,7 +5,9 @@
 - bug animation
 - icon + nom appli dans toolbar
 - remove inappropriate files from git
-- regle de gestion sur le click de la dialog shared pref
+- gérer une dialog d'information (shared pref is ready)
+- tester installation depuis le btn mettre à jour si l'appli actuelle est écrasée ou pas
+- travailler la phrase pour mettre à jour, rajouter plus d'instruction comment faire...
 
 
 

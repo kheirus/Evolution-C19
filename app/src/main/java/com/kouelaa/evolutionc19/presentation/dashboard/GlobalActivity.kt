@@ -19,10 +19,13 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.kouelaa.evolutionc19.R
-import com.kouelaa.evolutionc19.common.toKFormatter
+import com.kouelaa.evolutionc19.common.toDialog
+import com.kouelaa.evolutionc19.common.toErrorDialog
+import com.kouelaa.evolutionc19.common.toLargeNumberFormatter
 import com.kouelaa.evolutionc19.domain.entities.*
 import com.kouelaa.evolutionc19.presentation.about.AboutActivity
-import com.kouelaa.evolutionc19.presentation.models.DialogUpdateModel
+import com.kouelaa.evolutionc19.presentation.models.ButtonModel
+import com.kouelaa.evolutionc19.presentation.models.DialogModel
 import com.kouelaa.evolutionc19.presentation.models.ExtraDataCountry
 import kotlinx.android.synthetic.main.activity_global.*
 import kotlinx.android.synthetic.main.country_linechart_item.*
@@ -51,7 +54,7 @@ class GlobalActivity : AppCompatActivity(){
 
         initGlobalPieChart()
         initGlobalLineChart()
-        initCoutryLineChart()
+        initCountryLineChart()
         initToolbar()
         initSearchButton()
 
@@ -66,7 +69,7 @@ class GlobalActivity : AppCompatActivity(){
         globalViewModel.global.observe(this, Observer {global ->
             hideLoading()
             if (global == null){
-                showErrorDialog()
+                toErrorDialog()
             }else{
                 setPieChartData(global.toGlobalChart())
                 setPieChartLabels(global)
@@ -98,31 +101,24 @@ class GlobalActivity : AppCompatActivity(){
 
         globalViewModel.countryExtraValues.observe(this, Observer { extra ->
             initExtraCountryValues(extra)
-
         })
 
-        globalViewModel.dialogUpdate.observe(this, Observer {
-            showDialogUpdate(it)
-        })
-    }
-
-    private fun showDialogUpdate(dialogModel: DialogUpdateModel) {
-        val dialog = AlertDialog.Builder(this)
-
-        dialog.apply {
-            setTitle(dialogModel.title)
-            setMessage(dialogModel.content)
-            setNegativeButton(R.string._ignore) { mDialog, _ ->
-                mDialog.cancel()
-            }
-            setPositiveButton(dialogModel.button.label) { mDialog, _ ->
+        globalViewModel.dialogUpdate.observe(this, Observer {dialogModel ->
+            toDialog(dialogModel, isNegativeVisible = true){
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(dialogModel.button.url))
                 if (intent.resolveActivity(packageManager) != null) {
                     startActivity(intent)
                 }
-                mDialog.cancel()
             }
-        }.show()
+        })
+
+        globalViewModel.dialogInfo.observe(this, Observer { event ->
+            event.getContentIfNotHandled()?.let {dialogModel ->
+                toDialog(dialogModel){
+                    globalViewModel.onClickPositiveButtonDialogInfo()
+                }
+            }
+        })
     }
 
     private fun dialogErrorCountryNotFound() {
@@ -138,18 +134,6 @@ class GlobalActivity : AppCompatActivity(){
     private fun hideLoading() {
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         loader.visibility = View.GONE
-    }
-
-    private fun showErrorDialog(): AlertDialog.Builder {
-        val dialog = AlertDialog.Builder(this)
-        dialog.setTitle(getString(R.string.dialog_title))
-        dialog.setMessage(getString(R.string.dialog_text))
-        dialog.setPositiveButton(android.R.string.yes) { _, _ ->
-            finish()
-        }
-        dialog.show()
-
-        return dialog
     }
 
     private fun changeCameraDistance() {
@@ -186,7 +170,7 @@ class GlobalActivity : AppCompatActivity(){
     private fun initToolbar() {
         about_toolbar.setOnClickListener {
             startActivity(Intent(this, AboutActivity::class.java))
-            overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            overridePendingTransition(R.anim.right_in, R.anim.left_out)
         }
     }
 
@@ -201,7 +185,7 @@ class GlobalActivity : AppCompatActivity(){
         global_linechart.setParams()
     }
 
-    private fun initCoutryLineChart(){
+    private fun initCountryLineChart(){
         country_linechart.setParams()
     }
 
@@ -226,14 +210,14 @@ class GlobalActivity : AppCompatActivity(){
     private fun initExtraCountryValues(extra: ExtraDataCountry) {
         country_item_date_tv.text = extra.countryValue.date.toExtraChartLabelDate()
 
-        country_item_confirmed_tv.text = extra.countryValue.confirmed.toKFormatter()
-        country_item_new_confirmed_tv.text = getString(R.string._plus) + extra.newConfirmed.toKFormatter()
+        country_item_confirmed_tv.text = extra.countryValue.confirmed.toLargeNumberFormatter()
+        country_item_new_confirmed_tv.text = getString(R.string._plus, extra.newConfirmed.toLargeNumberFormatter())
 
-        country_item_death_tv.text = extra.countryValue.death.toKFormatter()
-        country_item_new_death_tv.text = getString(R.string._plus) + extra.newDeath.toKFormatter()
+        country_item_death_tv.text = extra.countryValue.death.toLargeNumberFormatter()
+        country_item_new_death_tv.text = getString(R.string._plus, extra.newDeath.toLargeNumberFormatter())
 
-        country_item_recovered_tv.text = extra.countryValue.recovered.toKFormatter()
-        country_item_new_recovered_tv.text = getString(R.string._plus) + extra.newRecovered.toKFormatter()
+        country_item_recovered_tv.text = extra.countryValue.recovered.toLargeNumberFormatter()
+        country_item_new_recovered_tv.text = getString(R.string._plus, extra.newRecovered.toLargeNumberFormatter())
     }
 
     private fun setPieChartData(values: List<GlobalChartValue>) {
@@ -263,14 +247,14 @@ class GlobalActivity : AppCompatActivity(){
     }
 
     private fun setPieChartLabels(global: Global) {
-        global_piechart.centerText = "${getString(R.string.confirmed)} \n ${global.globalData[0].confirmed.toKFormatter()}"
+        global_piechart.centerText = getString(R.string.confirmed, global.globalData[0].confirmed.toLargeNumberFormatter())
 
         global.toGlobalCards().forEach {
             when(it.label){
                 GlobalTypeEnum.CONFIRMED -> Unit
-                GlobalTypeEnum.RECOVERED -> recovered_tv.text = getString(R.string.recovered) + "\n"+ it.value.toKFormatter()
-                GlobalTypeEnum.DEATHS -> death_tv.text = getString(R.string.deaths)+ "\n" + it.value.toKFormatter()
-                GlobalTypeEnum.STILL_SICK -> still_sick_tv.text = getString(R.string.still_sick)+ "\n" + it.value.toKFormatter()
+                GlobalTypeEnum.RECOVERED -> recovered_tv.text = getString(R.string.recovered, it.value.toLargeNumberFormatter())
+                GlobalTypeEnum.DEATHS -> death_tv.text = getString(R.string.deaths, it.value.toLargeNumberFormatter())
+                GlobalTypeEnum.STILL_SICK -> still_sick_tv.text = getString(R.string.still_sick, it.value.toLargeNumberFormatter())
             }
         }
     }
@@ -280,9 +264,9 @@ class GlobalActivity : AppCompatActivity(){
         val valuesChart = values.reversed()
 
         global_item_date_tv.text = lastValue.date.toExtraChartLabelDate()
-        global_item_confirmed_tv.text = lastValue.confirmed.toKFormatter()
-        global_item_death_tv.text = lastValue.deaths.toKFormatter()
-        global_item_recovered_tv.text = lastValue.recovered.toKFormatter()
+        global_item_confirmed_tv.text = lastValue.confirmed.toLargeNumberFormatter()
+        global_item_death_tv.text = lastValue.deaths.toLargeNumberFormatter()
+        global_item_recovered_tv.text = lastValue.recovered.toLargeNumberFormatter()
 
         val entriesConfirmed = ArrayList<Entry>()
         val entriesRecovered = ArrayList<Entry>()

@@ -6,6 +6,6 @@ package com.kouelaa.evolutionc19.data.datasources.local
  */
 
 interface LocalDataSource {
-    fun setDialogChoice(isAlreadyClicked: Boolean)
     fun getDialogChoice(): Boolean
+    fun setDialogChoice(isAlreadyClicked: Boolean)
 }

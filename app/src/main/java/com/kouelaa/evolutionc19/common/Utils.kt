@@ -18,13 +18,11 @@ import java.util.*
  * Created by kheirus on 23/03/2020.
  */
 
-const val VERSION_CODE = 12
-
 /**
  * Normalize string - convert to lowercase, replace diacritics and trim trailing whitespaces
  */
 fun String.normalize(): String {
-    return Normalizer.normalize(toLowerCase(), Normalizer.Form.NFD)
+    return Normalizer.normalize(toLowerCase(Locale.ROOT), Normalizer.Form.NFD)
         .replace("[\\p{InCombiningDiacriticalMarks}]".toRegex(), "").trim()
 }
 
@@ -57,7 +55,7 @@ fun Float.toLargeNumberFormatter() : String {
     }
 }
 
-fun FirebaseRemoteConfig.toDialogModel(key: String, gson: Gson): DialogModel{
+fun FirebaseRemoteConfig.toDialogModel(key: String, gson: Gson): DialogModel?{
     val jsonRemoteDialog = getString(key)
     return gson.fromJson<DialogModel>(jsonRemoteDialog, DialogModel::class.java)
 }
@@ -86,7 +84,6 @@ fun AppCompatActivity.toDialog(
 
 fun AppCompatActivity.toErrorDialog(){
     val dialogModel = DialogModel(
-        version = 0,
         title = getString(R.string.dialog_title),
         content = getString(R.string.dialog_text),
         button = ButtonModel(

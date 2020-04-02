@@ -64,7 +64,7 @@ dependencies {
     def okhttp_version = '4.4.0'
     def mpchart_version = 'v3.1.0'
     def threetenbp_version = '1.2.2'
-    def firebase_version = '17.2.3'
+    def firebase_version = '17.3.0'
     def crashlytics_version = '17.0.0-beta03'
     def remote_config_version = '19.1.3'
 

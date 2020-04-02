@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import com.kouelaa.evolutionc19.common.Event
-import com.kouelaa.evolutionc19.common.VERSION_CODE
 import com.kouelaa.evolutionc19.common.normalize
 import com.kouelaa.evolutionc19.common.toDialogModel
 import com.kouelaa.evolutionc19.data.usecases.GlobalUseCase
@@ -78,16 +77,15 @@ class GlobalViewModel(
 
                     // Handle Dialog for update
                     val dialogUpdateModel = remoteConfig.toDialogModel(REMOTE_DIALOG_UPDATE_KEY, gson)
-                    if (dialogUpdateModel.version > VERSION_CODE){
-                        _dialogUpdate.value = dialogUpdateModel
-                    }
 
+                    dialogUpdateModel?.let {
+                            _dialogUpdate.value = dialogUpdateModel
+                    }
                     // Handle Dialog for general informations
                     val dialogInfoModel = remoteConfig.toDialogModel(REMOTE_DIALOG_INFO_KEY, gson)
-                    if (dialogInfoModel.version == VERSION_CODE && !isAlreadyReadInfo) {
-                        _dialogInfo.value = Event(dialogInfoModel)
+                    dialogInfoModel?.let {
+                        if (!isAlreadyReadInfo) _dialogInfo.value = Event(dialogInfoModel)
                     }
-
                 }else{
                     Timber.d(REMOTE_FAILED_LOG)
                 }

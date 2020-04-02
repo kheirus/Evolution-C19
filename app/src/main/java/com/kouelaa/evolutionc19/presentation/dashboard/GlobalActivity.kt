@@ -3,6 +3,7 @@ package com.kouelaa.evolutionc19.presentation.dashboard
 
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -24,8 +25,6 @@ import com.kouelaa.evolutionc19.common.toErrorDialog
 import com.kouelaa.evolutionc19.common.toLargeNumberFormatter
 import com.kouelaa.evolutionc19.domain.entities.*
 import com.kouelaa.evolutionc19.presentation.about.AboutActivity
-import com.kouelaa.evolutionc19.presentation.models.ButtonModel
-import com.kouelaa.evolutionc19.presentation.models.DialogModel
 import com.kouelaa.evolutionc19.presentation.models.ExtraDataCountry
 import kotlinx.android.synthetic.main.activity_global.*
 import kotlinx.android.synthetic.main.country_linechart_item.*
@@ -68,9 +67,7 @@ class GlobalActivity : AppCompatActivity(){
 
         globalViewModel.global.observe(this, Observer {global ->
             hideLoading()
-            if (global == null){
-                toErrorDialog()
-            }else{
+            if (global != null) {
                 setPieChartData(global.toGlobalChart())
                 setPieChartLabels(global)
                 setGlobalLineChartData(global.globalData)
@@ -78,6 +75,8 @@ class GlobalActivity : AppCompatActivity(){
 
                 // Display first country data
                 globalViewModel.onClickFirstCountry()
+            } else {
+                toErrorDialog()
             }
         })
 
@@ -189,6 +188,7 @@ class GlobalActivity : AppCompatActivity(){
         country_linechart.setParams()
     }
 
+    @SuppressLint("InflateParams")
     private fun initSearchButton() {
         search_btn.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(this)
@@ -197,7 +197,7 @@ class GlobalActivity : AppCompatActivity(){
 
             searchDialog = dialogBuilder.show()
 
-            dialog.search_edit_text.setOnEditorActionListener { textView, actionId, event ->
+            dialog.search_edit_text.setOnEditorActionListener { textView, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     globalViewModel.onSearchCountry(textView.text.toString())
                 }

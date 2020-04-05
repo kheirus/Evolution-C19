@@ -3,7 +3,9 @@ package com.kouelaa.evolutionc19.presentation.dashboard
 
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -18,8 +20,12 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.kouelaa.evolutionc19.R
+import com.kouelaa.evolutionc19.common.toDialog
+import com.kouelaa.evolutionc19.common.toErrorDialog
+import com.kouelaa.evolutionc19.common.toLargeNumberFormatter
 import com.kouelaa.evolutionc19.domain.entities.*
 import com.kouelaa.evolutionc19.presentation.about.AboutActivity
+import com.kouelaa.evolutionc19.presentation.models.ExtraDataCountry
 import kotlinx.android.synthetic.main.activity_global.*
 import kotlinx.android.synthetic.main.country_linechart_item.*
 import kotlinx.android.synthetic.main.global_linechart_item.*
@@ -47,7 +53,7 @@ class GlobalActivity : AppCompatActivity(){
 
         initGlobalPieChart()
         initGlobalLineChart()
-        initCoutryLineChart()
+        initCountryLineChart()
         initToolbar()
         initSearchButton()
 
@@ -61,20 +67,20 @@ class GlobalActivity : AppCompatActivity(){
 
         globalViewModel.global.observe(this, Observer {global ->
             hideLoading()
-            if (global == null){
-                showErrorDialog()
-            }else{
+            if (global != null) {
                 setPieChartData(global.toGlobalChart())
                 setPieChartLabels(global)
                 setGlobalLineChartData(global.globalData)
                 setCountriesData(global.coutriesData)
 
                 // Display first country data
-                globalViewModel.onClickedCountry("Chine")
+                globalViewModel.onClickFirstCountry()
+            } else {
+                toErrorDialog()
             }
         })
 
-        globalViewModel.countryData.observe(this, Observer {countryChartValue ->
+        globalViewModel.countryChartData.observe(this, Observer { countryChartValue ->
             country_item_country_tv.text = countryChartValue.country
             setCountriesLineChartDate(countryChartValue.values)
         })
@@ -84,11 +90,40 @@ class GlobalActivity : AppCompatActivity(){
                 countryAdapter.selected = countrySearched.index
                 countryLayoutManager.scrollToPosition(countrySearched.index)
             }else{
-                Toast.makeText(this, getString(R.string.toast_error_country_not_found), Toast.LENGTH_SHORT).show()
+                dialogErrorCountryNotFound()
+            }
+        })
+
+        globalViewModel.selectHighlightValues.observe(this, Observer {
+            globalViewModel.calculateValuesForHighlight(it)
+        })
+
+        globalViewModel.countryExtraValues.observe(this, Observer { extra ->
+            initExtraCountryValues(extra)
+        })
+
+        globalViewModel.dialogUpdate.observe(this, Observer {dialogModel ->
+            toDialog(dialogModel, isNegativeVisible = true){
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(dialogModel.button.url))
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent)
+                }
+            }
+        })
+
+        globalViewModel.dialogInfo.observe(this, Observer { event ->
+            event.getContentIfNotHandled()?.let {dialogModel ->
+                toDialog(dialogModel){
+                    globalViewModel.onClickPositiveButtonDialogInfo()
+                }
             }
         })
     }
 
+    private fun dialogErrorCountryNotFound() {
+        Toast.makeText(this, getString(R.string.toast_error_country_not_found), Toast.LENGTH_SHORT)
+            .show()
+    }
 
     private fun showLoading() {
         window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
@@ -98,18 +133,6 @@ class GlobalActivity : AppCompatActivity(){
     private fun hideLoading() {
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         loader.visibility = View.GONE
-    }
-
-    private fun showErrorDialog(): AlertDialog.Builder {
-        val dialog = AlertDialog.Builder(this)
-        dialog.setTitle(getString(R.string.dialog_title))
-        dialog.setMessage(getString(R.string.dialog_text))
-        dialog.setPositiveButton(android.R.string.yes) { _, _ ->
-            finish()
-        }
-        dialog.show()
-
-        return dialog
     }
 
     private fun changeCameraDistance() {
@@ -146,7 +169,7 @@ class GlobalActivity : AppCompatActivity(){
     private fun initToolbar() {
         about_toolbar.setOnClickListener {
             startActivity(Intent(this, AboutActivity::class.java))
-            overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            overridePendingTransition(R.anim.right_in, R.anim.left_out)
         }
     }
 
@@ -161,10 +184,11 @@ class GlobalActivity : AppCompatActivity(){
         global_linechart.setParams()
     }
 
-    private fun initCoutryLineChart(){
+    private fun initCountryLineChart(){
         country_linechart.setParams()
     }
 
+    @SuppressLint("InflateParams")
     private fun initSearchButton() {
         search_btn.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(this)
@@ -173,7 +197,7 @@ class GlobalActivity : AppCompatActivity(){
 
             searchDialog = dialogBuilder.show()
 
-            dialog.search_edit_text.setOnEditorActionListener { textView, actionId, event ->
+            dialog.search_edit_text.setOnEditorActionListener { textView, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     globalViewModel.onSearchCountry(textView.text.toString())
                 }
@@ -181,6 +205,19 @@ class GlobalActivity : AppCompatActivity(){
                 false
             }
         }
+    }
+
+    private fun initExtraCountryValues(extra: ExtraDataCountry) {
+        country_item_date_tv.text = extra.countryValue.date.toExtraChartLabelDate()
+
+        country_item_confirmed_tv.text = extra.countryValue.confirmed.toLargeNumberFormatter()
+        country_item_new_confirmed_tv.text = getString(R.string._plus, extra.newConfirmed.toLargeNumberFormatter())
+
+        country_item_death_tv.text = extra.countryValue.death.toLargeNumberFormatter()
+        country_item_new_death_tv.text = getString(R.string._plus, extra.newDeath.toLargeNumberFormatter())
+
+        country_item_recovered_tv.text = extra.countryValue.recovered.toLargeNumberFormatter()
+        country_item_new_recovered_tv.text = getString(R.string._plus, extra.newRecovered.toLargeNumberFormatter())
     }
 
     private fun setPieChartData(values: List<GlobalChartValue>) {
@@ -210,14 +247,14 @@ class GlobalActivity : AppCompatActivity(){
     }
 
     private fun setPieChartLabels(global: Global) {
-        global_piechart.centerText = "${getString(R.string.confirmed)} \n ${global.globalData[0].confirmed.toInt()}"
+        global_piechart.centerText = getString(R.string.confirmed, global.globalData[0].confirmed.toLargeNumberFormatter())
 
         global.toGlobalCards().forEach {
             when(it.label){
                 GlobalTypeEnum.CONFIRMED -> Unit
-                GlobalTypeEnum.RECOVERED -> recovered_tv.text = getString(R.string.recovered) + "\n"+ it.value.toInt().toString()
-                GlobalTypeEnum.DEATHS -> death_tv.text = getString(R.string.deaths)+ "\n" + it.value.toInt().toString()
-                GlobalTypeEnum.STILL_SICK -> still_sick_tv.text = getString(R.string.still_sick)+ "\n" + it.value.toInt().toString()
+                GlobalTypeEnum.RECOVERED -> recovered_tv.text = getString(R.string.recovered, it.value.toLargeNumberFormatter())
+                GlobalTypeEnum.DEATHS -> death_tv.text = getString(R.string.deaths, it.value.toLargeNumberFormatter())
+                GlobalTypeEnum.STILL_SICK -> still_sick_tv.text = getString(R.string.still_sick, it.value.toLargeNumberFormatter())
             }
         }
     }
@@ -226,10 +263,10 @@ class GlobalActivity : AppCompatActivity(){
         val lastValue = values[0]
         val valuesChart = values.reversed()
 
-        global_item_date_tv.text = lastValue.date.toChartLabelDate()
-        global_item_confirmed_tv.text = lastValue.confirmed.toInt().toString()
-        global_item_death_tv.text = lastValue.deaths.toInt().toString()
-        global_item_recovered_tv.text = lastValue.recovered.toInt().toString()
+        global_item_date_tv.text = lastValue.date.toExtraChartLabelDate()
+        global_item_confirmed_tv.text = lastValue.confirmed.toLargeNumberFormatter()
+        global_item_death_tv.text = lastValue.deaths.toLargeNumberFormatter()
+        global_item_recovered_tv.text = lastValue.recovered.toLargeNumberFormatter()
 
         val entriesConfirmed = ArrayList<Entry>()
         val entriesRecovered = ArrayList<Entry>()
@@ -261,10 +298,7 @@ class GlobalActivity : AppCompatActivity(){
     private fun setCountriesLineChartDate(values: List<CountryValue>) {
 
         val lastValue = values[values.size-1]
-        country_item_date_tv.text = lastValue.date.toChartLabelDate()
-        country_item_confirmed_tv.text = lastValue.confirmed.toInt().toString()
-        country_item_death_tv.text = lastValue.death.toInt().toString()
-        country_item_recovered_tv.text = lastValue.recovered.toInt().toString()
+        globalViewModel.calculateValuesForHighlight(lastValue)
 
         val entriesConfirmed = ArrayList<Entry>()
         val entriesRecovered = ArrayList<Entry>()
@@ -289,18 +323,30 @@ class GlobalActivity : AppCompatActivity(){
         country_linechart.xAxis.valueFormatter = LineChartCountryLabelFormatter(values)
         country_linechart.data = lineData
 
-        country_linechart.highlightValue((values.size-1).toFloat(), 0, true)
+        country_linechart.highlightValue((values.size - 1).toFloat(), 0, true)
+
+        year_before.setOnClickListener {
+            val xHighlighted = country_linechart.highlighted[0].x
+            if (xHighlighted > 0f){
+                country_linechart.highlightValue(xHighlighted - 1, 0, true)
+            }
+        }
+
+        year_next.setOnClickListener {
+            val xHighlighted = country_linechart.highlighted[0].x
+            if (xHighlighted < values.size - 1 ){
+                country_linechart.highlightValue(xHighlighted + 1, 0, true)
+            }
+        }
+
         country_linechart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onNothingSelected() {}
-
             override fun onValueSelected(entry: Entry?, highlight: Highlight?) {
-                val data  = entry?.data as? CountryValue?
-                country_item_date_tv.text = data?.date?.toChartLabelDate() ?: ""
-                country_item_confirmed_tv.text = data?.confirmed?.toInt().toString()
-                country_item_death_tv.text = data?.death?.toInt().toString()
-                country_item_recovered_tv.text = data?.recovered?.toInt().toString()
+                val data  = entry?.data as CountryValue
+                globalViewModel.onChangeSelectHighlight(data)
             }
         })
+
         country_linechart.animateXY(1000, 200)
     }
 
@@ -311,5 +357,4 @@ class GlobalActivity : AppCompatActivity(){
         countries_rv.layoutManager = countryLayoutManager
         countries_rv.adapter = countryAdapter
     }
-
 }

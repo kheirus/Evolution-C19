@@ -20,7 +20,9 @@ class CountryAdapter(
     private val countries: List<CountryData>,
     private val listener: (String) -> Unit
 ) : RecyclerView.Adapter<CountryAdapter.CountryViewHolder>() {
+
     var selected = 0
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.country_item, parent, false)
 
@@ -33,7 +35,6 @@ class CountryAdapter(
 
     override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
         holder.bind(countries.asReversed()[position],position,  listener)
-
     }
 
     inner class CountryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -86,7 +87,6 @@ class CountryAdapter(
                     selected = adapterPosition
                     notifyDataSetChanged()
                 }
-
             }
         }
     }

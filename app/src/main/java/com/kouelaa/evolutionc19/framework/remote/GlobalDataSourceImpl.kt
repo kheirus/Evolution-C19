@@ -12,8 +12,7 @@ class GlobalDataSourceImpl(private val apiService: ApiService) : GlobalDataSourc
         val response = apiService.getGlobal()
         return when {
             response.isSuccessful -> response.body()
-            else -> null
+            else -> null // TODO-(31/03/20)-kheirus: not elegant, change to an Error Object
         }
     }
-
 }

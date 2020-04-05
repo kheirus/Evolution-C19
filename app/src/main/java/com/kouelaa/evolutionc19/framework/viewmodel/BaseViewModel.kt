@@ -1,6 +1,7 @@
 package com.kouelaa.evolutionc19.framework.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 
 import kotlinx.coroutines.*
 import timber.log.Timber
@@ -9,7 +10,7 @@ import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel(
     private val dispatcher: CoroutineDispatcher
-) : ViewModel(), CoroutineScope {
+    ) : ViewModel(), CoroutineScope {
 
     private var handler: CoroutineExceptionHandler =
         CoroutineExceptionHandler { _, throwable -> baseHandleException(throwable) }

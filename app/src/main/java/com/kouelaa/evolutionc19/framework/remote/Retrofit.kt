@@ -12,7 +12,7 @@ import timber.log.Timber
  */
 
 
-inline fun <reified T> createRetrofitClient(okHttpClient: OkHttpClient, endpoint: String): T {
+inline fun <reified T> initRetrofitClient(okHttpClient: OkHttpClient, endpoint: String): T {
     return Retrofit.Builder()
         .baseUrl(endpoint)
         .client(okHttpClient)
@@ -21,7 +21,7 @@ inline fun <reified T> createRetrofitClient(okHttpClient: OkHttpClient, endpoint
         .create()
 }
 
-fun createOkHttpClient(): OkHttpClient {
+fun initOkHttpClient(): OkHttpClient {
     val logging = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
         override fun log(message: String) {
             Timber.tag("OkHttp").d(message)

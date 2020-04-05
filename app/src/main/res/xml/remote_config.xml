@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>dialog_update</key>
+        <value>
+            {
+            "title": "Mise à jour",
+            "content": "Une nouvelle version est disponible, pour le bon fonctionnement de votre application veuillez la mettre à jour",
+            "button": {
+            "label": "Mettre à jour",
+            "url": "https://github.com/kheirus/Evolution-C19-app"
+            }
+            }
+        </value>
+    </entry>
+
+    <entry>
+        <key>dialog_information</key>
+        <value>
+            {
+            "title": "Information",
+            "content": "Avec la dernière mise à jour, vous pouvez suivre mainteant l'évolution du virus heure par heure pour la journée en cours.\nLes données sont actualisées au fur et à mesure que les nouveaux chiffrent sont publiquement partagées un peu partout dans le monde.",
+            "button": {
+            "label": "Compris",
+            "url": null
+            }
+            }
+        </value>
+    </entry>
+</defaultsMap>

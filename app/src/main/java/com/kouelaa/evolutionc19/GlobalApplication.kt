@@ -16,9 +16,7 @@ class GlobalApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        // Fabric.with(this, Crashlytics())
         AndroidThreeTen.init(this);
-
 
         startKoin {
             androidContext(this@GlobalApplication)

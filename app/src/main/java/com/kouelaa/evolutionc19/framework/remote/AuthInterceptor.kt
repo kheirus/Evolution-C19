@@ -9,7 +9,7 @@ import okhttp3.Response
 
 class AuthInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        var req = chain.request()
+        val req = chain.request()
         return chain.proceed(req)
     }
 }

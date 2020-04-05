@@ -63,35 +63,6 @@
           ]
         }
       }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:399508966332:android:b1699e2d984333e44939b9",
-        "android_client_info": {
-          "package_name": "com.kouelaa.evolutionc19.dev.debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "399508966332-9kcvkrjfr4hso0hgvh0h90i61ddnenvn.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDEKEUwtKSW-5A9R8tun67a6OxRoxvuXB0"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "399508966332-9kcvkrjfr4hso0hgvh0h90i61ddnenvn.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
     }
   ],
   "configuration_version": "1"

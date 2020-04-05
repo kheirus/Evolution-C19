@@ -16,6 +16,10 @@ un besoin précis: celui d'afficher l'évolution du Coronavirus (COVID-19) jour 
 
 Cette application à un but non lucratif, n'affiche pas de publicité, ne demande aucune autorisation particulière.
 
+### Où est-ce que je peux trouver l'application ?
+L'application n'a malheureusement pas été accepté par Google dans le Play Store comme toute application qui traîte du sujet du Covid-19.
+Toutefois, vous pouvez la télécharger en toute sécurité sur ce repository : https://github.com/kheirus/Evolution-C19-app/tree/master
+
 
 ### Démonstration de l'application :
 
@@ -30,7 +34,6 @@ Cette application à un but non lucratif, n'affiche pas de publicité, ne demand
 <img src="/screenshots/research_screen_1.2.jpg" width="40%">
 <img src="/screenshots/research_result_screen_1.2.jpg" width="40%">
 </p>
-
 
 
 #### MIT License

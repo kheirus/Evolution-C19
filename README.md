@@ -19,14 +19,14 @@ Cette application à un but non lucratif, n'affiche pas de publicité, ne demand
 
 ### Démonstration de l'application :
 
-![Démo](/screenshots/1.2/demo_1.2.gif)
+![Démo](/screenshots/demo_1.2.gif)
 
 ### Quelques screenshots :
 <p float="center">
-<img src="/screenshots/1.2/global_screen_1.2.jpg" width="40%">
-<img src="/screenshots/1.2/country_screen_1.2.jpg" width="40%">
+<img src="/screenshots/global_screen_1.2.jpg" width="40%">
+<img src="/screenshots/country_screen_1.2.jpg" width="40%">
 </p>
 <p float="center">
-<img src="/screenshots/1.2/research_screen_1.2.jpg" width="40%">
-<img src="/screenshots/1.2/research_result_screen_1.2.jpg" width="40%">
+<img src="/screenshots/research_screen_1.2.jpg" width="40%">
+<img src="/screenshots/research_result_screen_1.2.jpg" width="40%">
 </p>

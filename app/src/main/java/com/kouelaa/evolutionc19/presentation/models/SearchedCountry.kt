@@ -6,4 +6,8 @@ package com.kouelaa.evolutionc19.presentation.models
 data class SearchedCountry (
     val found: Boolean,
     val index: Int
-)
+){
+    companion object {
+        const val OTHER_COUNTRIES = "Autres"
+    }
+}

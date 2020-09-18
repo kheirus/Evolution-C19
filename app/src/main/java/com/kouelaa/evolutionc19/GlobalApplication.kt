@@ -16,6 +16,7 @@ class GlobalApplication : Application() {
 
 
     //feature1
+    //feature2
     //dev 2
     override fun onCreate() {
         super.onCreate()

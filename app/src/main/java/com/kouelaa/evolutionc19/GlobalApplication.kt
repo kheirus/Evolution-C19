@@ -14,6 +14,7 @@ import timber.log.Timber
  */
 class GlobalApplication : Application() {
 
+
     override fun onCreate() {
         super.onCreate()
         AndroidThreeTen.init(this);

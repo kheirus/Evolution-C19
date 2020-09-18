@@ -20,6 +20,7 @@ class GlobalApplication : Application() {
         super.onCreate()
         AndroidThreeTen.init(this);
 
+        //dev3
         startKoin {
             androidContext(this@GlobalApplication)
             modules(listOf(vmModule, domainModule))
